@@ -26,16 +26,12 @@
             android:name="com.google.ar.core"
             android:value="required" />
 
-
         <activity
             android:name=".Extras.Medicion"
             android:configChanges="orientation|screenSize"
             android:exported="true"
             android:screenOrientation="locked"
-            android:theme="@style/Theme.AppCompat.NoActionBar">
-        </activity>
-
-        <activity android:name=".Extras.Localizacion" />
+            android:theme="@style/Theme.AppCompat.NoActionBar" />
         <activity
             android:name=".Fragments.HomeActivity"
             android:label="@string/title_activity_home"

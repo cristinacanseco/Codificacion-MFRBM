@@ -45,7 +45,7 @@ import java.util.Map;
  * Use the {@link BitacoraFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class BitacoraFragment extends Fragment implements OnCompleteListener<QuerySnapshot>,BitacoraAdapter.OnItemClickListener{
+public class BitacoraFragment extends Fragment implements OnCompleteListener<QuerySnapshot>, BitacoraAdapter.OnItemClickListener {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -160,7 +160,7 @@ public class BitacoraFragment extends Fragment implements OnCompleteListener<Que
             }
         }).attachToRecyclerView(rv_mis_bitacoras_p);
 
-        //bitacoraAdapter.setOnItemClickListener(this);
+
         return bitacora_fragment ;
 
     }
@@ -208,8 +208,11 @@ public class BitacoraFragment extends Fragment implements OnCompleteListener<Que
             if(bitacoraList.size()==0){
                 tv_sin_bitacoras.setVisibility(View.VISIBLE);
             }
-        }else{
 
+            bitacoraAdapter.setOnItemClickListener(this);
+
+        }else{
+            crud. createAlert("Error", "Hubo un problema", "OK");
         }
     }
 
@@ -241,7 +244,6 @@ public class BitacoraFragment extends Fragment implements OnCompleteListener<Que
                 .addToBackStack(null)
                 .commit();
     }
-
 
 
     /**

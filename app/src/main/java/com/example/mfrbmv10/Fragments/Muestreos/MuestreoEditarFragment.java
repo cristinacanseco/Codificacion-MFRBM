@@ -9,11 +9,17 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.mfrbmv10.FirebaseMotor.Crud;
+import com.example.mfrbmv10.Modelos.Muestreo;
 import com.example.mfrbmv10.R;
+
+import java.util.Map;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -23,7 +29,7 @@ import com.example.mfrbmv10.R;
  * Use the {@link MuestreoEditarFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class MuestreoEditarFragment extends Fragment {
+public class MuestreoEditarFragment extends Fragment implements View.OnClickListener {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -35,9 +41,13 @@ public class MuestreoEditarFragment extends Fragment {
 
     private OnFragmentInteractionListener mListener;
 
-    public ImageView img_muestreo_mp;
-    public TextView tv_color_mp, tv_dimension_mp,tv_localizacion_mp, tv_nombre_mp;
+    public ImageView img_me;
+    public EditText tv_nombre_me;
+    public TextView tv_fecha_me, tv_hora_me, tv_coordenadas_me, tv_localizacion_me;
     public Crud crud;
+    private Button btn_editar_me;
+    private String id_bitacora, id_muestreo, nombre_bitacora;
+    private Muestreo m;
 
     public MuestreoEditarFragment() {
         // Required empty public constructor
@@ -74,8 +84,66 @@ public class MuestreoEditarFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_muestreo_editar, container, false);
+        View muestreo_editar_fragment =  inflater.inflate(R.layout.fragment_muestreo_editar, container, false);
+
+        crud = new Crud(this);
+
+        img_me = muestreo_editar_fragment.findViewById(R.id.img_me);
+        tv_nombre_me = muestreo_editar_fragment.findViewById(R.id.tv_nombre_me);
+        tv_fecha_me = muestreo_editar_fragment.findViewById(R.id.tv_fecha_me);
+        tv_hora_me = muestreo_editar_fragment.findViewById(R.id.tv_hora_me);
+        tv_coordenadas_me = muestreo_editar_fragment.findViewById(R.id.tv_coordenadas_me);
+        tv_localizacion_me = muestreo_editar_fragment.findViewById(R.id.tv_localizacion_me);
+        btn_editar_me = muestreo_editar_fragment.findViewById(R.id.btn_editar_me);
+        btn_editar_me.setOnClickListener(this);
+
+        Bundle bundle = getArguments();
+        id_bitacora = bundle.getString("id_bitacora");
+        id_muestreo = bundle.getString("id_muestreo");
+        nombre_bitacora = bundle.getString("nombre_bitacora");
+        m= (Muestreo) bundle.getSerializable("muestreo");
+        obtenerDatos(m);
+
+        return muestreo_editar_fragment;
     }
+
+    private void obtenerDatos(Muestreo muestreo) {
+        img_me.setImageResource(R.drawable.flores1);
+        tv_nombre_me.setText(muestreo.getNombre_mtr());
+        tv_fecha_me.setText(muestreo.getFecha_mtr());
+        tv_hora_me.setText(muestreo.getHora_mtr());
+        tv_coordenadas_me.setText(muestreo.getCoordenadas_mtr());
+        tv_localizacion_me.setText(muestreo.getUbicacion_mtr());
+    }
+
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()){
+            case R.id.btn_editar_me:
+                actualizarDatos();
+                break;
+            default:
+                break;
+        }
+    }
+
+    private void actualizarDatos() {
+        String nombre_mtr = tv_nombre_me.getText().toString();
+        String imagen_mtr = "R.drawable.flores1";
+        String fecha_mtr = tv_fecha_me.getText().toString();
+        String hora_mtr = tv_hora_me.getText().toString();
+        String ubicacion_mtr = tv_localizacion_me.getText().toString();
+        String coordenadas_mtr = tv_coordenadas_me.getText().toString();
+        String forma_mtr = "algo";
+        String textura_mtr = "algo2";
+        String color_mtr = "colres";
+        String dimension_mtr = "dimensiones";
+
+        Muestreo muestreo = new Muestreo(nombre_mtr,imagen_mtr,fecha_mtr, hora_mtr,ubicacion_mtr,coordenadas_mtr,forma_mtr,textura_mtr,color_mtr,dimension_mtr);
+
+        crud.editarDatosMuestreo(muestreo, id_bitacora, id_muestreo, nombre_bitacora);
+    }
+
 
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
@@ -100,6 +168,8 @@ public class MuestreoEditarFragment extends Fragment {
         super.onDetach();
         mListener = null;
     }
+
+
 
     /**
      * This interface must be implemented by activities that contain this

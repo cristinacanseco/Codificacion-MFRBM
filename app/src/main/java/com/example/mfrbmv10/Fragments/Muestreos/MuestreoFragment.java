@@ -17,10 +17,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
-import com.example.mfrbmv10.Adaptadores.BitacoraAdapter;
 import com.example.mfrbmv10.Adaptadores.MuestreoAdapter;
-import com.example.mfrbmv10.Extras.Localizacion;
 import com.example.mfrbmv10.FirebaseMotor.Crud;
 import com.example.mfrbmv10.Modelos.Muestreo;
 import com.example.mfrbmv10.R;
@@ -41,7 +40,7 @@ import java.util.List;
  * Use the {@link MuestreoFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class MuestreoFragment extends Fragment implements OnCompleteListener<QuerySnapshot> {
+public class MuestreoFragment extends Fragment implements OnCompleteListener<QuerySnapshot>, MuestreoAdapter.OnItemClickListener {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -102,11 +101,9 @@ public class MuestreoFragment extends Fragment implements OnCompleteListener<Que
 
         this.crud = new Crud(this);
         Bundle bundle = getArguments();
-        //id_bitacora = bundle.getString("id_btc");
-        //crud.mostrarMuestreos(id_bitacora);
-        id_bitacora = "fij6EHdRxYozVOakbwuj";
+        id_bitacora = bundle.getString("id_bitacora");
+        nombreBitacora = bundle.getString("nombre_bitacora");
         crud.mostrarMuestreos(id_bitacora);
-
 
         rv_mis_muestreos  = muestreo_fragment.findViewById(R.id.rv_mis_muestreos);
         rv_mis_muestreos.setHasFixedSize(true);
@@ -116,15 +113,16 @@ public class MuestreoFragment extends Fragment implements OnCompleteListener<Que
         tv_numero_mm = muestreo_fragment.findViewById(R.id.tv_numero_mm);
         tv_sin_muestreos = muestreo_fragment.findViewById(R.id.tv_sin_muestreos);
 
-
-        //nombreBitacora = bundle.getString("nombre_btc");
-        nombreBitacora = "Hola";
-
         fab_agregar_muestreo = muestreo_fragment.findViewById(R.id.fab_agregar_muestreo);
         fab_agregar_muestreo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 MuestreoNuevoFragment fr=new MuestreoNuevoFragment();
+                Bundle bundle = new Bundle();
+                bundle.putString("id_bitacora", id_bitacora);
+                bundle.putString("nombre_bitacora", nombreBitacora);
+                bundle.putInt("cantidad_btc", muestreoList.size());
+                fr.setArguments(bundle);
                 getActivity().getSupportFragmentManager().beginTransaction()
                         .replace(R.id.content_main,fr)
                         .addToBackStack(null)
@@ -147,7 +145,10 @@ public class MuestreoFragment extends Fragment implements OnCompleteListener<Que
                         .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
-                                crud.borrarMuestreo(id_bitacora,muestreoIDList.get(viewHolder.getAdapterPosition()));
+                                int c = muestreoList.size() -1;
+                                String cantidad = ""+c;
+                                crud.actualizarCantidadMuestreos(id_bitacora, cantidad);
+                                crud.borrarMuestreo(id_bitacora,muestreoIDList.get(viewHolder.getAdapterPosition()), nombreBitacora);
                             }
                         })
                         .setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
@@ -194,11 +195,13 @@ public class MuestreoFragment extends Fragment implements OnCompleteListener<Que
         if(task.isSuccessful()){
             muestreoList = new ArrayList<Muestreo>();
             muestreoIDList = new ArrayList<String>();
+
             for(QueryDocumentSnapshot documentSnapshot : task.getResult()){
                 Muestreo b = documentSnapshot.toObject(Muestreo.class);
                 muestreoIDList.add(documentSnapshot.getId());
                 muestreoList.add(b);
             }
+
             muestreoAdapter= new MuestreoAdapter(getContext(), muestreoList);
             rv_mis_muestreos.setAdapter(muestreoAdapter);
             tv_numero_mm.setText(muestreoList.size()+" muestreo(s)");
@@ -208,10 +211,43 @@ public class MuestreoFragment extends Fragment implements OnCompleteListener<Que
                 tv_sin_muestreos.setVisibility(View.VISIBLE);
             }
 
+            muestreoAdapter.setOnItemClickListener(this);
 
         }else{
             crud.createAlert("Error", "No se encontraron resultados " + task.getException(), "OK");;
         }
+    }
+
+    @Override
+    public void onItemClick(Muestreo documentSnapshot, int posicion) {
+        String id = muestreoIDList.get(posicion);
+
+       MuestreoMostrarFragment bmf=new MuestreoMostrarFragment();
+        Bundle bundle = new Bundle();
+        bundle.putString("id_bitacora", id_bitacora);
+        bundle.putString("id_muestreo", id);
+        bundle.putSerializable("muestreo", documentSnapshot);
+        bmf.setArguments(bundle);
+        getActivity().getSupportFragmentManager().beginTransaction()
+                .replace(R.id.content_main,bmf)
+                .addToBackStack(null)
+                .commit();
+    }
+
+    @Override
+    public void onItemLongClick(Muestreo documentReference, int posicion) {
+        String id = muestreoIDList.get(posicion);
+        MuestreoEditarFragment bmf = new MuestreoEditarFragment();
+        Bundle bundle = new Bundle();
+        bundle.putString("id_bitacora", id_bitacora);
+        bundle.putString("id_muestreo", id);
+        bundle.putString("nombre_bitacora", nombreBitacora);
+        bundle.putSerializable("muestreo", documentReference);
+        bmf.setArguments(bundle);
+        getActivity().getSupportFragmentManager().beginTransaction()
+                .replace(R.id.content_main,bmf)
+                .addToBackStack(null)
+                .commit();
     }
 
     /**

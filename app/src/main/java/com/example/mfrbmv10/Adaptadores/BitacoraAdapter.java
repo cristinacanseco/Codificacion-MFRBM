@@ -48,10 +48,6 @@ public class BitacoraAdapter extends RecyclerView.Adapter<BitacoraAdapter.MyView
         return listaBitacoras.size();
     }
 
-    public void setOnItemClickListener(BitacoraFragment bitacoraFragment) {
-        this.listener =bitacoraFragment;
-    }
-
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
         TextView tv_nombre_btc, tv_descripcion_btc;

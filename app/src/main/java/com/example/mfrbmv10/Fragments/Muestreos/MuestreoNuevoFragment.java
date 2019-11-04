@@ -43,7 +43,8 @@ public class MuestreoNuevoFragment extends Fragment implements View.OnClickListe
     private Crud crud;
     private Button btn_guardar_nm;
     private ImageView iv_regresar_nm;
-    public String id_bitacora;
+    public String id_bitacora, nombreBitacora;
+    private int cantidad_btc;
     public Timestamp timestamp;
     private Localizacion localizacion;
 
@@ -97,9 +98,11 @@ public class MuestreoNuevoFragment extends Fragment implements View.OnClickListe
         iv_regresar_nm.setOnClickListener(this);
 
         Bundle bundle = getArguments();
-        //id_bitacora = bundle.getString("id_btc");
+        id_bitacora = bundle.getString("id_bitacora");
+        nombreBitacora = bundle.getString("nombre_bitacora");
+        cantidad_btc = bundle.getInt("cantidad_btc");
         //Toast.makeText(this.getContext(), ""+id_bitacora, Toast.LENGTH_SHORT).show();
-        id_bitacora= "fij6EHdRxYozVOakbwuj";
+
 
         return mn_fragment ;
     }
@@ -136,7 +139,10 @@ public class MuestreoNuevoFragment extends Fragment implements View.OnClickListe
                 if (et_nombre_btc_nm.getText().toString().trim().isEmpty()) {
                     crud.createAlert("Error", "Agrega un nombre al muestreo. \nVuelve a intentarlo\n ", "OK");
                 }else {
-                    crud.insertarMuestreo(generarDatosMuestreo(), id_bitacora);
+                    int c = cantidad_btc+1;
+                    String cantidad = ""+c;
+                    crud.actualizarCantidadMuestreos(id_bitacora, cantidad);
+                    crud.insertarMuestreo(generarDatosMuestreo(), id_bitacora, nombreBitacora);
                 }
                 break;
             case R.id.iv_regresar_nb:
@@ -163,6 +169,10 @@ public class MuestreoNuevoFragment extends Fragment implements View.OnClickListe
 
     public void regresar(){
         BitacoraFragment bf=new BitacoraFragment();
+        Bundle bundle = new Bundle();
+        bundle.putString("id_bitacora", id_bitacora);
+        bundle.putSerializable("nombre_bitacora", nombreBitacora);
+        bf.setArguments(bundle);
         getActivity().getSupportFragmentManager().beginTransaction()
                 .replace(R.id.content_main,bf)
                 .addToBackStack(null)

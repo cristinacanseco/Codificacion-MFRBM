@@ -83,10 +83,10 @@ public class BitacoraEditarFragment extends Fragment implements View.OnClickList
         // Inflate the layout for this fragment
         View bitacora_editar_fragment =  inflater.inflate(R.layout.fragment_bitacora_editar, container, false);
 
-        crud = new Crud(BitacoraEditarFragment.this);
+        crud = new Crud(this);
 
         et_nombre_bp = bitacora_editar_fragment.findViewById(R.id.tv_nombre_be);
-        tv_fecha_bp = bitacora_editar_fragment.findViewById(R.id.tv_hora_be);
+        tv_fecha_bp = bitacora_editar_fragment.findViewById(R.id.tv_fecha_be);
         img_bp = bitacora_editar_fragment.findViewById(R.id.img_be);
         tv_localizacion_bp = bitacora_editar_fragment.findViewById(R.id.tv_localizacion_be);
         tv_hora_bp = bitacora_editar_fragment.findViewById(R.id.tv_hora_be);

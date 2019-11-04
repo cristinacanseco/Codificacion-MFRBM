@@ -1,7 +1,6 @@
-package com.example.mfrbmv10.Fragments.Bitacoras;
+package com.example.mfrbmv10.Fragments.Muestreos;
 
 import android.content.Context;
-import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -11,24 +10,20 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.example.mfrbmv10.FirebaseMotor.Crud;
-import com.example.mfrbmv10.Fragments.Muestreos.MuestreoFragment;
-import com.example.mfrbmv10.Modelos.Bitacora;
+import com.example.mfrbmv10.Modelos.Muestreo;
 import com.example.mfrbmv10.R;
 
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link BitacoraMostrarFragment.OnFragmentInteractionListener} interface
+ * {@link MuestreoMostrarFragment.OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link BitacoraMostrarFragment#newInstance} factory method to
+ * Use the {@link MuestreoMostrarFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class BitacoraMostrarFragment extends Fragment implements View.OnClickListener {
+public class MuestreoMostrarFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -40,12 +35,12 @@ public class BitacoraMostrarFragment extends Fragment implements View.OnClickLis
 
     private OnFragmentInteractionListener mListener;
 
-    public TextView tv_nombre_bp, tv_fecha_bp, tv_coordenadas_bm, tv_localizacion_bm, tv_muestreos_bp,
-            tv_descripcion_bp;
-    public ImageView img_bp;
-    private String id_bitacora;
+    public ImageView img_mm;
+    public TextView tv_nombre_mm, tv_fecha_mm, tv_hora_mm, tv_coordenadas_mm, tv_localizacion_mm;
+    private String id_bitacora, id_muestreo, nombre_bitacora;
+    private Muestreo m;
 
-    public BitacoraMostrarFragment() {
+    public MuestreoMostrarFragment() {
         // Required empty public constructor
     }
 
@@ -55,11 +50,11 @@ public class BitacoraMostrarFragment extends Fragment implements View.OnClickLis
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment BitacoraMostrarFragment.
+     * @return A new instance of fragment MuestreoMostrarFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static BitacoraMostrarFragment newInstance(String param1, String param2) {
-        BitacoraMostrarFragment fragment = new BitacoraMostrarFragment();
+    public static MuestreoMostrarFragment newInstance(String param1, String param2) {
+        MuestreoMostrarFragment fragment = new MuestreoMostrarFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -80,24 +75,34 @@ public class BitacoraMostrarFragment extends Fragment implements View.OnClickLis
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View bitacora_mostrar_fragment = inflater.inflate(R.layout.fragment_bitacora_mostrar, container, false);
+        View muestreo_mostrar_fragment = inflater.inflate(R.layout.fragment_muestreo_mostrar, container, false);
 
-        tv_nombre_bp = bitacora_mostrar_fragment.findViewById(R.id.tv_nombre_bm);
-        tv_fecha_bp = bitacora_mostrar_fragment.findViewById(R.id.tv_fecha_bm);
-        img_bp = bitacora_mostrar_fragment.findViewById(R.id.img_bm);
-        tv_coordenadas_bm = bitacora_mostrar_fragment.findViewById(R.id.tv_coordenadas_bm);
-        tv_localizacion_bm = bitacora_mostrar_fragment.findViewById(R.id.tv_localizacion_bm);
-        tv_muestreos_bp = bitacora_mostrar_fragment.findViewById(R.id.tv_muestreos_bm);
-        tv_descripcion_bp = bitacora_mostrar_fragment.findViewById(R.id.tv_descripcion_bm);
-        tv_muestreos_bp.setOnClickListener(this);
+        img_mm = muestreo_mostrar_fragment.findViewById(R.id.img_mm);
+        tv_nombre_mm = muestreo_mostrar_fragment.findViewById(R.id.tv_nombre_mm);
+        tv_fecha_mm = muestreo_mostrar_fragment.findViewById(R.id.tv_fecha_mm);
+        tv_hora_mm = muestreo_mostrar_fragment.findViewById(R.id.tv_hora_mm);
+        tv_coordenadas_mm = muestreo_mostrar_fragment.findViewById(R.id.tv_coordenadas_mm);
+        tv_localizacion_mm = muestreo_mostrar_fragment.findViewById(R.id.tv_localizacion_mm);
 
         Bundle bundle = getArguments();
         id_bitacora = bundle.getString("id_bitacora");
-        //Toast.makeText(this.getContext(), ""+id_bitacora, Toast.LENGTH_SHORT).show();
-        Bitacora b = (Bitacora) bundle.getSerializable("bitacora");
-        actualizarDatos(b);
-        return bitacora_mostrar_fragment;
+        id_muestreo = bundle.getString("id_muestreo");
+        nombre_bitacora = bundle.getString("nombre_bitacora");
+        m= (Muestreo) bundle.getSerializable("muestreo");
+        obtenerDatos(m);
+
+        return muestreo_mostrar_fragment;
     }
+
+    private void obtenerDatos(Muestreo muestreo) {
+        img_mm.setImageResource(R.drawable.flores1);
+        tv_nombre_mm.setText(muestreo.getNombre_mtr());
+        tv_fecha_mm.setText(muestreo.getFecha_mtr());
+        tv_hora_mm.setText(muestreo.getHora_mtr());
+        tv_coordenadas_mm.setText(muestreo.getCoordenadas_mtr());
+        tv_localizacion_mm.setText(muestreo.getUbicacion_mtr());
+    }
+
 
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
@@ -121,39 +126,6 @@ public class BitacoraMostrarFragment extends Fragment implements View.OnClickLis
     public void onDetach() {
         super.onDetach();
         mListener = null;
-    }
-
-    private void actualizarDatos(Bitacora model) {
-        tv_nombre_bp.setText(model.getNombre_btc());
-        tv_fecha_bp.setText(model.getFecha_btc()+" | " + model.getHora_btc());
-        img_bp.setImageResource(R.drawable.flores1);
-        tv_coordenadas_bm.setText(model.getCoordenadas_btc());
-        tv_localizacion_bm.setText(model.getUbicacion_btc());
-        tv_muestreos_bp.setText(model.getCantidad_btc());
-        tv_descripcion_bp.setText(model.getDescripcion_btc());
-    }
-
-    @Override
-    public void onClick(View view) {
-
-        switch (view.getId()){
-            case R.id.tv_muestreos_bm:
-                MuestreoFragment bmf=new MuestreoFragment();
-                Bundle bundle = new Bundle();
-                bundle.putString("id_bitacora", id_bitacora);
-                bundle.putSerializable("nombre_bitacora", tv_nombre_bp.getText().toString());
-                bmf.setArguments(bundle);
-                getActivity().getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.content_main,bmf)
-                        .addToBackStack(null)
-                        .commit();
-                break;
-            default:
-                break;
-        }
-
-
-
     }
 
     /**

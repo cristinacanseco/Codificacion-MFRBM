@@ -20,23 +20,22 @@ tools:context=".Fragments.Bitacoras.BitacoraMostrarFragment">
     app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintTop_toTopOf="parent" />
 
-<TextView
-    android:id="@+id/tv_nombre_be"
-    android:layout_width="0dp"
-    android:layout_height="wrap_content"
-    android:layout_marginStart="16dp"
-    android:layout_marginLeft="16dp"
-    android:layout_marginTop="16dp"
-    android:layout_marginEnd="16dp"
-    android:layout_marginRight="16dp"
-    android:lineSpacingExtra="4dp"
-    android:text="@string/bitacora_db"
-    android:fontFamily="@font/bold"
-    android:textColor="@android:color/black"
-    android:textSize="34sp"
-    app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toBottomOf="@+id/img_be" />
+        <EditText
+            android:id="@+id/tv_nombre_be"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:fontFamily="@font/bold"
+            android:lineSpacingExtra="0dp"
+            android:singleLine="true"
+            android:text="@string/bitacora_db"
+            android:textColor="@color/cafe2"
+            android:textSize="34sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/img_be" />
 
 <View
     android:background="#2e2e2e"
@@ -69,19 +68,19 @@ tools:context=".Fragments.Bitacoras.BitacoraMostrarFragment">
             android:id="@+id/tv_hora_be"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
+            android:layout_marginStart="16dp"
             android:layout_marginTop="24dp"
             android:layout_marginEnd="8dp"
             android:fontFamily="@font/regular"
             android:text="@string/hora"
             android:textSize="20sp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintHorizontal_bias="0.035"
             app:layout_constraintStart_toEndOf="@+id/tv_fecha_be"
             app:layout_constraintTop_toBottomOf="@+id/view" />
 
         <TextView
-            android:id="@+id/tv_fecha_be"
+            android:id="@+id/tv_fecha_be3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
@@ -92,11 +91,11 @@ tools:context=".Fragments.Bitacoras.BitacoraMostrarFragment">
             android:textSize="20sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toEndOf="@+id/tv_fecha_be3"
+            app:layout_constraintStart_toEndOf="@+id/tv_fecha_be"
             app:layout_constraintTop_toBottomOf="@+id/view" />
 
         <TextView
-            android:id="@+id/tv_fecha_be3"
+            android:id="@+id/tv_fecha_be"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
@@ -206,6 +205,7 @@ tools:context=".Fragments.Bitacoras.BitacoraMostrarFragment">
     android:fontFamily="@font/regular"
     android:text="@string/descripcion_btc"
     android:textSize="20sp"
+    android:textColor="@color/cafe2"
     app:layout_constraintBottom_toBottomOf="parent"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintHorizontal_bias="0.135"

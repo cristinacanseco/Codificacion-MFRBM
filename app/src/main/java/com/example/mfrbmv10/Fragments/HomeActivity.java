@@ -11,6 +11,7 @@ import com.example.mfrbmv10.Fragments.Bitacoras.BitacoraMostrarFragment;
 import com.example.mfrbmv10.Fragments.Bitacoras.BitacoraNuevaFragment;
 import com.example.mfrbmv10.Fragments.Muestreos.MuestreoEditarFragment;
 import com.example.mfrbmv10.Fragments.Muestreos.MuestreoFragment;
+import com.example.mfrbmv10.Fragments.Muestreos.MuestreoMostrarFragment;
 import com.example.mfrbmv10.Fragments.Muestreos.MuestreoNuevoFragment;
 import com.example.mfrbmv10.R;
 
@@ -28,6 +29,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 
 import android.view.Menu;
+import android.widget.HeaderViewListAdapter;
 import android.widget.Toast;
 
 public class HomeActivity extends AppCompatActivity
@@ -38,7 +40,8 @@ public class HomeActivity extends AppCompatActivity
                     BitacoraMostrarFragment.OnFragmentInteractionListener,
                     MuestreoFragment.OnFragmentInteractionListener,
                     MuestreoNuevoFragment.OnFragmentInteractionListener,
-                    MuestreoEditarFragment.OnFragmentInteractionListener {
+                    MuestreoEditarFragment.OnFragmentInteractionListener,
+                    MuestreoMostrarFragment.OnFragmentInteractionListener {
 
    private SesionesFirestore crud;
 
@@ -56,6 +59,10 @@ public class HomeActivity extends AppCompatActivity
         drawer.addDrawerListener(toggle);
         toggle.syncState();
         navigationView.setNavigationItemSelectedListener(this);
+
+        SesionesFirestore sesionesFirestore = new SesionesFirestore(this);
+        sesionesFirestore.getmUser().getEmail();
+
 
         Fragment fragment = new BitacoraFragment();
         getSupportFragmentManager().beginTransaction().add(R.id.content_main, fragment).commit();
@@ -101,8 +108,6 @@ public class HomeActivity extends AppCompatActivity
         boolean fragmentSeleccionado=false;
 
         if (id == R.id.nav_bitacora) {
-            // Handle the camera action
-            Toast.makeText(this, "Bitacora", Toast.LENGTH_SHORT).show();
             miFragment = new BitacoraFragment();
             fragmentSeleccionado = true;
         } else if (id == R.id.nav_perfil) {
@@ -110,10 +115,6 @@ public class HomeActivity extends AppCompatActivity
         } else if (id == R.id.nav_Salir) {
             Toast.makeText(this, "¡ Nos vemos luego ;) !", Toast.LENGTH_SHORT).show();
             crud.cerrarSesion();
-        }else if (id == R.id.nav_muestreo) {
-            Toast.makeText(this, "Muestreo", Toast.LENGTH_SHORT).show();
-            miFragment = new MuestreoFragment();
-            fragmentSeleccionado = true;
         }
 
         if(fragmentSeleccionado)

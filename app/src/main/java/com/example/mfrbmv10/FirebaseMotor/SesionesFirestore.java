@@ -19,6 +19,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthUserCollisionException;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -35,6 +36,7 @@ public class SesionesFirestore {
     private Context context;
     private FirebaseAuth mAuth;
     public FirebaseFirestore mFirestore;
+    private FirebaseUser mUser;
     private String usuario_db ="Usuario";
 
 
@@ -42,6 +44,7 @@ public class SesionesFirestore {
         this.context = context;
         mAuth = FirebaseAuth.getInstance();
         mFirestore = FirebaseFirestore.getInstance();
+        mUser = mAuth.getCurrentUser();
     }
 
 
@@ -87,23 +90,24 @@ public class SesionesFirestore {
     }
 
     public void iniciarSesion(String correo, String clave, Button btn_ingresar_is, ProgressBar pb_is) {
-        mAuth.signInWithEmailAndPassword(correo, clave).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-            @Override
-            public void onComplete(@NonNull Task<AuthResult> task) {
-                cambiarBotones(btn_ingresar_is, pb_is);
-                if (task.isSuccessful()) {
-                    //createAlert("Éxito", "Bienvenido ", "OK");
-                    context.startActivity(new Intent(context, HomeActivity.class));
-                } else {
-                    if (task.getException() instanceof FirebaseAuthUserCollisionException) {
-                        createAlert("Error", "No coindice la contraseña con el coreo \nVuelve a intentarlo\n ", "OK");
+        mAuth.signInWithEmailAndPassword(correo, clave)
+                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        cambiarBotones(btn_ingresar_is, pb_is);
+                        if (task.isSuccessful()) {
+                            //createAlert("Éxito", "Bienvenido ", "OK");
+                            context.startActivity(new Intent(context, HomeActivity.class));
+                        } else {
+                            if (task.getException() instanceof FirebaseAuthUserCollisionException) {
+                                createAlert("Error", "No coindice la contraseña con el coreo \nVuelve a intentarlo\n ", "OK");
 
-                    } else {
-                        createAlert("Error", "No existe el usuario.", "OK");
+                            } else {
+                                createAlert("Error", "No existe el usuario.", "OK");
+                            }
+                        }
                     }
-                }
-            }
-        });
+                });
     }
 
     public void cerrarSesion() {
@@ -124,5 +128,8 @@ public class SesionesFirestore {
         pb.setVisibility(View.INVISIBLE);
     }
 
+    public FirebaseUser getmUser() {
+        return mUser;
+    }
 
 }

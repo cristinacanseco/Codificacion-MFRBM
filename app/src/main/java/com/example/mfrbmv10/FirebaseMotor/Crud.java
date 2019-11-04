@@ -3,6 +3,7 @@ package com.example.mfrbmv10.FirebaseMotor;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -131,7 +132,7 @@ public class Crud {
     //M U E S T R E O S
 
     //Create
-    public void insertarMuestreo(Muestreo muestreo, String id_btc) {
+    public void insertarMuestreo(Muestreo muestreo, String id_btc, String nombre_muestreo) {
         String id = mAuth.getCurrentUser().getUid();
 
         mFirestore.collection(usuario_db).document(id).collection(bitacora_db).document(id_btc).collection(muestreo_db)
@@ -142,7 +143,7 @@ public class Crud {
                         if (task.isSuccessful()) {
                             createAlert("Éxito", "Se creó correctamente el muestreo.","OK");
                             //context.startActivity(new Intent(context2,BitacoraNuevaFragment.class));
-                            irMuestreoFragment();
+                            irMuestreoFragment(id_btc, nombre_muestreo);
                         } else {
                             createAlert("Error", "No se agregaron los datos de la bitácora. \nVuelve a intentarlo\n ", "OK");
                         }
@@ -153,6 +154,28 @@ public class Crud {
                 createAlert("Error", "Ups...hubo un problema. \nVuelve a intentarlo\n ", "OK");
             }
         });
+
+    }
+
+    public void actualizarCantidadMuestreos(String id_bitacora, String cantidad){
+        String id = mAuth.getCurrentUser().getUid();
+        mFirestore.collection(usuario_db).document(id)
+                .collection(bitacora_db).document(id_bitacora)
+                .update("cantidad_btc", cantidad)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        createAlert("Éxito", "Número de muestreos actualizado", "OK");
+                        //irMuestreoFragment(id_bitacora, nombre_muestreo);
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        createAlert("Error", "No se actualizó el número de muestreos " + e.getMessage().toString(), "OK");
+                    }
+                });
+
 
     }
 
@@ -172,7 +195,7 @@ public class Crud {
 
 
     //Update
-    public void editarDatosMuestreo(Muestreo muestreo, String id_bitacora, String id_muestreo) {
+    public void editarDatosMuestreo(Muestreo muestreo, String id_bitacora, String id_muestreo, String nombre_bitacora) {
         String id = mAuth.getCurrentUser().getUid();
 
         mFirestore.collection(usuario_db).document(id)
@@ -183,7 +206,7 @@ public class Crud {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         createAlert("Éxito", "Bitácora actualizada", "OK");
-                        irMuestreoFragment();
+                        irMuestreoFragment(id_bitacora, nombre_bitacora);
                     }
                 }).addOnFailureListener(new OnFailureListener() {
             @Override
@@ -195,7 +218,7 @@ public class Crud {
 
 
     //Delete
-    public void borrarMuestreo(String id_bitacora, String id_muestreo) {
+    public void borrarMuestreo(String id_bitacora, String id_muestreo, String nombre_bitacora) {
 
         String id = mAuth.getCurrentUser().getUid();
 
@@ -206,7 +229,7 @@ public class Crud {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 createAlert("Éxito", "Bitácora eliminada exitosamente", "OK");
-                irMuestreoFragment();
+                irMuestreoFragment(id_bitacora, nombre_bitacora);
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
@@ -280,8 +303,12 @@ public class Crud {
                 .commit();
     }
 
-    public void irMuestreoFragment(){
+    public void irMuestreoFragment(String id_bitacora, String nombre_bitacora){
         MuestreoFragment mf=new MuestreoFragment();
+        Bundle bundle = new Bundle();
+        bundle.putString("id_bitacora", id_bitacora);
+        bundle.putString("nombre_bitacora", nombre_bitacora);
+        mf.setArguments(bundle);
         context.getActivity().getSupportFragmentManager().beginTransaction()
                 .replace(R.id.content_main,mf)
                 .addToBackStack(null)

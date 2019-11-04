@@ -19,6 +19,7 @@ public class MuestreoAdapter extends RecyclerView.Adapter<MuestreoAdapter.MyView
 
     private Context mContext;
     private List<Muestreo> listaMuestreos;
+    private OnItemClickListener listener;
 
     public MuestreoAdapter(Context context, List<Muestreo> uploads) {
         mContext = context;
@@ -56,7 +57,41 @@ public class MuestreoAdapter extends RecyclerView.Adapter<MuestreoAdapter.MyView
             tv_nombre_mtr = itemView.findViewById(R.id.tv_nombre_mtr);
             tv_localizacion_mtr = itemView.findViewById(R.id.tv_localizacion_mtr);
             iv_imagen_mtr = itemView.findViewById(R.id.iv_imagen_mtr);
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    int posicion = getAdapterPosition();
+                    if (posicion != RecyclerView.NO_POSITION && listener != null) {
+                        listener.onItemClick(listaMuestreos.get(posicion), posicion);
+                    }
+                }
+            });
+
+            itemView.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View view) {
+                    int posicion = getAdapterPosition();
+                    if (posicion != RecyclerView.NO_POSITION && listener != null) {
+                        listener.onItemLongClick(listaMuestreos.get(posicion), posicion);
+                    }
+                    return true;
+                }
+            });
+
 
         }
     }
+
+    public interface OnItemClickListener {
+        void onItemClick(Muestreo documentSnapshot, int posicion);
+
+        void onItemLongClick(Muestreo documentReference, int posicion);
+
+    }
+    public void setOnItemClickListener(OnItemClickListener listener){
+        this.listener = listener;
+    }
+
+
 }
+
