@@ -2,24 +2,27 @@ package com.example.mfrbmv10.FirebaseMotor;
 
 import android.app.AlertDialog;
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+
+import com.example.mfrbmv10.Adaptadores.EscuchadorForma;
+import com.example.mfrbmv10.Adaptadores.EscuchadorTextura;
 import com.example.mfrbmv10.Fragments.Bitacoras.BitacoraFragment;
 import com.example.mfrbmv10.Fragments.Muestreos.MuestreoFragment;
 import com.example.mfrbmv10.Modelos.Bitacora;
+import com.example.mfrbmv10.Modelos.Longitud;
 import com.example.mfrbmv10.Modelos.Muestreo;
 import com.example.mfrbmv10.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -125,8 +128,6 @@ public class Crud {
         });
     }
 
-    //Map-Bitacora
-
 
 
     //M U E S T R E O S
@@ -156,6 +157,7 @@ public class Crud {
         });
 
     }
+
 
     public void actualizarCantidadMuestreos(String id_bitacora, String cantidad){
         String id = mAuth.getCurrentUser().getUid();
@@ -286,7 +288,7 @@ public class Crud {
         String forma_mtr= (String) map.get("forma_mtr");
         String textura_mtr= (String) map.get("textura_mtr");
         String color_mtr=(String)map.get("color_mtr");
-        String dimension_mtr= (String)map.get("dimension_mtr");
+        ArrayList<String> dimension_mtr= (ArrayList<String>) map.get("dimension_mtr");
         String ubicacion_mtr= (String)map.get("ubicacion_mtr");
         String coordenadas_mtr = (String)map.get("coordenadas_mtr");
         String hora_mtr= (String)map.get("hora_mtr");
@@ -314,6 +316,48 @@ public class Crud {
                 .addToBackStack(null)
                 .commit();
     }
+
+
+    // F O R M A
+    public void obtenerFormas(){
+        mFirestore.collection("Descripciones").document("7HojItOAjpRKjH127655")
+                .collection("Forma")
+                .get()
+                .addOnCompleteListener((EscuchadorForma)context)
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        createAlert("Error", "Ups...hubo un problema. \nVuelve a intentarlo\n ", "OK");
+                    }
+                });
+    }
+
+    //T E X T U R A
+    public void obtenerTextura(){
+        mFirestore.collection("Descripciones").document("sJid2DP0iiNaXpqoJNJk")
+                .collection("Textura")
+                .get().addOnCompleteListener((EscuchadorTextura)context)
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        createAlert("Error", "Ups...hubo un problema. \nVuelve a intentarlo\n ", "OK");
+                    }
+                });
+    }
+
+   /* public void obtenerTextura2(){
+        mFirestore.collection("Descripciones").document("sJid2DP0iiNaXpqoJNJk")
+                .collection("Textura")
+                .get().addOnCompleteListener((MuestreoEditarFragment)context)
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        createAlert("Error", "Ups...hubo un problema. \nVuelve a intentarlo\n ", "OK");
+                    }
+                });
+    }*/
+
+
 
 
 }

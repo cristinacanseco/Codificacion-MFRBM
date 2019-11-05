@@ -222,7 +222,7 @@ public class MuestreoFragment extends Fragment implements OnCompleteListener<Que
     public void onItemClick(Muestreo documentSnapshot, int posicion) {
         String id = muestreoIDList.get(posicion);
 
-       MuestreoMostrarFragment bmf=new MuestreoMostrarFragment();
+        MuestreoMostrarFragment bmf=new MuestreoMostrarFragment();
         Bundle bundle = new Bundle();
         bundle.putString("id_bitacora", id_bitacora);
         bundle.putString("id_muestreo", id);

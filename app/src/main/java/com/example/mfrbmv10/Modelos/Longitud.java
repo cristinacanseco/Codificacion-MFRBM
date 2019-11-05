@@ -1,4 +1,4 @@
-package com.example.mfrbmv10.Extras;
+package com.example.mfrbmv10.Modelos;
 
 public class Longitud {
 

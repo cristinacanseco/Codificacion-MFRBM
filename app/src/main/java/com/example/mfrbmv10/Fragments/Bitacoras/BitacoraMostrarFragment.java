@@ -129,7 +129,7 @@ public class BitacoraMostrarFragment extends Fragment implements View.OnClickLis
         img_bp.setImageResource(R.drawable.flores1);
         tv_coordenadas_bm.setText(model.getCoordenadas_btc());
         tv_localizacion_bm.setText(model.getUbicacion_btc());
-        tv_muestreos_bp.setText(model.getCantidad_btc());
+        tv_muestreos_bp.setText(model.getCantidad_btc() + " muestreo(s)");
         tv_descripcion_bp.setText(model.getDescripcion_btc());
     }
 

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
 xmlns:app="http://schemas.android.com/apk/res-auto"
 xmlns:tools="http://schemas.android.com/tools"
 android:layout_width="match_parent"
@@ -7,228 +7,22 @@ android:layout_height="match_parent"
 android:background="@color/blanco"
 tools:context=".Fragments.Muestreos.MuestreoEditarFragment">
 
-
-<ImageView
-    android:id="@+id/img_me"
-    android:layout_width="0dp"
-    android:layout_height="250dp"
-    android:layout_marginEnd="8dp"
-    android:scaleType="centerCrop"
-    android:src="@drawable/flores1"
-    app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintHorizontal_bias="0.0"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toTopOf="parent" />
-
-<EditText
-    android:id="@+id/tv_nombre_me"
-    android:layout_width="0dp"
-    android:layout_height="wrap_content"
-    android:layout_marginStart="16dp"
-    android:layout_marginLeft="16dp"
-    android:layout_marginTop="16dp"
-    android:layout_marginEnd="16dp"
-    android:layout_marginRight="16dp"
-    android:lineSpacingExtra="4dp"
-    android:text="@string/muestreo_db"
-    android:fontFamily="@font/bold"
-    android:textColor="@color/cafe2"
-    android:textSize="34sp"
-    app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toBottomOf="@+id/img_me" />
-
-<View
-    android:background="#2e2e2e"
-    android:id="@+id/view_m"
-    android:layout_width="0dp"
-    android:layout_height="1dp"
-    android:layout_marginStart="16dp"
-    android:layout_marginLeft="16dp"
-    android:layout_marginTop="8dp"
-    android:layout_marginEnd="16dp"
-    android:layout_marginRight="16dp"
-    app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintHorizontal_bias="0.0"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toBottomOf="@+id/tv_nombre_me" />
-
-<ImageView
-    android:id="@+id/img_horafecha_me"
-    android:layout_width="42dp"
-    android:layout_height="38dp"
-    android:layout_marginStart="16dp"
-    android:layout_marginTop="16dp"
-    android:src="@drawable/calendario"
-    app:layout_constraintBottom_toBottomOf="parent"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toTopOf="@id/view_m"
-    app:layout_constraintVertical_bias="0.028" />
-
-    <TextView
-        android:id="@+id/tv_fecha_me"
-        android:layout_width="wrap_content"
+    <!-- our tablayout to display tabs  -->
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/tabLayout"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="24dp"
-        android:layout_marginEnd="8dp"
-        android:fontFamily="@font/regular"
-        android:text="@string/fecha"
-        android:textSize="20sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.031"
-        app:layout_constraintStart_toEndOf="@+id/img_horafecha_me"
-        app:layout_constraintTop_toBottomOf="@+id/view_m" />
+        android:layout_below="@+id/toolbar"
+        android:elevation="6dp"
+        android:background="?attr/colorPrimary"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"/>
 
-    <TextView
-        android:id="@+id/tv_fecha_me2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="32dp"
-        android:fontFamily="@font/regular"
-        android:text="|"
-        android:textSize="20sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.05"
-        app:layout_constraintStart_toEndOf="@+id/tv_fecha_me"
-        app:layout_constraintTop_toBottomOf="@+id/tv_nombre_me" />
+    <!-- View pager to swipe views -->
+    <androidx.viewpager.widget.ViewPager
+        android:id="@+id/pager"
+        android:layout_width="match_parent"
+        android:layout_height="fill_parent"
+        android:layout_below="@+id/tabLayout"/>
 
-    <TextView
-        android:id="@+id/tv_hora_me"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="32dp"
-        android:fontFamily="@font/regular"
-        android:text="@string/hora"
-        android:textSize="20sp"
-        app:layout_constraintStart_toEndOf="@+id/tv_fecha_me2"
-        app:layout_constraintTop_toBottomOf="@+id/tv_nombre_me" />
-
-    <ImageView
-    android:id="@+id/img_localizacion_me"
-    android:layout_width="42dp"
-    android:layout_height="38dp"
-    android:layout_marginStart="8dp"
-    android:layout_marginTop="40dp"
-    android:src="@drawable/ubicacion"
-    app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintHorizontal_bias="0.022"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toBottomOf="@+id/img_horafecha_me" />
-
-<TextView
-    android:id="@+id/tv_coordenadas_me"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_marginStart="16dp"
-    android:layout_marginTop="36dp"
-    android:layout_marginEnd="8dp"
-    android:text="@string/ubicacion_B"
-    android:textSize="20sp"
-    android:fontFamily="@font/regular"
-    app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintHorizontal_bias="0.287"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toBottomOf="@+id/tv_fecha_me" />
-
-<TextView
-    android:id="@+id/tv_localizacion_me"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_marginStart="16dp"
-    android:layout_marginTop="12dp"
-    android:layout_marginEnd="8dp"
-    android:text="@string/ubicacion_B"
-    android:textSize="20sp"
-    android:fontFamily="@font/regular"
-    app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintHorizontal_bias="0.287"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toBottomOf="@+id/tv_coordenadas_me" />
-
-
-<ImageView
-    android:id="@+id/img_colores_me"
-    android:layout_width="42dp"
-    android:layout_height="38dp"
-    android:layout_marginStart="16dp"
-    android:layout_marginTop="44dp"
-    android:layout_marginEnd="8dp"
-    android:src="@drawable/paleta"
-    app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintHorizontal_bias="0.0"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toBottomOf="@+id/img_localizacion_me" />
-
-<TextView
-    android:id="@+id/tv_muestreos_me"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_centerVertical="true"
-    android:layout_marginStart="16dp"
-    android:layout_marginTop="72dp"
-    android:layout_marginEnd="8dp"
-    android:fontFamily="@font/regular"
-    android:text="Consultar colores"
-    android:textSize="20sp"
-    app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintHorizontal_bias="0.035"
-    app:layout_constraintStart_toEndOf="@+id/img_descripcion_me"
-    app:layout_constraintTop_toBottomOf="@+id/tv_coordenadas_me" />
-
-<ImageView
-    android:id="@+id/img_descripcion_me"
-    android:layout_width="42dp"
-    android:layout_height="38dp"
-    android:layout_marginStart="16dp"
-    android:layout_marginTop="8dp"
-    android:layout_marginBottom="8dp"
-    android:src="@drawable/nota"
-    app:layout_constraintBottom_toBottomOf="parent"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toBottomOf="@+id/img_colores_me"
-    app:layout_constraintVertical_bias="0.161" />
-
-<TextView
-    android:id="@+id/tv_dimensiones_me"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_centerVertical="true"
-    android:layout_marginStart="8dp"
-    android:layout_marginEnd="8dp"
-    android:layout_marginBottom="8dp"
-    android:fontFamily="@font/regular"
-    android:text="@string/consultarDimensiones"
-    android:textSize="20sp"
-    app:layout_constraintBottom_toBottomOf="parent"
-    app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintHorizontal_bias="0.135"
-    app:layout_constraintStart_toEndOf="@+id/img_descripcion_me"
-    app:layout_constraintTop_toBottomOf="@+id/tv_muestreos_me"
-    app:layout_constraintVertical_bias="0.28" />
-
-
-    <Button
-        android:id="@+id/btn_editar_me"
-        android:layout_width="160dp"
-        android:layout_height="50dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
-        android:background="@drawable/boton"
-        android:fontFamily="@font/regular"
-        android:text="@string/editar"
-        android:textAllCaps="false"
-        android:textColor="@color/beige"
-        android:textSize="22sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/img_me"
-        app:layout_constraintVertical_bias="0.954" />
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+</RelativeLayout>

@@ -107,7 +107,6 @@ public class BitacoraFragment extends Fragment implements OnCompleteListener<Que
         this.crud = new Crud(this);
         crud.mostrarBitacoras();
 
-
         rv_mis_bitacoras_p  = bitacora_fragment.findViewById(R.id.rv_mis_bitacoras_p);
         rv_mis_bitacoras_p.setHasFixedSize(true);
         rv_mis_bitacoras_p.setLayoutManager(new GridLayoutManager(getActivity(), 2));

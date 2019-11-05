@@ -5,15 +5,22 @@ import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.viewpager.widget.ViewPager;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toolbar;
 
+import com.example.mfrbmv10.Adaptadores.EscuchadorForma;
+import com.example.mfrbmv10.Adaptadores.EscuchadorTextura;
+import com.example.mfrbmv10.Fragments.Muestreos.MuestreoMostrar.PageMuestreoMostrarAdapter;
 import com.example.mfrbmv10.Modelos.Muestreo;
 import com.example.mfrbmv10.R;
+import com.google.android.material.tabs.TabLayout;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -23,7 +30,7 @@ import com.example.mfrbmv10.R;
  * Use the {@link MuestreoMostrarFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class MuestreoMostrarFragment extends Fragment {
+public class MuestreoMostrarFragment extends Fragment implements TabLayout.OnTabSelectedListener {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -35,10 +42,11 @@ public class MuestreoMostrarFragment extends Fragment {
 
     private OnFragmentInteractionListener mListener;
 
-    public ImageView img_mm;
-    public TextView tv_nombre_mm, tv_fecha_mm, tv_hora_mm, tv_coordenadas_mm, tv_localizacion_mm;
-    private String id_bitacora, id_muestreo, nombre_bitacora;
+    private TabLayout tabLayout;
+    private ViewPager viewPager;
+    private String id_bitacora, id_muestreo, nombre_bitacora, forma, textura;
     private Muestreo m;
+
 
     public MuestreoMostrarFragment() {
         // Required empty public constructor
@@ -77,31 +85,27 @@ public class MuestreoMostrarFragment extends Fragment {
         // Inflate the layout for this fragment
         View muestreo_mostrar_fragment = inflater.inflate(R.layout.fragment_muestreo_mostrar, container, false);
 
-        img_mm = muestreo_mostrar_fragment.findViewById(R.id.img_mm);
-        tv_nombre_mm = muestreo_mostrar_fragment.findViewById(R.id.tv_nombre_mm);
-        tv_fecha_mm = muestreo_mostrar_fragment.findViewById(R.id.tv_fecha_mm);
-        tv_hora_mm = muestreo_mostrar_fragment.findViewById(R.id.tv_hora_mm);
-        tv_coordenadas_mm = muestreo_mostrar_fragment.findViewById(R.id.tv_coordenadas_mm);
-        tv_localizacion_mm = muestreo_mostrar_fragment.findViewById(R.id.tv_localizacion_mm);
-
         Bundle bundle = getArguments();
         id_bitacora = bundle.getString("id_bitacora");
         id_muestreo = bundle.getString("id_muestreo");
         nombre_bitacora = bundle.getString("nombre_bitacora");
         m= (Muestreo) bundle.getSerializable("muestreo");
-        obtenerDatos(m);
+
+        tabLayout = (TabLayout) muestreo_mostrar_fragment.findViewById(R.id.tabLayout_mm);
+        tabLayout.addTab(tabLayout.newTab().setText("Descripcion"));
+        tabLayout.addTab(tabLayout.newTab().setText("Colores"));
+        tabLayout.addTab(tabLayout.newTab().setText("Dimensiones"));
+        tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
+
+        viewPager = (ViewPager) muestreo_mostrar_fragment.findViewById(R.id.pager_mm);
+        PageMuestreoMostrarAdapter adapter = new PageMuestreoMostrarAdapter(getActivity().getSupportFragmentManager(), tabLayout.getTabCount(), id_bitacora, id_muestreo, nombre_bitacora, m);
+        viewPager.setAdapter(adapter);
+        tabLayout.setOnTabSelectedListener(this);
 
         return muestreo_mostrar_fragment;
     }
 
-    private void obtenerDatos(Muestreo muestreo) {
-        img_mm.setImageResource(R.drawable.flores1);
-        tv_nombre_mm.setText(muestreo.getNombre_mtr());
-        tv_fecha_mm.setText(muestreo.getFecha_mtr());
-        tv_hora_mm.setText(muestreo.getHora_mtr());
-        tv_coordenadas_mm.setText(muestreo.getCoordenadas_mtr());
-        tv_localizacion_mm.setText(muestreo.getUbicacion_mtr());
-    }
+
 
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -127,6 +131,22 @@ public class MuestreoMostrarFragment extends Fragment {
         super.onDetach();
         mListener = null;
     }
+
+    @Override
+    public void onTabSelected(TabLayout.Tab tab) {
+        viewPager.setCurrentItem(tab.getPosition());
+    }
+
+    @Override
+    public void onTabUnselected(TabLayout.Tab tab) {
+
+    }
+
+    @Override
+    public void onTabReselected(TabLayout.Tab tab) {
+
+    }
+
 
     /**
      * This interface must be implemented by activities that contain this

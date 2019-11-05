@@ -4,7 +4,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".Extras.Medicion">
+    android:configChanges="orientation|screenSize"
+    android:exported="true"
+    android:screenOrientation="locked"
+    tools:context=".Extras.MedicionFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -17,10 +20,76 @@
             android:layout_height="match_parent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="1.0" />
+            app:layout_constraintVertical_bias="0.0" />
+
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="56dp"
+            android:background="@color/blanco"
+            android:elevation="4dp"
+            android:translationY="56dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent">
+
+            <ImageView
+                android:id="@+id/iv_limpiar"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="48dp"
+                android:layout_weight="1"
+                android:contentDescription="@string/limpiar"
+                android:foreground="?selectableItemBackground"
+                android:padding="16dp"
+                android:src="@drawable/borrador"
+                android:tint="@drawable/icon_color_selector"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintHorizontal_chainStyle="packed"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.0" />
+
+            <ImageView
+                android:id="@+id/btnDistance"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="80dp"
+                android:layout_weight="1"
+                android:contentDescription="@string/limpiar"
+                android:foreground="?selectableItemBackground"
+                android:padding="16dp"
+                android:src="@drawable/medir"
+                android:tint="@drawable/icon_color_selector"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintHorizontal_chainStyle="packed"
+                app:layout_constraintStart_toEndOf="@+id/iv_limpiar"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.0" />
+
+            <ImageView
+                android:id="@+id/iv_guardar"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
+                android:layout_weight="1"
+                android:contentDescription="@string/limpiar"
+                android:foreground="?selectableItemBackground"
+                android:padding="16dp"
+                android:src="@drawable/guardar"
+                android:tint="@drawable/icon_color_selector"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_chainStyle="packed"
+                app:layout_constraintTop_toTopOf="parent" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <TextView
             android:id="@+id/txtDistance"
@@ -36,54 +105,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@+id/ux_fragment"
             app:layout_constraintVertical_bias="0.042" />
-
-
-        <Button
-            android:id="@+id/btnDistance"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="16dp"
-            android:layout_marginBottom="36dp"
-            android:layout_weight="1"
-            android:background="@drawable/boton"
-            android:text="@string/medir"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="@+id/txtDistance" />
-
-        <Button
-            android:id="@+id/clear"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp"
-            android:layout_weight="1"
-            android:background="@drawable/boton"
-            android:text="@string/limpiar"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/btnDistance"
-            app:layout_constraintHorizontal_bias="0.118"
-            app:layout_constraintStart_toStartOf="@+id/ux_fragment"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.958" />
-
-        <Button
-            android:id="@+id/guardar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="end"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_weight="1"
-            android:background="@drawable/boton"
-            android:text="@string/guardar"
-            app:layout_constraintBottom_toBottomOf="@+id/ux_fragment"
-            app:layout_constraintEnd_toStartOf="@+id/btnDistance"
-            app:layout_constraintHorizontal_bias="0.438"
-            app:layout_constraintStart_toEndOf="@+id/clear"
-            app:layout_constraintTop_toTopOf="@+id/txtDistance"
-            app:layout_constraintVertical_bias="0.946" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -8,13 +8,14 @@ import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MotionEvent;
-import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 
+import com.example.mfrbmv10.Modelos.Longitud;
 import com.example.mfrbmv10.R;
 import com.google.ar.core.Anchor;
 import com.google.ar.core.Frame;
@@ -49,12 +50,12 @@ public class Medicion extends AppCompatActivity implements Node.OnTapListener, S
 
         ArrayList<Float> arrayList1 = new ArrayList<>();
         ArrayList<Float> arrayList2 = new ArrayList<>();
-        ArrayList<Longitud> todasLongitudes = new ArrayList<>();
+        ArrayList<String> todasLongitudes = new ArrayList<>();
 
         private ArFragment arFragment;
         private AnchorNode ultimoAnchorNode;
         private TextView txtDistance;
-        Button btnDist, btnClear;
+        private ImageView btnDist, btnClear, btnGuardar;
         //Button btnHeight;
         ModelRenderable cubeRenderable;
         //ModelRenderable heightRenderable;
@@ -79,20 +80,23 @@ public class Medicion extends AppCompatActivity implements Node.OnTapListener, S
                 btnDist.setOnClickListener(v -> {btnLengthClicked =true; onClear();});
 
 
-        /*btnHeight = findViewById(R.id.btnHeight);
-        btnHeight.setOnClickListener(v -> {
-            btnHeightClicked = true;
-            btnLengthClicked = false;
-            onClear();
-        });*/
+                /*btnHeight = findViewById(R.id.btnHeight);
+                btnHeight.setOnClickListener(v -> {
+                    btnHeightClicked = true;
+                    btnLengthClicked = false;
+                    onClear();
+                });*/
 
-                btnClear = findViewById(R.id.clear);
+                btnClear = findViewById(R.id.iv_limpiar);
                 btnClear.setOnClickListener(v -> onClear());
+
+                btnGuardar = findViewById(R.id.iv_guardar);
+                btnGuardar.setOnClickListener(view -> guardarDatos());
 
                 MaterialFactory.makeTransparentWithColor(this, new Color(0F, 0F, 244F))
                         .thenAccept(
                                 material -> {
-                                        Vector3 vector3 = new Vector3(0.0001f, 0.0001f, 0.0001f);
+                                        Vector3 vector3 = new Vector3(0.00001f, 0.00001f, 0.00001f);
                                         cubeRenderable = ShapeFactory.makeCube(vector3, Vector3.zero(), material);
                                         cubeRenderable.setShadowCaster(false);
                                         cubeRenderable.setShadowReceiver(false);
@@ -168,7 +172,7 @@ public class Medicion extends AppCompatActivity implements Node.OnTapListener, S
                                                         arrayList2.add(pose.tz());
                                                         //float d = getDistanceMeters(arrayList1, arrayList2);
                                                         double d = getDistanciaMetros(arrayList1, arrayList2);
-                                                        todasLongitudes.add(new Longitud(d));
+                                                        todasLongitudes.add(String.valueOf(d));
                                                         txtDistance.setText("Distancia: " + String.valueOf(d));
                                                 } else {
                                                         arrayList1.clear();
@@ -179,7 +183,7 @@ public class Medicion extends AppCompatActivity implements Node.OnTapListener, S
                                                         arrayList2.add(pose.tz());
                                                         //float d = getDistanceMeters(arrayList1, arrayList2);
                                                         double d = getDistanciaMetros(arrayList1, arrayList2);
-                                                        todasLongitudes.add(new Longitud(d));
+                                                        todasLongitudes.add(String.valueOf(d));
                                                         txtDistance.setText("Distancia: " + String.valueOf(d));
                                                 }
 
@@ -213,6 +217,10 @@ public class Medicion extends AppCompatActivity implements Node.OnTapListener, S
                                         }
                                 }
                         });
+
+        }
+
+        private void guardarDatos() {
 
         }
 

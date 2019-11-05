@@ -14,12 +14,18 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.example.mfrbmv10.Adaptadores.EscuchadorForma;
+import com.example.mfrbmv10.Adaptadores.EscuchadorTextura;
 import com.example.mfrbmv10.Extras.Localizacion;
+import com.example.mfrbmv10.Extras.MedicionFragment;
 import com.example.mfrbmv10.Extras.Timestamp;
 import com.example.mfrbmv10.FirebaseMotor.Crud;
 import com.example.mfrbmv10.Fragments.Bitacoras.BitacoraFragment;
+import com.example.mfrbmv10.Modelos.Longitud;
 import com.example.mfrbmv10.Modelos.Muestreo;
 import com.example.mfrbmv10.R;
+
+import java.util.ArrayList;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -142,7 +148,8 @@ public class MuestreoNuevoFragment extends Fragment implements View.OnClickListe
                     int c = cantidad_btc+1;
                     String cantidad = ""+c;
                     crud.actualizarCantidadMuestreos(id_bitacora, cantidad);
-                    crud.insertarMuestreo(generarDatosMuestreo(), id_bitacora, nombreBitacora);
+                    irAMedicionFragment();
+                    //crud.insertarMuestreo(generarDatosMuestreo(), id_bitacora, nombreBitacora);
                 }
                 break;
             case R.id.iv_regresar_nb:
@@ -150,16 +157,28 @@ public class MuestreoNuevoFragment extends Fragment implements View.OnClickListe
             default:
                 break;
         }
+    }
 
+    private void irAMedicionFragment() {
+        MedicionFragment bf=new MedicionFragment();
+        Bundle bundle = new Bundle();
+        bundle.putString("id_bitacora", id_bitacora);
+        bundle.putString("nombre_bitacora", nombreBitacora);
+        bundle.putSerializable("muestreo", generarDatosMuestreo());
+        bf.setArguments(bundle);
+        getActivity().getSupportFragmentManager().beginTransaction()
+                .replace(R.id.content_main,bf)
+                .addToBackStack(null)
+                .commit();
     }
 
     private Muestreo generarDatosMuestreo() {
         String nombre_mtr = et_nombre_btc_nm.getText().toString();
-        String imagen_mtr = "Guadalupe";
-        String forma_mtr = "55";
-        String textura_mtr= "2345";
+        String imagen_mtr = "R.drawable.flores1";
+        String forma_mtr = "Pilado";
+        String textura_mtr= "Cartilaginoso";
         String color_mtr = "345";
-        String dimension_mtr = "null";
+        ArrayList<String> dimension_mtr = null;
         String ubicacion_mtr = localizacion.getUbicacion();
         String coordenadas_mtr = localizacion.getCoordenadas();
         String fecha_mtr = timestamp.obtenerFecha();
@@ -171,7 +190,7 @@ public class MuestreoNuevoFragment extends Fragment implements View.OnClickListe
         BitacoraFragment bf=new BitacoraFragment();
         Bundle bundle = new Bundle();
         bundle.putString("id_bitacora", id_bitacora);
-        bundle.putSerializable("nombre_bitacora", nombreBitacora);
+        bundle.putString("nombre_bitacora", nombreBitacora);
         bf.setArguments(bundle);
         getActivity().getSupportFragmentManager().beginTransaction()
                 .replace(R.id.content_main,bf)
