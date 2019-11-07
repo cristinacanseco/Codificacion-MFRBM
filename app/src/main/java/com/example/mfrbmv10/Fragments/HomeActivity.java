@@ -3,7 +3,6 @@ package com.example.mfrbmv10.Fragments;
 import android.net.Uri;
 import android.os.Bundle;
 
-import com.example.mfrbmv10.FirebaseMotor.Crud;
 import com.example.mfrbmv10.FirebaseMotor.SesionesFirestore;
 import com.example.mfrbmv10.Fragments.Bitacoras.BitacoraEditarFragment;
 import com.example.mfrbmv10.Fragments.Bitacoras.BitacoraFragment;
@@ -13,6 +12,7 @@ import com.example.mfrbmv10.Fragments.Muestreos.MuestreoEditarFragment;
 import com.example.mfrbmv10.Fragments.Muestreos.MuestreoFragment;
 import com.example.mfrbmv10.Fragments.Muestreos.MuestreoMostrarFragment;
 import com.example.mfrbmv10.Fragments.Muestreos.MuestreoNuevoFragment;
+import com.example.mfrbmv10.Fragments.Usuario.UsuarioPerfilFragment;
 import com.example.mfrbmv10.R;
 
 import androidx.core.view.GravityCompat;
@@ -29,7 +29,8 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 
 import android.view.Menu;
-import android.widget.HeaderViewListAdapter;
+import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class HomeActivity extends AppCompatActivity
@@ -41,14 +42,17 @@ public class HomeActivity extends AppCompatActivity
                     MuestreoFragment.OnFragmentInteractionListener,
                     MuestreoNuevoFragment.OnFragmentInteractionListener,
                     MuestreoEditarFragment.OnFragmentInteractionListener,
-                    MuestreoMostrarFragment.OnFragmentInteractionListener {
+                    MuestreoMostrarFragment.OnFragmentInteractionListener,
+                    UsuarioPerfilFragment.OnFragmentInteractionListener{
 
-   private SesionesFirestore crud;
+   private SesionesFirestore sesionesFirestore;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+        this.sesionesFirestore = new SesionesFirestore(this);
+
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -58,17 +62,14 @@ public class HomeActivity extends AppCompatActivity
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
+
         navigationView.setNavigationItemSelectedListener(this);
-
-        SesionesFirestore sesionesFirestore = new SesionesFirestore(this);
-        sesionesFirestore.getmUser().getEmail();
-
+        actualizarNavHeader();
 
         Fragment fragment = new BitacoraFragment();
         getSupportFragmentManager().beginTransaction().add(R.id.content_main, fragment).commit();
         navigationView.setNavigationItemSelectedListener(this);
 
-        this.crud = new SesionesFirestore(this);
     }
 
     @Override
@@ -111,10 +112,11 @@ public class HomeActivity extends AppCompatActivity
             miFragment = new BitacoraFragment();
             fragmentSeleccionado = true;
         } else if (id == R.id.nav_perfil) {
-            Toast.makeText(this, "PErfil", Toast.LENGTH_SHORT).show();
+            miFragment = new UsuarioPerfilFragment();
+            fragmentSeleccionado = true;
         } else if (id == R.id.nav_Salir) {
             Toast.makeText(this, "¡ Nos vemos luego ;) !", Toast.LENGTH_SHORT).show();
-            crud.cerrarSesion();
+            sesionesFirestore.cerrarSesion();
         }
 
         if(fragmentSeleccionado)
@@ -127,4 +129,17 @@ public class HomeActivity extends AppCompatActivity
 
     @Override
     public void onFragmentInteraction(Uri uri) { }
+
+    public void actualizarNavHeader(){
+        NavigationView navigationView = findViewById(R.id.nav_view);
+        View headerView = navigationView.getHeaderView(0);
+
+        TextView tv_nombreUsuario = headerView.findViewById(R.id.tv_nombreUsuario);
+        TextView tv_correoUsuario = headerView.findViewById(R.id.tv_correoUsuario);
+
+        Toast.makeText(this, ""+sesionesFirestore.getmUser().getDisplayName(), Toast.LENGTH_SHORT).show();
+        tv_nombreUsuario.setText(sesionesFirestore.getmUser().getDisplayName());
+        tv_correoUsuario.setText(sesionesFirestore.getmUser().getEmail());
+
+    }
 }

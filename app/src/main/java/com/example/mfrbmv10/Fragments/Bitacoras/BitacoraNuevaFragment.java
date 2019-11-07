@@ -44,7 +44,6 @@ public class BitacoraNuevaFragment extends Fragment implements View.OnClickListe
     private EditText et_nombre_btc_nb, et_descripcion_btc_nb;
     private Crud crud;
     private Button btn_guardar_nb;
-    private ImageView iv_regresar_nb;
     private Timestamp timestamp;
     private Localizacion localizacion;
 
@@ -92,8 +91,6 @@ public class BitacoraNuevaFragment extends Fragment implements View.OnClickListe
         et_descripcion_btc_nb = bn_fragment.findViewById(R.id.et_descripcion_btc_nb);
         btn_guardar_nb = bn_fragment.findViewById(R.id.btn_guardar_nb);
         btn_guardar_nb.setOnClickListener(this);
-        iv_regresar_nb = bn_fragment.findViewById(R.id.iv_regresar_nb);
-        iv_regresar_nb.setOnClickListener(this);
 
         //Bundle bundle = getArguments();
         //Toast.makeText(this.getContext(), ""+bundle.getString("mensaje"), Toast.LENGTH_SHORT).show();
@@ -111,8 +108,6 @@ public class BitacoraNuevaFragment extends Fragment implements View.OnClickListe
                     crud.insertarBitacora(generarDatosBitacora());
                 }
                 break;
-            case R.id.iv_regresar_nb:
-                regresar();
             default:
                 break;
         }
@@ -133,13 +128,6 @@ public class BitacoraNuevaFragment extends Fragment implements View.OnClickListe
         return new Bitacora(nombre_btc,imagen_btc,fecha_btc,hora_btc,ubicacion_btc,coordenadas_btc,cantidad_btc,descripcion_btc);
     }
 
-    public void regresar(){
-        BitacoraFragment bf=new BitacoraFragment();
-        getActivity().getSupportFragmentManager().beginTransaction()
-                .replace(R.id.content_main,bf)
-                .addToBackStack(null)
-                .commit();
-    }
 
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {

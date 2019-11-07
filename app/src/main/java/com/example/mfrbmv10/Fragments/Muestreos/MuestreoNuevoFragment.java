@@ -1,6 +1,7 @@
 package com.example.mfrbmv10.Fragments.Muestreos;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -11,17 +12,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.Toast;
 
-import com.example.mfrbmv10.Adaptadores.EscuchadorForma;
-import com.example.mfrbmv10.Adaptadores.EscuchadorTextura;
 import com.example.mfrbmv10.Extras.Localizacion;
-import com.example.mfrbmv10.Extras.MedicionFragment;
+import com.example.mfrbmv10.Extras.Medicion;
 import com.example.mfrbmv10.Extras.Timestamp;
 import com.example.mfrbmv10.FirebaseMotor.Crud;
 import com.example.mfrbmv10.Fragments.Bitacoras.BitacoraFragment;
-import com.example.mfrbmv10.Modelos.Longitud;
+import com.example.mfrbmv10.Imagen.CamaraDibujo;
+import com.example.mfrbmv10.Modelos.ColorMuestreo;
 import com.example.mfrbmv10.Modelos.Muestreo;
 import com.example.mfrbmv10.R;
 
@@ -35,7 +33,7 @@ import java.util.ArrayList;
  * Use the {@link MuestreoNuevoFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class MuestreoNuevoFragment extends Fragment implements View.OnClickListener {
+public class MuestreoNuevoFragment extends Fragment implements View.OnClickListener{
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -48,7 +46,6 @@ public class MuestreoNuevoFragment extends Fragment implements View.OnClickListe
     private EditText et_nombre_btc_nm;
     private Crud crud;
     private Button btn_guardar_nm;
-    private ImageView iv_regresar_nm;
     public String id_bitacora, nombreBitacora;
     private int cantidad_btc;
     public Timestamp timestamp;
@@ -100,8 +97,6 @@ public class MuestreoNuevoFragment extends Fragment implements View.OnClickListe
         et_nombre_btc_nm = mn_fragment.findViewById(R.id.et_nombre_mtr_nm);
         btn_guardar_nm = mn_fragment.findViewById(R.id.btn_guardar_nm);
         btn_guardar_nm.setOnClickListener(this);
-        iv_regresar_nm = mn_fragment.findViewById(R.id.iv_regresar_mn);
-        iv_regresar_nm.setOnClickListener(this);
 
         Bundle bundle = getArguments();
         id_bitacora = bundle.getString("id_bitacora");
@@ -147,29 +142,41 @@ public class MuestreoNuevoFragment extends Fragment implements View.OnClickListe
                 }else {
                     int c = cantidad_btc+1;
                     String cantidad = ""+c;
-                    crud.actualizarCantidadMuestreos(id_bitacora, cantidad);
-                    irAMedicionFragment();
-                    //crud.insertarMuestreo(generarDatosMuestreo(), id_bitacora, nombreBitacora);
+                    irACamara(cantidad);
+                    //irAMedicion(cantidad);
                 }
                 break;
-            case R.id.iv_regresar_nb:
-                regresar();
             default:
                 break;
         }
     }
 
-    private void irAMedicionFragment() {
-        MedicionFragment bf=new MedicionFragment();
+    private void irACamara(String cantidad) {
+
         Bundle bundle = new Bundle();
-        bundle.putString("id_bitacora", id_bitacora);
-        bundle.putString("nombre_bitacora", nombreBitacora);
         bundle.putSerializable("muestreo", generarDatosMuestreo());
-        bf.setArguments(bundle);
-        getActivity().getSupportFragmentManager().beginTransaction()
-                .replace(R.id.content_main,bf)
-                .addToBackStack(null)
-                .commit();
+
+        Intent intent = new Intent(getContext(), CamaraDibujo.class);
+        intent.putExtra("id_bitacora", id_bitacora);
+        intent.putExtra("nombre_bitacora", nombreBitacora);
+        intent.putExtra("muestreo",bundle);
+        intent.putExtra("cantidad", cantidad);
+        startActivity(intent);
+
+    }
+
+    private void irAMedicion(String cantidad) {
+
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("muestreo", generarDatosMuestreo());
+
+        Intent intent = new Intent(getContext(), Medicion.class);
+        intent.putExtra("id_bitacora", id_bitacora);
+        intent.putExtra("nombre_bitacora", nombreBitacora);
+        intent.putExtra("muestreo",bundle);
+        intent.putExtra("cantidad", cantidad);
+        startActivity(intent);
+
     }
 
     private Muestreo generarDatosMuestreo() {
@@ -177,7 +184,7 @@ public class MuestreoNuevoFragment extends Fragment implements View.OnClickListe
         String imagen_mtr = "R.drawable.flores1";
         String forma_mtr = "Pilado";
         String textura_mtr= "Cartilaginoso";
-        String color_mtr = "345";
+        ArrayList<ColorMuestreo> color_mtr = null;
         ArrayList<String> dimension_mtr = null;
         String ubicacion_mtr = localizacion.getUbicacion();
         String coordenadas_mtr = localizacion.getCoordenadas();

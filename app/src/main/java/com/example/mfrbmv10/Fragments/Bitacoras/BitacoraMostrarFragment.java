@@ -17,8 +17,10 @@ import android.widget.Toast;
 
 import com.example.mfrbmv10.FirebaseMotor.Crud;
 import com.example.mfrbmv10.Fragments.Muestreos.MuestreoFragment;
+import com.example.mfrbmv10.Fragments.Muestreos.MuestreoNuevoFragment;
 import com.example.mfrbmv10.Modelos.Bitacora;
 import com.example.mfrbmv10.R;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -44,6 +46,7 @@ public class BitacoraMostrarFragment extends Fragment implements View.OnClickLis
             tv_descripcion_bp;
     public ImageView img_bp;
     private String id_bitacora;
+    private FloatingActionButton fab_agregar_bm;
 
     public BitacoraMostrarFragment() {
         // Required empty public constructor
@@ -90,6 +93,8 @@ public class BitacoraMostrarFragment extends Fragment implements View.OnClickLis
         tv_muestreos_bp = bitacora_mostrar_fragment.findViewById(R.id.tv_muestreos_bm);
         tv_descripcion_bp = bitacora_mostrar_fragment.findViewById(R.id.tv_descripcion_bm);
         tv_muestreos_bp.setOnClickListener(this);
+        fab_agregar_bm = bitacora_mostrar_fragment.findViewById(R.id.fab_agregar_bm);
+        fab_agregar_bm.setOnClickListener(this);
 
         Bundle bundle = getArguments();
         id_bitacora = bundle.getString("id_bitacora");
@@ -142,6 +147,7 @@ public class BitacoraMostrarFragment extends Fragment implements View.OnClickLis
                 Bundle bundle = new Bundle();
                 bundle.putString("id_bitacora", id_bitacora);
                 bundle.putSerializable("nombre_bitacora", tv_nombre_bp.getText().toString());
+                bundle.putString("cantidad", tv_muestreos_bp.getText().toString());
                 bmf.setArguments(bundle);
                 getActivity().getSupportFragmentManager().beginTransaction()
                         .replace(R.id.content_main,bmf)

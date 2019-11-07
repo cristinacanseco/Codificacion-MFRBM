@@ -14,16 +14,13 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import com.example.mfrbmv10.Adaptadores.EscuchadorForma;
-import com.example.mfrbmv10.Adaptadores.EscuchadorTextura;
+import com.example.mfrbmv10.Adaptadores.FormaAdapter;
+import com.example.mfrbmv10.Adaptadores.TexturaAdapter;
 import com.example.mfrbmv10.FirebaseMotor.Crud;
-import com.example.mfrbmv10.Modelos.Longitud;
 import com.example.mfrbmv10.Modelos.Muestreo;
 import com.example.mfrbmv10.R;
 
-import java.util.ArrayList;
-
-public class TabMuestreoEditarDescripcion extends Fragment  implements View.OnClickListener, EscuchadorTextura.OnItemSelectedListener, EscuchadorForma.OnItemSelectedListener{
+public class TabMuestreoEditarDescripcion extends Fragment  implements View.OnClickListener, TexturaAdapter.OnItemSelectedListener, FormaAdapter.OnItemSelectedListener{
 
     public ImageView img_me;
     public EditText tv_nombre_me;
@@ -33,8 +30,8 @@ public class TabMuestreoEditarDescripcion extends Fragment  implements View.OnCl
     private String id_bitacora, id_muestreo, nombre_bitacora, forma, textura;
     private Muestreo m;
     private Spinner spinner_forma,spinner_textura;
-    private EscuchadorForma escuchadorForma;
-    private EscuchadorTextura escuchadorTextura;
+    private FormaAdapter formaAdapter;
+    private TexturaAdapter texturaAdapter;
 
     @Nullable
     @Override
@@ -78,11 +75,11 @@ public class TabMuestreoEditarDescripcion extends Fragment  implements View.OnCl
     }
 
     private void generarSpinners(String forma_mtr, String textura_mtr) {
-        escuchadorForma = new EscuchadorForma(this, spinner_forma, forma_mtr);
-        escuchadorTextura = new EscuchadorTextura(this, spinner_textura, textura_mtr);
+        formaAdapter = new FormaAdapter(this, spinner_forma, forma_mtr);
+        texturaAdapter = new TexturaAdapter(this, spinner_textura, textura_mtr);
 
-        escuchadorTextura.setOnItemSelectedListener(this);
-        escuchadorForma.setOnItemSelectedListener(this);
+        texturaAdapter.setOnItemSelectedListener(this);
+        formaAdapter.setOnItemSelectedListener(this);
 
     }
 

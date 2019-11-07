@@ -21,7 +21,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 import java.util.ArrayList;
 import java.util.List;
 
-public class EscuchadorForma extends Fragment implements OnCompleteListener<QuerySnapshot> {
+public class FormaAdapter extends Fragment implements OnCompleteListener<QuerySnapshot> {
 
     private List<Forma> formaList, formaList2;
     private String[] formas;
@@ -31,7 +31,7 @@ public class EscuchadorForma extends Fragment implements OnCompleteListener<Quer
     private String forma_mtr;
     private OnItemSelectedListener listener;
 
-    public EscuchadorForma(Fragment context, Spinner spinner_forma, String forma_mtr) {
+    public FormaAdapter(Fragment context, Spinner spinner_forma, String forma_mtr) {
         this.context = context.getContext();
         this.spinner_forma = spinner_forma;
         crud = new Crud(this);

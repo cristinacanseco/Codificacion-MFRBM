@@ -17,7 +17,17 @@
     <color name="cafe1">#8A5B4F</color>
     <color name="verde3">#558A08</color>
     <color name="cafe2">#543F26</color>
+    <color name="rojo2">#FFCCCC</color>
     <color name="rojo">#ff0000</color>
+
+
+    <color name="color_black">#000</color>
+    <color name="color_red">#FF5252</color>
+    <color name="color_yellow">#FFEB3B</color>
+    <color name="color_green">#00C853</color>
+    <color name="color_blue">#00B0FF</color>
+    <color name="color_pink">#D500F9</color>
+    <color name="color_brown">#8D6E63</color>
 
 
 </resources>

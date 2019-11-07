@@ -22,7 +22,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 import java.util.ArrayList;
 import java.util.List;
 
-public class EscuchadorTextura extends Fragment implements OnCompleteListener<QuerySnapshot>  {
+public class TexturaAdapter extends Fragment implements OnCompleteListener<QuerySnapshot>  {
 
     private List<Textura> texturaList, texturaList2;
     private String[] textura;
@@ -32,7 +32,7 @@ public class EscuchadorTextura extends Fragment implements OnCompleteListener<Qu
     private String textura_mtr;
     private OnItemSelectedListener listener;
 
-    public EscuchadorTextura(Fragment context, Spinner spinner_textura, String textura_mtr) {
+    public TexturaAdapter(Fragment context, Spinner spinner_textura, String textura_mtr) {
         this.context = context.getContext();
         this.spinner_textura = spinner_textura;
         crud = new Crud(this);

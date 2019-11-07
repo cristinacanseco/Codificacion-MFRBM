@@ -20,6 +20,20 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_colores_me"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_nombre_mec"
+        app:layout_constraintVertical_bias="0.373"></androidx.recyclerview.widget.RecyclerView>
+
     <TextView
         android:id="@+id/tv_nombre_mec"
         android:layout_width="0dp"
@@ -31,7 +45,7 @@
         android:lineSpacingExtra="4dp"
         android:text="@string/muestreo_db"
         android:textColor="@color/cafe2"
-        android:textSize="34sp"
+        android:textSize="26sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -55,7 +69,7 @@
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
+        android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
@@ -65,7 +79,7 @@
         app:layout_constraintHorizontal_bias="0.636"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/view_m"
-        app:layout_constraintVertical_bias="0.071" />
+        app:layout_constraintVertical_bias="0.100000024" />
 
     <TextView
         android:id="@+id/tv_colores_mec"
@@ -74,13 +88,16 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
-        android:text="fdjfhd"
+        android:fontFamily="@font/regular"
+        android:text="Colores obtenidos"
+        android:textColor="@color/cafe2"
+        android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.245"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_nombre_mec"
-        app:layout_constraintVertical_bias="0.088" />
+        app:layout_constraintVertical_bias="0.110000014" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

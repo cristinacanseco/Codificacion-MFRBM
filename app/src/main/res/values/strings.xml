@@ -50,7 +50,7 @@
     <string name="menu_home">MFRBM</string>
     <string name="menu_bitacora">Bitácoras</string>
     <string name="menu_perfil">Mi perfil</string>
-    <string name="menu_salir">Salir</string>
+    <string name="menu_salir">Cerrar Sesión</string>
 
 
     <string name="textwarn">Permiso requerido para esta aplicación</string>
@@ -74,5 +74,15 @@
     <string name="tab_text_1">Tab 1</string>
     <string name="tab_text_2">Tab 2</string>
     <string name="title_activity_muestreos_mostrar2">MuestreosMostrar2</string>
+    <string name="erase">Borrar</string>
+    <string name="brush">Brocha</string>
+    <string name="save">Guardar</string>
+    <string name="sml">Pequeño</string>
+    <string name="med">Mediano</string>
+    <string name="lrg">Grande</string>
+    <string name="editarDatos">Editar mis datos</string>
+    <string name="cambiarClave">Cambiar contraseña</string>
+    <string name="olvidarClave">¿Olvidaste tu contraseña?</string>
+    <string name="paint">Pintar</string>
 
 </resources>

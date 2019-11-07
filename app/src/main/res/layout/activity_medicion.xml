@@ -7,7 +7,8 @@
     android:configChanges="orientation|screenSize"
     android:exported="true"
     android:screenOrientation="locked"
-    tools:context=".Extras.MedicionFragment">
+    android:id="@+id/fragment_medicion"
+    tools:context=".Extras.Medicion">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -20,13 +21,14 @@
             android:layout_height="match_parent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.0" />
 
 
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constraintLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="56dp"
@@ -92,19 +94,50 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <TextView
-            android:id="@+id/txtDistance"
-            android:layout_width="match_parent"
+            android:id="@+id/txtDistance2"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
-            android:layout_marginStart="8dp"
+            android:layout_marginStart="76dp"
+            android:layout_marginTop="28dp"
+            android:gravity="center"
+            android:text="Distancia:"
+            android:textSize="20sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/ux_fragment" />
+
+        <TextView
+            android:id="@+id/txtDistance"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:layout_marginStart="4dp"
             android:layout_marginTop="8dp"
             android:gravity="center"
+            android:text="0.0"
             android:textSize="20sp"
-            app:layout_constraintEnd_toEndOf="@+id/ux_fragment"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/constraintLayout"
+            app:layout_constraintStart_toEndOf="@+id/txtDistance2"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.035" />
+
+        <ImageView
+            android:id="@+id/iv_listo"
+            android:layout_width="38dp"
+            android:layout_height="38dp"
+            android:layout_margin="10dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:background="@color/blanco"
+            android:padding="12dp"
+            android:src="@drawable/check"
+            android:tint="@color/cafe2"
+            app:layout_constraintBottom_toTopOf="@+id/constraintLayout"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.866"
+            app:layout_constraintStart_toEndOf="@+id/txtDistance"
             app:layout_constraintTop_toTopOf="@+id/ux_fragment"
-            app:layout_constraintVertical_bias="0.042" />
+            app:layout_constraintVertical_bias="0.033" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

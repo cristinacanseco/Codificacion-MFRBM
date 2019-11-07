@@ -10,7 +10,10 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.mfrbmv10.Adaptadores.ColorAdapter;
 import com.example.mfrbmv10.Modelos.Muestreo;
 import com.example.mfrbmv10.R;
 
@@ -20,6 +23,8 @@ public class TabMuestreoMostrarColores extends Fragment {
     public TextView tv_nombre_mm, tv_colores_mmc;
     private String id_bitacora, id_muestreo, nombre_bitacora;
     private Muestreo m;
+    private RecyclerView rv_colores_mm;
+    private ColorAdapter colorAdapter;
 
     @Nullable
     @Override
@@ -30,6 +35,10 @@ public class TabMuestreoMostrarColores extends Fragment {
         img_mm = muestreo_mostrar_fragment.findViewById(R.id.img_mmc);
         tv_nombre_mm = muestreo_mostrar_fragment.findViewById(R.id.tv_nombre_mmc);
         tv_colores_mmc = muestreo_mostrar_fragment.findViewById(R.id.tv_colores_mmc);
+
+        rv_colores_mm = muestreo_mostrar_fragment.findViewById(R.id.rv_colores_mm);
+        rv_colores_mm.setHasFixedSize(true);
+        rv_colores_mm.setLayoutManager(new LinearLayoutManager(getContext()));
 
         Bundle bundle = getArguments();
         id_bitacora = bundle.getString("id_bitacora");
@@ -44,7 +53,10 @@ public class TabMuestreoMostrarColores extends Fragment {
     private void obtenerDatos(Muestreo muestreo) {
         img_mm.setImageResource(R.drawable.flores1);
         tv_nombre_mm.setText(muestreo.getNombre_mtr());
-        tv_colores_mmc.setText(muestreo.getColor_mtr());
+        if(m.getColor_mtr().size() !=0) {
+            colorAdapter = new ColorAdapter(getContext(), m.getColor_mtr());
+            rv_colores_mm.setAdapter(colorAdapter);
+        }
 
     }
 }

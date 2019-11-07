@@ -155,7 +155,8 @@ public class MuestreoFragment extends Fragment implements OnCompleteListener<Que
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
                                 dialogInterface.dismiss();
-                                crud.irBitacoraFragment();
+                                crud.irMuestreoFragment(id_bitacora,nombreBitacora);
+                                //crud.irBitacoraFragment();
                             }
                         })
                         .create().show();

@@ -13,9 +13,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 
-import com.example.mfrbmv10.Modelos.Longitud;
+import com.example.mfrbmv10.Fragments.Muestreos.MuestreoNuevoIntermedioFragment2;
+import com.example.mfrbmv10.Modelos.Muestreo;
 import com.example.mfrbmv10.R;
 import com.google.ar.core.Anchor;
 import com.google.ar.core.Frame;
@@ -45,23 +48,26 @@ import java.util.List;
 import java.util.Objects;
 
 public class Medicion extends AppCompatActivity implements Node.OnTapListener, Scene.OnUpdateListener {
+
         private static final String TAG = Medicion.class.getSimpleName();
         private static final double MIN_OPENGL_VERSION = 3.0;
+        private static float f = 0.0001f;
 
         ArrayList<Float> arrayList1 = new ArrayList<>();
         ArrayList<Float> arrayList2 = new ArrayList<>();
-        ArrayList<String> todasLongitudes = new ArrayList<>();
+        ArrayList<String> todasLongitudes;
 
         private ArFragment arFragment;
         private AnchorNode ultimoAnchorNode;
         private TextView txtDistance;
-        private ImageView btnDist, btnClear, btnGuardar;
+        private ImageView btnDist, btnClear, btnGuardar, iv_listo;
         //Button btnHeight;
         ModelRenderable cubeRenderable;
         //ModelRenderable heightRenderable;
         //boolean btnHeightClicked;
         boolean btnLengthClicked;
         Vector3 point1, point2;
+
 
         @SuppressLint("SetTextI18n")
         @Override
@@ -74,6 +80,8 @@ public class Medicion extends AppCompatActivity implements Node.OnTapListener, S
                 }
 
                 setContentView(R.layout.activity_medicion);
+                todasLongitudes = new ArrayList<String>();
+
                 arFragment = (ArFragment) getSupportFragmentManager().findFragmentById(R.id.ux_fragment);
                 txtDistance = findViewById(R.id.txtDistance);
                 btnDist = findViewById(R.id.btnDistance);
@@ -91,12 +99,15 @@ public class Medicion extends AppCompatActivity implements Node.OnTapListener, S
                 btnClear.setOnClickListener(v -> onClear());
 
                 btnGuardar = findViewById(R.id.iv_guardar);
-                btnGuardar.setOnClickListener(view -> guardarDatos());
+                btnGuardar.setOnClickListener(view -> guardarMedida());
+
+                iv_listo = findViewById(R.id.iv_listo);
+                iv_listo.setOnClickListener(view -> guardarDatos());
 
                 MaterialFactory.makeTransparentWithColor(this, new Color(0F, 0F, 244F))
                         .thenAccept(
                                 material -> {
-                                        Vector3 vector3 = new Vector3(0.00001f, 0.00001f, 0.00001f);
+                                        Vector3 vector3 = new Vector3(f, f, f);
                                         cubeRenderable = ShapeFactory.makeCube(vector3, Vector3.zero(), material);
                                         cubeRenderable.setShadowCaster(false);
                                         cubeRenderable.setShadowReceiver(false);
@@ -172,8 +183,8 @@ public class Medicion extends AppCompatActivity implements Node.OnTapListener, S
                                                         arrayList2.add(pose.tz());
                                                         //float d = getDistanceMeters(arrayList1, arrayList2);
                                                         double d = getDistanciaMetros(arrayList1, arrayList2);
-                                                        todasLongitudes.add(String.valueOf(d));
-                                                        txtDistance.setText("Distancia: " + String.valueOf(d));
+                                                        //todasLongitudes.add(String.valueOf(d));
+                                                        txtDistance.setText( String.valueOf(d) + " cm");
                                                 } else {
                                                         arrayList1.clear();
                                                         arrayList1.addAll(arrayList2);
@@ -183,8 +194,8 @@ public class Medicion extends AppCompatActivity implements Node.OnTapListener, S
                                                         arrayList2.add(pose.tz());
                                                         //float d = getDistanceMeters(arrayList1, arrayList2);
                                                         double d = getDistanciaMetros(arrayList1, arrayList2);
-                                                        todasLongitudes.add(String.valueOf(d));
-                                                        txtDistance.setText("Distancia: " + String.valueOf(d));
+                                                        //todasLongitudes.add(String.valueOf(d));
+                                                        txtDistance.setText(String.valueOf(d) + " cm");
                                                 }
 
                                                 TransformableNode transformableNode = new TransformableNode(arFragment.getTransformationSystem());
@@ -204,7 +215,7 @@ public class Medicion extends AppCompatActivity implements Node.OnTapListener, S
                                                         .thenAccept(
                                                                 material -> {
                                                                         ModelRenderable model = ShapeFactory.makeCube(
-                                                                                new Vector3(.01f, .01f, difference.length()),
+                                                                                new Vector3(0.009f, 0.009f, difference.length()),
                                                                                 Vector3.zero(), material);
                                                                         Node node = new Node();
                                                                         node.setParent(anchorNode);
@@ -220,7 +231,30 @@ public class Medicion extends AppCompatActivity implements Node.OnTapListener, S
 
         }
 
+        private void guardarMedida() {
+                todasLongitudes.add(txtDistance.getText().toString());
+                Toast.makeText(this, "¡Medida agregada satisfactoriamente!", Toast.LENGTH_SHORT).show();
+        }
+
         private void guardarDatos() {
+                String id_bitacora = getIntent().getStringExtra("id_bitacora");
+                String nombre_bitacora = getIntent().getStringExtra("nombre_bitacora");
+                String cantidad = getIntent().getStringExtra("cantidad");
+                Bundle bundle1 = getIntent().getBundleExtra("muestreo");
+                Muestreo m = (Muestreo) bundle1.getSerializable("muestreo");
+                m.setDimension_mtr(todasLongitudes);
+
+                Bundle bundle = new Bundle();
+                bundle.putString("id_bitacora", id_bitacora);
+                bundle.putString("nombre_bitacora", nombre_bitacora);
+                bundle.putString("cantidad",cantidad);
+                bundle.putSerializable("muestreo", m);
+
+                Fragment fragment = new MuestreoNuevoIntermedioFragment2();
+                FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+                fragment.setArguments(bundle);
+                transaction.replace(R.id.fragment_medicion, fragment);
+                transaction.commit();
 
         }
 

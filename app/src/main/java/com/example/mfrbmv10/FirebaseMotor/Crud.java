@@ -7,13 +7,15 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
-import com.example.mfrbmv10.Adaptadores.EscuchadorForma;
-import com.example.mfrbmv10.Adaptadores.EscuchadorTextura;
+import com.example.mfrbmv10.Adaptadores.FormaAdapter;
+import com.example.mfrbmv10.Adaptadores.TexturaAdapter;
 import com.example.mfrbmv10.Fragments.Bitacoras.BitacoraFragment;
 import com.example.mfrbmv10.Fragments.Muestreos.MuestreoFragment;
+import com.example.mfrbmv10.Fragments.Usuario.UsuarioPerfilFragment;
 import com.example.mfrbmv10.Modelos.Bitacora;
-import com.example.mfrbmv10.Modelos.Longitud;
+import com.example.mfrbmv10.Modelos.ColorMuestreo;
 import com.example.mfrbmv10.Modelos.Muestreo;
+import com.example.mfrbmv10.Modelos.Usuario;
 import com.example.mfrbmv10.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -22,12 +24,13 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
 
-public class Crud {
+public class Crud implements Serializable {
     private Fragment context;
     private FirebaseAuth mAuth;
     private FirebaseFirestore mFirestore;
@@ -45,6 +48,40 @@ public class Crud {
     }
 
 
+    //U S U A R I O
+    public void mostrarUsuario(){
+        String id= mAuth.getCurrentUser().getUid();
+        mFirestore.collection(usuario_db).document(id)
+                .get().addOnCompleteListener((UsuarioPerfilFragment) context)
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        createAlert("Error", "Ups...hubo un problema. \nVuelve a intentarlo\n ", "OK");
+                    }
+                });
+    }
+
+    public void editarUsuario(Usuario usuario) {
+        String id = mAuth.getCurrentUser().getUid();
+
+        mFirestore.collection(usuario_db).document(id)
+                .update(generarMapUsuario(usuario))
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        createAlert("Éxito", "Se actualizaron tus datos ;)", "OK");
+                        irBitacoraFragment();
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                createAlert("Error", "No se actualizaron tus datos. \nVuelve a intentarlo\n " + e.getMessage().toString(), "OK");
+            }
+        });
+    }
+
+
+
     //B I T Á C O R A S
 
     //Create
@@ -59,8 +96,8 @@ public class Crud {
                             createAlert("Éxito", "Se creó correctamente la bitácora.","OK");
                             //context.startActivity(new Intent(context2,BitacoraNuevaFragment.class));
 
-                            irBitacoraFragment();
-
+                            //irBitacoraFragment();
+                            irMuestreoFragment(task.getResult().getId() ,bitacora.getNombre_btc());
                         } else {
                             createAlert("Error", "No se agregaron los datos de la bitácora. \nVuelve a intentarlo\n ", "OK");
                         }
@@ -282,12 +319,24 @@ public class Crud {
         return map;
     }
 
+    private Map<String, Object> generarMapUsuario(Usuario usuario) {
+        Map<String, Object> map = new HashMap<>();
+        map.put("nombre_usr", usuario.getNombre_usr());
+        map.put("apellido_usr", usuario.getApellido_usr());
+        map.put("correo_usr", usuario.getCorreo_usr());
+        map.put("clave_usr", usuario.getClave_usr());
+        map.put("imagen_usr", usuario.getImagen_usr());
+        map.put("admin_usr", usuario.getAdmin_usr());
+        return map;
+    }
+
+
     public Muestreo generarMuestreo(Map<String, Object> map){
         String nombre_mtr = (String) map.get("nombre_mtr");
         String imagen_mtr = (String) map.get("imagen_mtr");
         String forma_mtr= (String) map.get("forma_mtr");
         String textura_mtr= (String) map.get("textura_mtr");
-        String color_mtr=(String)map.get("color_mtr");
+        ArrayList<ColorMuestreo> color_mtr=(ArrayList<ColorMuestreo>) map.get("color_mtr");
         ArrayList<String> dimension_mtr= (ArrayList<String>) map.get("dimension_mtr");
         String ubicacion_mtr= (String)map.get("ubicacion_mtr");
         String coordenadas_mtr = (String)map.get("coordenadas_mtr");
@@ -323,7 +372,7 @@ public class Crud {
         mFirestore.collection("Descripciones").document("7HojItOAjpRKjH127655")
                 .collection("Forma")
                 .get()
-                .addOnCompleteListener((EscuchadorForma)context)
+                .addOnCompleteListener((FormaAdapter)context)
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
@@ -336,7 +385,7 @@ public class Crud {
     public void obtenerTextura(){
         mFirestore.collection("Descripciones").document("sJid2DP0iiNaXpqoJNJk")
                 .collection("Textura")
-                .get().addOnCompleteListener((EscuchadorTextura)context)
+                .get().addOnCompleteListener((TexturaAdapter)context)
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
@@ -345,17 +394,7 @@ public class Crud {
                 });
     }
 
-   /* public void obtenerTextura2(){
-        mFirestore.collection("Descripciones").document("sJid2DP0iiNaXpqoJNJk")
-                .collection("Textura")
-                .get().addOnCompleteListener((MuestreoEditarFragment)context)
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        createAlert("Error", "Ups...hubo un problema. \nVuelve a intentarlo\n ", "OK");
-                    }
-                });
-    }*/
+
 
 
 

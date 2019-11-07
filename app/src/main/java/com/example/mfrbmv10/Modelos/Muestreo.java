@@ -5,7 +5,6 @@ import java.util.ArrayList;
 
 public class Muestreo implements Serializable {
 
-    public String id_btc;
     public String nombre_mtr;
     public String imagen_mtr;
     public String fecha_mtr;
@@ -14,14 +13,14 @@ public class Muestreo implements Serializable {
     public String coordenadas_mtr;
     public String forma_mtr;
     public String textura_mtr;
-    public String color_mtr;
+    public ArrayList<ColorMuestreo> color_mtr;
     public ArrayList<String> dimension_mtr;
 
 
     public Muestreo() {
     }
 
-    public Muestreo(String nombre_mtr, String imagen_mtr, String fecha_mtr, String hora_mtr, String ubicacion_mtr, String coordenadas_mtr, String forma_mtr, String textura_mtr, String color_mtr, ArrayList<String> dimension_mtr) {
+    public Muestreo(String nombre_mtr, String imagen_mtr, String fecha_mtr, String hora_mtr, String ubicacion_mtr, String coordenadas_mtr, String forma_mtr, String textura_mtr, ArrayList<ColorMuestreo> color_mtr, ArrayList<String> dimension_mtr) {
 
         this.nombre_mtr = nombre_mtr;
         this.imagen_mtr = imagen_mtr;
@@ -67,11 +66,11 @@ public class Muestreo implements Serializable {
         this.textura_mtr = textura_mtr;
     }
 
-    public String getColor_mtr() {
+    public ArrayList<ColorMuestreo> getColor_mtr() {
         return color_mtr;
     }
 
-    public void setColor_mtr(String color_mtr) {
+    public void setColor_mtr(ArrayList<ColorMuestreo> color_mtr) {
         this.color_mtr = color_mtr;
     }
 
@@ -79,9 +78,7 @@ public class Muestreo implements Serializable {
         return dimension_mtr;
     }
 
-    public void setDimension_mtr(ArrayList<String> dimension_mtr) {
-        this.dimension_mtr = dimension_mtr;
-    }
+    public void setDimension_mtr(ArrayList<String> dimension_mtr) { this.dimension_mtr = dimension_mtr; }
 
     public String getUbicacion_mtr() {
         return ubicacion_mtr;
@@ -115,11 +112,4 @@ public class Muestreo implements Serializable {
         this.hora_mtr = hora_mtr;
     }
 
-    public String getId_btc() {
-        return id_btc;
-    }
-
-    public void setId_btc(String id_btc) {
-        this.id_btc = id_btc;
-    }
 }

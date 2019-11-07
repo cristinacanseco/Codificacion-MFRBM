@@ -6,10 +6,12 @@ import android.content.Intent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
 import com.example.mfrbmv10.Fragments.HomeActivity;
+import com.example.mfrbmv10.Fragments.Usuario.UsuarioPerfilFragment;
 import com.example.mfrbmv10.Modelos.Usuario;
 import com.example.mfrbmv10.Sesiones.IniciarSesion;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -20,6 +22,7 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -47,7 +50,6 @@ public class SesionesFirestore {
         mUser = mAuth.getCurrentUser();
     }
 
-
     public void registrarUsuario(final Usuario usuario, Button btn_registrate_r, ProgressBar pb_r) {
         mAuth.createUserWithEmailAndPassword(usuario.getCorreo_usr(), usuario.getClave_usr()).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
@@ -68,6 +70,29 @@ public class SesionesFirestore {
                             .addOnSuccessListener(new OnSuccessListener<Void>() {
                                 @Override
                                 public void onSuccess(Void aVoid) {
+
+                                    FirebaseUser user = mAuth.getCurrentUser();
+                                    user.sendEmailVerification().addOnCompleteListener(new OnCompleteListener<Void>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<Void> task) {
+                                            Toast.makeText(context, "Se envió el correo de confirmación de cuenta", Toast.LENGTH_SHORT).show();
+                                        }
+                                    });
+
+                                    String nombre = usuario.getNombre_usr()+" "+usuario.getApellido_usr();
+                                    UserProfileChangeRequest userp = new UserProfileChangeRequest.Builder()
+                                            .setDisplayName(nombre)
+                                            .build();
+
+                                    mUser.updateProfile(userp).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<Void> task) {
+                                            if(task.isSuccessful()){
+                                                Toast.makeText(context, "¡Registro completo ;)!", Toast.LENGTH_SHORT).show();
+                                            }
+                                        }
+                                    });
+
                                     context.startActivity(new Intent(new Intent(context, HomeActivity.class)));
                                 }
                             })
@@ -78,6 +103,9 @@ public class SesionesFirestore {
                                     // Log.e(TAG, "Mensaje: "+ e.getMessage().toString()+ " Localización: " +e.getLocalizedMessage().toString());
                                 }
                             });
+
+
+
                 } else {
                     if (task.getException() instanceof FirebaseAuthUserCollisionException) {
                         createAlert("Error", "El correo ya existe. \nVuelve a intentarlo\n ", "OK");
@@ -115,6 +143,24 @@ public class SesionesFirestore {
         context.startActivity(new Intent(context, IniciarSesion.class));
     }
 
+    public void editarUsuario(Usuario usuario) {
+    }
+
+    public void cambiarClave(){
+        FirebaseUser user = mAuth.getCurrentUser();
+        Toast.makeText(context, "Usuario"+user.getDisplayName(), Toast.LENGTH_SHORT).show();
+        mAuth.sendPasswordResetEmail(user.getEmail()).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if(task.isSuccessful()) {
+                    Toast.makeText(context, "Se envió un correo electrónico para cambiar la contraseña. \n ¡Gracias!", Toast.LENGTH_SHORT).show();
+                }else{
+                    Toast.makeText(context, "Ups... algo salió mal. \nEstamos trabajando en ello\n"+task.getException(), Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+        cerrarSesion();
+    }
 
     public void createAlert(String alertTitle, String alertMessage, String positiveText){
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
@@ -131,5 +177,6 @@ public class SesionesFirestore {
     public FirebaseUser getmUser() {
         return mUser;
     }
+
 
 }

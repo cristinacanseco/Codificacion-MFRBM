@@ -138,7 +138,7 @@ public class BitacoraFragment extends Fragment implements OnCompleteListener<Que
             @Override
             public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
 
-                AlertDialog.Builder builder = new AlertDialog.Builder(getContext(), R.style.Theme_AppCompat_Dialog);
+                AlertDialog.Builder builder = new AlertDialog.Builder(getContext(), R.style.Theme_AppCompat_DayNight_Dialog);
                 builder.setTitle("Eliminar bitácora")
                         .setMessage("¿Estás seguro de que deseas eliminar la bitácora?")
                         .setPositiveButton("OK", new DialogInterface.OnClickListener() {
