@@ -3,6 +3,7 @@ package com.example.mfrbmv10.Fragments;
 import android.net.Uri;
 import android.os.Bundle;
 
+import com.example.mfrbmv10.FirebaseMotor.Crud;
 import com.example.mfrbmv10.FirebaseMotor.SesionesFirestore;
 import com.example.mfrbmv10.Fragments.Bitacoras.BitacoraEditarFragment;
 import com.example.mfrbmv10.Fragments.Bitacoras.BitacoraFragment;
@@ -15,6 +16,7 @@ import com.example.mfrbmv10.Fragments.Muestreos.MuestreoNuevoFragment;
 import com.example.mfrbmv10.Fragments.Usuario.UsuarioPerfilFragment;
 import com.example.mfrbmv10.R;
 
+import androidx.appcompat.widget.SearchView;
 import androidx.core.view.GravityCompat;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 
@@ -22,6 +24,7 @@ import android.view.MenuItem;
 
 import com.google.android.material.navigation.NavigationView;
 
+import androidx.core.view.MenuItemCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -46,6 +49,7 @@ public class HomeActivity extends AppCompatActivity
                     UsuarioPerfilFragment.OnFragmentInteractionListener{
 
    private SesionesFirestore sesionesFirestore;
+   Fragment fragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,7 +70,7 @@ public class HomeActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
         actualizarNavHeader();
 
-        Fragment fragment = new BitacoraFragment();
+        fragment = new BitacoraFragment();
         getSupportFragmentManager().beginTransaction().add(R.id.content_main, fragment).commit();
         navigationView.setNavigationItemSelectedListener(this);
 
@@ -85,7 +89,33 @@ public class HomeActivity extends AppCompatActivity
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.home, menu);
+
+        MenuItem item = menu.findItem(R.id.buscar);
+        SearchView searchView = (SearchView) MenuItemCompat.getActionView(item);
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                buscarBitacoras(query,true);
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                buscarBitacoras(newText,false);
+                return false;
+            }
+        });
         return true;
+    }
+
+    private void buscarBitacoras(String query, boolean b) {
+        Crud crud = new Crud(fragment);
+        if(b) {
+            crud.buscar(query.trim());
+        }else{
+            crud.mostrarBitacoras();
+        }
     }
 
     @Override
@@ -94,7 +124,6 @@ public class HomeActivity extends AppCompatActivity
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-
         //noinspection SimplifiableIfStatement
         return super.onOptionsItemSelected(item);
     }
@@ -105,14 +134,14 @@ public class HomeActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        Fragment miFragment = null;
+
         boolean fragmentSeleccionado=false;
 
         if (id == R.id.nav_bitacora) {
-            miFragment = new BitacoraFragment();
+            fragment = new BitacoraFragment();
             fragmentSeleccionado = true;
         } else if (id == R.id.nav_perfil) {
-            miFragment = new UsuarioPerfilFragment();
+            fragment = new UsuarioPerfilFragment();
             fragmentSeleccionado = true;
         } else if (id == R.id.nav_Salir) {
             Toast.makeText(this, "¡ Nos vemos luego ;) !", Toast.LENGTH_SHORT).show();
@@ -120,7 +149,7 @@ public class HomeActivity extends AppCompatActivity
         }
 
         if(fragmentSeleccionado)
-            getSupportFragmentManager().beginTransaction().replace(R.id.content_main, miFragment).commit();
+            getSupportFragmentManager().beginTransaction().replace(R.id.content_main, fragment).commit();
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
@@ -137,7 +166,7 @@ public class HomeActivity extends AppCompatActivity
         TextView tv_nombreUsuario = headerView.findViewById(R.id.tv_nombreUsuario);
         TextView tv_correoUsuario = headerView.findViewById(R.id.tv_correoUsuario);
 
-        Toast.makeText(this, ""+sesionesFirestore.getmUser().getDisplayName(), Toast.LENGTH_SHORT).show();
+        //Toast.makeText(this, ""+sesionesFirestore.getmUser().getDisplayName(), Toast.LENGTH_SHORT).show();
         tv_nombreUsuario.setText(sesionesFirestore.getmUser().getDisplayName());
         tv_correoUsuario.setText(sesionesFirestore.getmUser().getEmail());
 

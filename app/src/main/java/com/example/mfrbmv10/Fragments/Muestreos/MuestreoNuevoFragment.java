@@ -23,6 +23,7 @@ import com.example.mfrbmv10.Modelos.ColorMuestreo;
 import com.example.mfrbmv10.Modelos.Muestreo;
 import com.example.mfrbmv10.R;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
@@ -33,7 +34,7 @@ import java.util.ArrayList;
  * Use the {@link MuestreoNuevoFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class MuestreoNuevoFragment extends Fragment implements View.OnClickListener{
+public class MuestreoNuevoFragment extends Fragment implements View.OnClickListener,Serializable{
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -155,6 +156,7 @@ public class MuestreoNuevoFragment extends Fragment implements View.OnClickListe
 
         Bundle bundle = new Bundle();
         bundle.putSerializable("muestreo", generarDatosMuestreo());
+        //bundle.putSerializable("contexto",this);
 
         Intent intent = new Intent(getContext(), CamaraDibujo.class);
         intent.putExtra("id_bitacora", id_bitacora);
@@ -169,6 +171,7 @@ public class MuestreoNuevoFragment extends Fragment implements View.OnClickListe
 
         Bundle bundle = new Bundle();
         bundle.putSerializable("muestreo", generarDatosMuestreo());
+        //bundle.putSerializable("contexto",this);
 
         Intent intent = new Intent(getContext(), Medicion.class);
         intent.putExtra("id_bitacora", id_bitacora);
@@ -184,7 +187,7 @@ public class MuestreoNuevoFragment extends Fragment implements View.OnClickListe
         String imagen_mtr = "R.drawable.flores1";
         String forma_mtr = "Pilado";
         String textura_mtr= "Cartilaginoso";
-        ArrayList<ColorMuestreo> color_mtr = null;
+        String  color_mtr = "";
         ArrayList<String> dimension_mtr = null;
         String ubicacion_mtr = localizacion.getUbicacion();
         String coordenadas_mtr = localizacion.getCoordenadas();

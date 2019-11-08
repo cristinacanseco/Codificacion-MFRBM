@@ -84,5 +84,8 @@
     <string name="cambiarClave">Cambiar contraseña</string>
     <string name="olvidarClave">¿Olvidaste tu contraseña?</string>
     <string name="paint">Pintar</string>
+    <string name="aceptar">Aceptar</string>
+    <string name="borrarCuenta">Quiro borrar mi cuenta</string>
+    <string name="generandoColores"> Generando los colores</string>
 
 </resources>

@@ -21,6 +21,9 @@
         android:fitsSystemWindows="true"
         android:background="@drawable/fondo_menu"
         app:headerLayout="@layout/nav_header_home"
-        app:menu="@menu/activity_home_drawer" />
+        app:menu="@menu/activity_home_drawer"
+        app:itemTextColor="@color/cafe2"
+        app:itemIconTint="@color/cafe2"
+        />
 
 </androidx.drawerlayout.widget.DrawerLayout>

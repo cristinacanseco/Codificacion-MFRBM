@@ -20,6 +20,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.mfrbmv10.Extras.Dialogo;
 import com.example.mfrbmv10.FirebaseMotor.Crud;
 import com.example.mfrbmv10.FirebaseMotor.SesionesFirestore;
 import com.example.mfrbmv10.Modelos.Usuario;
@@ -55,7 +56,7 @@ public class UsuarioPerfilFragment extends Fragment implements View.OnClickListe
 
     private EditText et_nombreUsuario, et_apellidoUsuario, et_correoUsuario;
     private ImageView iv_imagen_u;
-    private TextView tv_cambiarClave;
+    private TextView tv_cambiarClave, tv_borrarCuenta;
     private Button btn_salir_u;
     private SesionesFirestore sesionesFirestore;
     private Crud crud;
@@ -114,6 +115,12 @@ public class UsuarioPerfilFragment extends Fragment implements View.OnClickListe
         tv_cambiarClave.setText(mitextoU2);
         tv_cambiarClave.setOnClickListener(this);
 
+        tv_borrarCuenta = usuario_fragment.findViewById(R.id.tv_borrarCuenta);
+        SpannableString mitextoU = new SpannableString(tv_borrarCuenta.getText());
+        mitextoU.setSpan(new UnderlineSpan(), 0, mitextoU.length(), 0);
+        tv_borrarCuenta.setText(mitextoU);
+        tv_borrarCuenta.setOnClickListener(this);
+
         //ImageView
         iv_imagen_u = usuario_fragment.findViewById(R.id.iv_imagen_u);
 
@@ -130,14 +137,36 @@ public class UsuarioPerfilFragment extends Fragment implements View.OnClickListe
     public void onClick(View view) {
         switch (view.getId()){
             case R.id.tv_cambiarClave:
-                Toast.makeText(getContext(), "fjdfkj", Toast.LENGTH_SHORT).show();
-                sesionesFirestore.cambiarClave();
+                Dialogo dialogo = new Dialogo();
+                dialogo.show(getFragmentManager(), "dialogo");
+                break;
+            case R.id.tv_borrarCuenta:
+                borrarCuenta();
                 break;
             case R.id.btn_salir_u:
                 sesionesFirestore.cerrarSesion();
                 break;
         }
 
+    }
+
+    private void borrarCuenta() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext(), R.style.Theme_AppCompat_DayNight_Dialog);
+        builder.setTitle("Eliminar cuenta")
+                .setMessage("¿Estás seguro de que deseas eliminar tu cuenta? \n\n Al hacerlo perderás todos tus datos y no podrás volver a acceder a ellos")
+                .setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        sesionesFirestore.borrarCuenta();
+                    }
+                })
+                .setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.dismiss();
+                    }
+                })
+                .create().show();
     }
 
 

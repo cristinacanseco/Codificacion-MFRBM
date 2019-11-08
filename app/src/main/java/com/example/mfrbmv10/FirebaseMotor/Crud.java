@@ -2,7 +2,10 @@ package com.example.mfrbmv10.FirebaseMotor;
 
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -10,6 +13,7 @@ import androidx.fragment.app.Fragment;
 import com.example.mfrbmv10.Adaptadores.FormaAdapter;
 import com.example.mfrbmv10.Adaptadores.TexturaAdapter;
 import com.example.mfrbmv10.Fragments.Bitacoras.BitacoraFragment;
+import com.example.mfrbmv10.Fragments.HomeActivity;
 import com.example.mfrbmv10.Fragments.Muestreos.MuestreoFragment;
 import com.example.mfrbmv10.Fragments.Usuario.UsuarioPerfilFragment;
 import com.example.mfrbmv10.Modelos.Bitacora;
@@ -47,6 +51,11 @@ public class Crud implements Serializable {
         context2 = context.getContext();
     }
 
+    public Crud(Context context){
+        mAuth = FirebaseAuth.getInstance();
+        mFirestore = FirebaseFirestore.getInstance();
+        context2 =context;
+    }
 
     //U S U A R I O
     public void mostrarUsuario(){
@@ -81,7 +90,6 @@ public class Crud implements Serializable {
     }
 
 
-
     //B I T Á C O R A S
 
     //Create
@@ -93,6 +101,18 @@ public class Crud implements Serializable {
                     @Override
                     public void onComplete(@NonNull Task<DocumentReference> task) {
                         if (task.isSuccessful()) {
+
+                            AlertDialog.Builder builder = new AlertDialog.Builder(context2, R.style.Theme_AppCompat_DayNight_Dialog);
+                            builder.setTitle("¡Nuevo Bitácora!")
+                                    .setMessage("Se generó correctamente tu muestreo. Ya puedes consultarlo")
+                                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialogInterface, int i) {
+                                            context2.startActivity(new Intent(context2, HomeActivity.class));
+                                        }
+                                    })
+                                    .create().show();
+
                             createAlert("Éxito", "Se creó correctamente la bitácora.","OK");
                             //context.startActivity(new Intent(context2,BitacoraNuevaFragment.class));
 
@@ -165,6 +185,18 @@ public class Crud implements Serializable {
         });
     }
 
+    public void buscar(String query) {
+        String id = mAuth.getCurrentUser().getUid();
+        mFirestore.collection(usuario_db).document(id).collection(bitacora_db)
+                .whereEqualTo("nombre_btc", query)
+                .get().addOnCompleteListener((BitacoraFragment)context)
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        createAlert("Error", "Ups...hubo un problema. \nVuelve a intentarlo\n ", "OK");
+                    }
+                });
+    }
 
 
     //M U E S T R E O S
@@ -179,11 +211,20 @@ public class Crud implements Serializable {
                     @Override
                     public void onComplete(@NonNull Task<DocumentReference> task) {
                         if (task.isSuccessful()) {
-                            createAlert("Éxito", "Se creó correctamente el muestreo.","OK");
-                            //context.startActivity(new Intent(context2,BitacoraNuevaFragment.class));
-                            irMuestreoFragment(id_btc, nombre_muestreo);
+
+                            /*AlertDialog.Builder builder = new AlertDialog.Builder(context2, R.style.Theme_AppCompat_DayNight_Dialog);
+                            builder.setTitle("¡Nuevo Muestreo!")
+                                    .setMessage("Se generó correctamente el muestreo. Ya puedes consultarlo")
+                                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialogInterface, int i) {
+                                            context2.startActivity(new Intent(context2, HomeActivity.class));
+                                        }
+                                    })
+                                    .create().show();*/
                         } else {
                             createAlert("Error", "No se agregaron los datos de la bitácora. \nVuelve a intentarlo\n ", "OK");
+                            context2.startActivity(new Intent(context2, HomeActivity.class));
                         }
                     }
                 }).addOnFailureListener(new OnFailureListener() {
@@ -204,20 +245,46 @@ public class Crud implements Serializable {
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
-                        createAlert("Éxito", "Número de muestreos actualizado", "OK");
+                        //createAlert("Éxito", "Número de muestreos actualizado", "OK");
                         //irMuestreoFragment(id_bitacora, nombre_muestreo);
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        createAlert("Error", "No se actualizó el número de muestreos " + e.getMessage().toString(), "OK");
+                        //createAlert("Error", "No se actualizó el número de muestreos " + e.getMessage().toString(), "OK");
                     }
                 });
-
-
     }
 
+
+    public void actualizarImagenBitacora(String id_bitacora, String imagen){
+        String id = mAuth.getCurrentUser().getUid();
+        mFirestore.collection(usuario_db).document(id)
+                .collection(bitacora_db).document(id_bitacora)
+                .update("imagen_btc", imagen)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        AlertDialog.Builder builder = new AlertDialog.Builder(context2, R.style.Theme_AppCompat_DayNight_Dialog);
+                        builder.setTitle("¡Nuevo Muestreo!")
+                                .setMessage("Se generó correctamente el muestreo. Ya puedes consultarlo")
+                                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialogInterface, int i) {
+                                        context2.startActivity(new Intent(context2, HomeActivity.class));
+                                    }
+                                })
+                                .create().show();
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        //createAlert("Error", "No se actualizó el número de muestreos " + e.getMessage().toString(), "OK");
+                    }
+                });
+    }
 
     //Read
     public void mostrarMuestreos(String id_btc){
@@ -245,7 +312,8 @@ public class Crud implements Serializable {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         createAlert("Éxito", "Bitácora actualizada", "OK");
-                        irMuestreoFragment(id_bitacora, nombre_bitacora);
+                        irBitacoraFragment();
+                        //irMuestreoFragment(id_bitacora, nombre_bitacora);
                     }
                 }).addOnFailureListener(new OnFailureListener() {
             @Override
@@ -336,7 +404,7 @@ public class Crud implements Serializable {
         String imagen_mtr = (String) map.get("imagen_mtr");
         String forma_mtr= (String) map.get("forma_mtr");
         String textura_mtr= (String) map.get("textura_mtr");
-        ArrayList<ColorMuestreo> color_mtr=(ArrayList<ColorMuestreo>) map.get("color_mtr");
+        String color_mtr=(String) map.get("color_mtr");
         ArrayList<String> dimension_mtr= (ArrayList<String>) map.get("dimension_mtr");
         String ubicacion_mtr= (String)map.get("ubicacion_mtr");
         String coordenadas_mtr = (String)map.get("coordenadas_mtr");
@@ -366,6 +434,19 @@ public class Crud implements Serializable {
                 .commit();
     }
 
+    public void generarAlert(String titulo, String mensaje){
+        AlertDialog.Builder builder = new AlertDialog.Builder(context2, R.style.Theme_AppCompat_DayNight_Dialog);
+        builder.setTitle(titulo)
+                .setMessage(mensaje)
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                    }
+                })
+                .create().show();
+
+    }
+
 
     // F O R M A
     public void obtenerFormas(){
@@ -393,10 +474,5 @@ public class Crud implements Serializable {
                     }
                 });
     }
-
-
-
-
-
 
 }

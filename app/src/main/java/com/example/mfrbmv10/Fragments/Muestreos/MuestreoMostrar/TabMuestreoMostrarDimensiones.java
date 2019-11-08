@@ -11,6 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.bumptech.glide.Glide;
 import com.example.mfrbmv10.Modelos.Muestreo;
 import com.example.mfrbmv10.R;
 
@@ -42,9 +43,22 @@ public class TabMuestreoMostrarDimensiones extends Fragment {
     }
 
     private void obtenerDatos(Muestreo muestreo) {
-        img_mm.setImageResource(R.drawable.flores1);
+        //img_mm.setImageResource(R.drawable.flores1);
+        //Glide.with(getContext()).load(muestreo.getImagen_mtr()).into(img_mm);
+        verificarImagen(muestreo.getImagen_mtr());
         tv_nombre_mm.setText(muestreo.getNombre_mtr());
         tv_dimensiones_mmd.setText(obtenerDimensiones(muestreo));
+    }
+
+    public void verificarImagen(String imagen){
+        if(imagen == ""){
+            img_mm.setImageResource(R.drawable.flores1);
+        }else{
+            Glide.with(getContext())
+                    .load(imagen)
+                    //.apply(new RequestOptions().override(80, 80))
+                    .into(img_mm);
+        }
     }
 
     private String obtenerDimensiones(Muestreo muestreo) {

@@ -2,6 +2,7 @@ package com.example.mfrbmv10.FirebaseMotor;
 
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.view.View;
 import android.widget.Button;
@@ -13,7 +14,9 @@ import androidx.annotation.NonNull;
 import com.example.mfrbmv10.Fragments.HomeActivity;
 import com.example.mfrbmv10.Fragments.Usuario.UsuarioPerfilFragment;
 import com.example.mfrbmv10.Modelos.Usuario;
+import com.example.mfrbmv10.R;
 import com.example.mfrbmv10.Sesiones.IniciarSesion;
+import com.example.mfrbmv10.Sesiones.MainActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -124,11 +127,12 @@ public class SesionesFirestore {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         cambiarBotones(btn_ingresar_is, pb_is);
                         if (task.isSuccessful()) {
-                            //createAlert("Éxito", "Bienvenido ", "OK");
+                            createAlert("Éxito", "Bienvenido ", "OK");
                             context.startActivity(new Intent(context, HomeActivity.class));
+
                         } else {
                             if (task.getException() instanceof FirebaseAuthUserCollisionException) {
-                                createAlert("Error", "No coindice la contraseña con el coreo \nVuelve a intentarlo\n ", "OK");
+                                createAlert("Error", "No coindice la contraseña con el correo \nVuelve a intentarlo\n ", "OK");
 
                             } else {
                                 createAlert("Error", "No existe el usuario.", "OK");
@@ -139,27 +143,57 @@ public class SesionesFirestore {
     }
 
     public void cerrarSesion() {
+        Toast.makeText(context, "¡Nos vemos luego!", Toast.LENGTH_SHORT).show();
         mAuth.signOut();
-        context.startActivity(new Intent(context, IniciarSesion.class));
+        context.startActivity(new Intent(context, MainActivity.class));
     }
 
-    public void editarUsuario(Usuario usuario) {
-    }
+    public void cambiarClave(String correo){
 
-    public void cambiarClave(){
-        FirebaseUser user = mAuth.getCurrentUser();
-        Toast.makeText(context, "Usuario"+user.getDisplayName(), Toast.LENGTH_SHORT).show();
-        mAuth.sendPasswordResetEmail(user.getEmail()).addOnCompleteListener(new OnCompleteListener<Void>() {
+        mAuth.sendPasswordResetEmail(correo).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 if(task.isSuccessful()) {
-                    Toast.makeText(context, "Se envió un correo electrónico para cambiar la contraseña. \n ¡Gracias!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, "Se envió un correo electrónico para cambiar la contraseña. \n\n ¡Gracias!", Toast.LENGTH_SHORT).show();
                 }else{
-                    Toast.makeText(context, "Ups... algo salió mal. \nEstamos trabajando en ello\n"+task.getException(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, "Ups... algo salió mal. \n\nEstamos trabajando en ello\n"+task.getException(), Toast.LENGTH_SHORT).show();
                 }
             }
         });
         cerrarSesion();
+    }
+
+    public void borrarCuenta() {
+        String id = mAuth.getUid();
+       mUser.delete().addOnCompleteListener(new OnCompleteListener<Void>() {
+           @Override
+           public void onComplete(@NonNull Task<Void> task) {
+               if (task.isSuccessful()){
+                   Toast.makeText(context, "Hasta Luego. Fue un gusto tenerte", Toast.LENGTH_SHORT).show();
+
+                   mFirestore.collection("Usuario").document(id).delete().addOnCompleteListener(new OnCompleteListener<Void>() {
+                       @Override
+                       public void onComplete(@NonNull Task<Void> task) {
+                           if (task.isSuccessful()){
+                               Intent intent = new Intent(context, MainActivity.class);
+                               intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                               intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                               context.startActivity(intent);
+                           }else{
+                               Toast.makeText(context, "Ups... algo salió mal. \n\nEstamos trabajando en ello\n"+task.getException(), Toast.LENGTH_SHORT).show();
+                           }
+                       }
+                   }).addOnFailureListener(new OnFailureListener() {
+                       @Override
+                       public void onFailure(@NonNull Exception e) {
+
+                       }
+                   });
+               }else{
+                   Toast.makeText(context, "Ups... algo salió mal. \n\nEstamos trabajando en ello\n"+task.getException(), Toast.LENGTH_SHORT).show();
+               }
+           }
+       });
     }
 
     public void createAlert(String alertTitle, String alertMessage, String positiveText){
@@ -169,6 +203,7 @@ public class SesionesFirestore {
                 .setPositiveButton(positiveText, null)
                 .create().show();
     }
+
     private void cambiarBotones(Button btn, ProgressBar pb) {
         btn.setVisibility(View.VISIBLE);
         pb.setVisibility(View.INVISIBLE);
@@ -177,6 +212,7 @@ public class SesionesFirestore {
     public FirebaseUser getmUser() {
         return mUser;
     }
+
 
 
 }

@@ -14,6 +14,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.bumptech.glide.Glide;
 import com.example.mfrbmv10.Adaptadores.FormaAdapter;
 import com.example.mfrbmv10.Adaptadores.TexturaAdapter;
 import com.example.mfrbmv10.FirebaseMotor.Crud;
@@ -65,13 +66,26 @@ public class TabMuestreoEditarDescripcion extends Fragment  implements View.OnCl
     }
 
     private void obtenerDatos(Muestreo muestreo) {
-        img_me.setImageResource(R.drawable.flores1);
+        //img_me.setImageResource(R.drawable.flores1);
+        //Glide.with(getContext()).load(muestreo.getImagen_mtr()).into(img_me);
+        verificarImagen(muestreo.getImagen_mtr());
         tv_nombre_me.setText(muestreo.getNombre_mtr());
         tv_fecha_me.setText(muestreo.getFecha_mtr());
         tv_hora_me.setText(muestreo.getHora_mtr());
         tv_coordenadas_me.setText(muestreo.getCoordenadas_mtr());
         tv_localizacion_me.setText(muestreo.getUbicacion_mtr());
         generarSpinners(muestreo.getForma_mtr(), muestreo.getTextura_mtr());
+    }
+
+    public void verificarImagen(String imagen){
+        if(imagen == ""){
+            img_me.setImageResource(R.drawable.flores1);
+        }else{
+            Glide.with(getContext())
+                    .load(imagen)
+                    //.apply(new RequestOptions().override(80, 80))
+                    .into(img_me);
+        }
     }
 
     private void generarSpinners(String forma_mtr, String textura_mtr) {

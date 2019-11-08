@@ -20,8 +20,13 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.AppCompat.NoActionBar">
-        <activity android:name=".Imagen.CamaraDibujo"></activity>
+        android:theme="@style/AppTheme">
+
+        <activity android:name=".Imagen.CamaraIntento2">
+        </activity>
+
+        <activity android:name=".Imagen.CamaraSegmentacion"></activity>
+        <activity android:name=".Imagen.CamaraDibujo" />
 
         <meta-data
             android:name="com.google.ar.core"
@@ -31,18 +36,16 @@
             android:name=".Extras.Medicion"
             android:configChanges="orientation|screenSize"
             android:exported="true"
-            android:screenOrientation="locked"
-            android:theme="@style/Theme.AppCompat.NoActionBar" />
+            android:screenOrientation="locked" />
         <activity
             android:name=".Fragments.HomeActivity"
             android:label="@string/title_activity_home"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".Sesiones.Registro" />
-        <activity android:name=".Sesiones.IniciarSesion" />
-        <activity android:name=".Sesiones.MainActivity">
+        <activity android:name=".Sesiones.Registro" android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity android:name=".Sesiones.IniciarSesion" android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity android:name=".Sesiones.MainActivity" android:theme="@style/Theme.AppCompat.Light.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>

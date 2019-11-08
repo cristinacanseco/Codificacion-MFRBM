@@ -10,6 +10,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.example.mfrbmv10.Fragments.Bitacoras.BitacoraFragment;
 import com.example.mfrbmv10.Modelos.Bitacora;
 import com.example.mfrbmv10.R;
@@ -38,14 +40,30 @@ public class BitacoraAdapter extends RecyclerView.Adapter<BitacoraAdapter.MyView
         Bitacora bitacora = listaBitacoras.get(position);
         holder.tv_nombre_btc.setText(bitacora.getNombre_btc());
         holder.tv_descripcion_btc.setText(bitacora.getUbicacion_btc());
-        holder.iv_imagen_btc.setImageResource(R.drawable.flores1);
-        //Glide.with(mContext).load(mData.get(position).getUserPhoto()).into(holder.imgPostProfile);
+        //holder.iv_imagen_btc.setImageResource(R.drawable.flores1);
+
+        /*Glide.with(mContext)
+                .load(bitacora.getImagen_btc())
+                .apply(new RequestOptions().override(80, 80))
+                .into(holder.iv_imagen_btc);*/
+        verificarImagen(bitacora.getImagen_btc(), holder);
     }
 
 
     @Override
     public int getItemCount() {
         return listaBitacoras.size();
+    }
+
+    public void verificarImagen(String imagen, MyViewHolder holder){
+        if(imagen == ""){
+            holder.iv_imagen_btc.setImageResource(R.drawable.flores1);
+        }else{
+            Glide.with(mContext)
+                    .load(imagen)
+                    .apply(new RequestOptions().override(80, 80))
+                    .into(holder.iv_imagen_btc);
+        }
     }
 
 

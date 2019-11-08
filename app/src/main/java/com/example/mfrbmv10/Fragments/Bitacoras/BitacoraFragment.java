@@ -4,25 +4,34 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Paint;
+import android.graphics.pdf.PdfDocument;
 import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.widget.SearchView;
+import androidx.core.view.MenuItemCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.os.Environment;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.mfrbmv10.Adaptadores.BitacoraAdapter;
 import com.example.mfrbmv10.Extras.Localizacion;
 import com.example.mfrbmv10.FirebaseMotor.Crud;
+import com.example.mfrbmv10.Fragments.HomeActivity;
 import com.example.mfrbmv10.Modelos.Bitacora;
 import com.example.mfrbmv10.R;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -32,6 +41,8 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.io.File;
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -65,7 +76,6 @@ public class BitacoraFragment extends Fragment implements OnCompleteListener<Que
     private BitacoraAdapter bitacoraAdapter;
     private TextView tv_sin_bitacoras, tv_numero_b;
 
-
     public BitacoraFragment() {
         // Required empty public constructor
     }
@@ -97,6 +107,7 @@ public class BitacoraFragment extends Fragment implements OnCompleteListener<Que
         }
     }
 
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -119,9 +130,6 @@ public class BitacoraFragment extends Fragment implements OnCompleteListener<Que
             @Override
             public void onClick(View view) {
                 BitacoraNuevaFragment fr=new BitacoraNuevaFragment();
-                Bundle args = new Bundle();
-                args.putString("mensaje", "Hola, es tu mensaje");
-                fr.setArguments(args);
                 getActivity().getSupportFragmentManager().beginTransaction()
                         .replace(R.id.content_main,fr)
                         .addToBackStack(null)
@@ -145,6 +153,7 @@ public class BitacoraFragment extends Fragment implements OnCompleteListener<Que
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
                                 crud.borrarBitacora(bitacoraIDList.get(viewHolder.getAdapterPosition()));
+                                dialogInterface.dismiss();
                             }
                         })
                         .setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
@@ -243,6 +252,7 @@ public class BitacoraFragment extends Fragment implements OnCompleteListener<Que
                 .addToBackStack(null)
                 .commit();
     }
+
 
 
     /**

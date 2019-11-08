@@ -13,6 +13,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.mfrbmv10.Adaptadores.ColorAdapter;
 import com.example.mfrbmv10.Modelos.Muestreo;
 import com.example.mfrbmv10.R;
@@ -51,12 +52,25 @@ public class TabMuestreoMostrarColores extends Fragment {
     }
 
     private void obtenerDatos(Muestreo muestreo) {
-        img_mm.setImageResource(R.drawable.flores1);
+        //img_mm.setImageResource(R.drawable.flores1);
+        //Glide.with(getContext()).load(muestreo.getImagen_mtr()).into(img_mm);
+        verificarImagen(muestreo.getImagen_mtr());
         tv_nombre_mm.setText(muestreo.getNombre_mtr());
-        if(m.getColor_mtr().size() !=0) {
+        tv_colores_mmc.setText(muestreo.getColor_mtr());
+        /*if(m.getColor_mtr() != null) {
             colorAdapter = new ColorAdapter(getContext(), m.getColor_mtr());
             rv_colores_mm.setAdapter(colorAdapter);
-        }
+        }*/
+    }
 
+    public void verificarImagen(String imagen){
+        if(imagen == ""){
+            img_mm.setImageResource(R.drawable.flores1);
+        }else{
+            Glide.with(getContext())
+                    .load(imagen)
+                    //.apply(new RequestOptions().override(80, 80))
+                    .into(img_mm);
+        }
     }
 }

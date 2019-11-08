@@ -2,11 +2,15 @@ package com.example.mfrbmv10.Fragments.Bitacoras;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Paint;
+import android.graphics.pdf.PdfDocument;
 import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
+import android.os.Environment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,12 +19,18 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.example.mfrbmv10.FirebaseMotor.Crud;
 import com.example.mfrbmv10.Fragments.Muestreos.MuestreoFragment;
 import com.example.mfrbmv10.Fragments.Muestreos.MuestreoNuevoFragment;
 import com.example.mfrbmv10.Modelos.Bitacora;
 import com.example.mfrbmv10.R;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -131,11 +141,26 @@ public class BitacoraMostrarFragment extends Fragment implements View.OnClickLis
     private void actualizarDatos(Bitacora model) {
         tv_nombre_bp.setText(model.getNombre_btc());
         tv_fecha_bp.setText(model.getFecha_btc()+" | " + model.getHora_btc());
-        img_bp.setImageResource(R.drawable.flores1);
+        //img_bp.setImageResource(R.drawable.flores1);
+        /*Glide.with(getContext())
+                .load(model.getImagen_btc())
+                .into(img_bp);*/
+        verificarImagen(model.getImagen_btc());
         tv_coordenadas_bm.setText(model.getCoordenadas_btc());
         tv_localizacion_bm.setText(model.getUbicacion_btc());
         tv_muestreos_bp.setText(model.getCantidad_btc() + " muestreo(s)");
         tv_descripcion_bp.setText(model.getDescripcion_btc());
+    }
+
+    public void verificarImagen(String imagen){
+        if(imagen == ""){
+            img_bp.setImageResource(R.drawable.flores1);
+        }else{
+            Glide.with(getContext())
+                    .load(imagen)
+                    //.apply(new RequestOptions().override(80, 80))
+                    .into(img_bp);
+        }
     }
 
     @Override
@@ -158,9 +183,46 @@ public class BitacoraMostrarFragment extends Fragment implements View.OnClickLis
                 break;
         }
 
+    }
 
+    private void generarPDF() throws IOException {
+        PdfDocument pdfDocument = new PdfDocument();
+        PdfDocument.PageInfo pageInfo = new PdfDocument.PageInfo.Builder(300,600,1).create();
+        PdfDocument.Page page = pdfDocument.startPage(pageInfo);
+
+        Paint mPaint = new Paint();
+        int x=20, y=25;
+        page.getCanvas().drawText("Hola", x, y, mPaint);
+        pdfDocument.finishPage(page);
+
+        File mFilePath = crearDirectorioPublico("MFRBM");
+        File mFile = null;
+
+        boolean isCreada=mFilePath.exists();
+        if(isCreada==false){
+            isCreada=mFilePath.mkdirs();
+        }
+
+        if(isCreada==true) {
+            String imagenFileName = "" + tv_nombre_bp.getText().toString().trim();
+            mFile = File.createTempFile(imagenFileName, ".dfg", mFilePath);
+        }
+
+        try {
+            pdfDocument.writeTo(new FileOutputStream(mFile));
+        }catch (Exception e){
+            Toast.makeText(getContext(), "Ups, algo sucedió mal"+e.getMessage(), Toast.LENGTH_SHORT).show();
+        }
 
     }
+
+    public File crearDirectorioPublico(String nombreDirectorio) {
+        File directorio = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), nombreDirectorio);
+        if (!directorio.mkdirs())
+            Log.e("" ,"Error: No se creo el directorio público");
+        return directorio;
+    }
+
 
     /**
      * This interface must be implemented by activities that contain this

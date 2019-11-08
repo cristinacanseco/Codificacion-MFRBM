@@ -11,6 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.bumptech.glide.Glide;
 import com.example.mfrbmv10.Modelos.Muestreo;
 import com.example.mfrbmv10.R;
 
@@ -50,7 +51,9 @@ public class TabMuestreoMostrarDescripcion extends Fragment{
     }
 
     private void obtenerDatos(Muestreo muestreo) {
-        img_mm.setImageResource(R.drawable.flores1);
+        //img_mm.setImageResource(R.drawable.flores1);
+        //Glide.with(getContext()).load(muestreo.getImagen_mtr()).into(img_mm);
+        verificarImagen(muestreo.getImagen_mtr());
         tv_nombre_mm.setText(muestreo.getNombre_mtr());
         tv_fecha_mm.setText(muestreo.getFecha_mtr());
         tv_hora_mm.setText(muestreo.getHora_mtr());
@@ -59,5 +62,17 @@ public class TabMuestreoMostrarDescripcion extends Fragment{
         tv_forma_mm.setText(muestreo.getForma_mtr());
         tv_textura_mm.setText(muestreo.getTextura_mtr());
     }
+
+    public void verificarImagen(String imagen){
+        if(imagen == ""){
+            img_mm.setImageResource(R.drawable.flores1);
+        }else{
+            Glide.with(getContext())
+                    .load(imagen)
+                    //.apply(new RequestOptions().override(80, 80))
+                    .into(img_mm);
+        }
+    }
+
 
 }

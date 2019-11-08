@@ -66,6 +66,7 @@
         app:layout_constraintTop_toBottomOf="@+id/iv_imagen_u" />
 
     <ImageView
+        android:id="@+id/imageView4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
@@ -99,16 +100,13 @@
         android:id="@+id/btn_salir_u"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
         android:layout_marginEnd="152dp"
-        android:layout_marginBottom="44dp"
+        android:layout_marginBottom="88dp"
         android:background="@drawable/boton_rojo"
         android:text="@string/menu_salir"
         android:textColor="@color/rojo"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.705"
-        app:layout_constraintStart_toEndOf="@+id/btn_editar_u" />
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <TextView
         android:id="@+id/tv_cambiarClave"
@@ -124,7 +122,25 @@
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/et_correoUsuario"
-        app:layout_constraintVertical_bias="0.396" />
+        app:layout_constraintVertical_bias="0.241" />
+
+    <TextView
+        android:id="@+id/tv_borrarCuenta"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:fontFamily="@font/regular"
+        android:text="@string/borrarCuenta"
+        android:textColor="@color/cafe2"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.918"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_cambiarClave"
+        app:layout_constraintVertical_bias="0.753" />
 
 
 

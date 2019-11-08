@@ -10,6 +10,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.example.mfrbmv10.Modelos.Muestreo;
 import com.example.mfrbmv10.R;
 
@@ -37,14 +39,28 @@ public class MuestreoAdapter extends RecyclerView.Adapter<MuestreoAdapter.MyView
         Muestreo muestreo = listaMuestreos.get(position);
         holder.tv_nombre_mtr.setText(muestreo.getNombre_mtr());
         holder.tv_localizacion_mtr.setText(muestreo.getUbicacion_mtr());
-        holder.iv_imagen_mtr.setImageResource(R.drawable.flores1);
-        //Glide.with(mContext).load(mData.get(position).getUserPhoto()).into(holder.imgPostProfile);
+        //holder.iv_imagen_mtr.setImageResource(R.drawable.flores1);
+        /*Glide.with(mContext)
+                .load(muestreo.getImagen_mtr())
+                .apply(new RequestOptions().override(80, 80))
+                .into(holder.iv_imagen_mtr);*/
+        verificarImagen(muestreo.getImagen_mtr(), holder);
     }
-
 
     @Override
     public int getItemCount() {
         return listaMuestreos.size();
+    }
+
+    public void verificarImagen(String imagen, MyViewHolder holder){
+        if(imagen == ""){
+            holder.iv_imagen_mtr.setImageResource(R.drawable.flores1);
+        }else{
+            Glide.with(mContext)
+                    .load(imagen)
+                    .apply(new RequestOptions().override(80, 80))
+                    .into(holder.iv_imagen_mtr);
+        }
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder {

@@ -12,17 +12,19 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.mfrbmv10.Extras.Dialogo;
 import com.example.mfrbmv10.FirebaseMotor.Crud;
 import com.example.mfrbmv10.FirebaseMotor.SesionesFirestore;
 import com.example.mfrbmv10.R;
 
 public class IniciarSesion extends AppCompatActivity implements View.OnClickListener {
     public ImageView iv_regresar_is;
-    public TextView tv_registrar_is, et_clave_is,et_correo_is;
+    public TextView tv_registrar_is, et_clave_is,et_correo_is, tv_olvidar_clave;
     public Button btn_ingresar_is;
     public SesionesFirestore crud;
     public String correo, clave;
     private ProgressBar pb_is;
+    private Dialogo dialogo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +39,9 @@ public class IniciarSesion extends AppCompatActivity implements View.OnClickList
         tv_registrar_is = findViewById(R.id.tv_registrar_is);
         tv_registrar_is.setOnClickListener(this);
 
+        tv_olvidar_clave = findViewById(R.id.tv_olvidar_clave);
+        tv_olvidar_clave.setOnClickListener(this);
+
         btn_ingresar_is = findViewById(R.id.btn_ingresar_is);
         btn_ingresar_is.setOnClickListener(this);
 
@@ -45,6 +50,8 @@ public class IniciarSesion extends AppCompatActivity implements View.OnClickList
 
         et_correo_is = findViewById(R.id.et_correo_is);
         et_clave_is = findViewById(R.id.et_clave_is);
+
+        dialogo = new Dialogo();
     }
 
     @Override
@@ -61,6 +68,9 @@ public class IniciarSesion extends AppCompatActivity implements View.OnClickList
                 clave = et_clave_is.getText().toString().trim();
                 cambiarVisibilidad(true);
                 iniciarSesion();
+            case R.id.tv_olvidar_clave:
+                dialogo.show(getSupportFragmentManager(), "dialogo");
+                break;
             default:
                 break;
         }

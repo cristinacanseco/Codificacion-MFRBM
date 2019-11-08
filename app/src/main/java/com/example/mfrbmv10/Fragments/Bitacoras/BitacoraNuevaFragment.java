@@ -117,7 +117,7 @@ public class BitacoraNuevaFragment extends Fragment implements View.OnClickListe
     private Bitacora generarDatosBitacora() {
 
         String nombre_btc = et_nombre_btc_nb.getText().toString();
-        String imagen_btc = "R.drawable.flores1";
+        String imagen_btc = "";
         String fecha_btc = timestamp.obtenerFecha();
         String hora_btc = timestamp.obtenerHora();
         String ubicacion_btc = localizacion.getUbicacion();

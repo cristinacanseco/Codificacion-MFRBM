@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+xmlns:tools="http://schemas.android.com/tools"
+android:id="@+id/root_layout"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+android:orientation="vertical"
+tools:context=".Imagen.CamaraSegmentacion">
+
+<TextView
+    android:id="@+id/text_view_title"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center_horizontal"
+
+    android:text="Title Text"
+    android:textColor="@android:color/holo_red_light"
+    android:textSize="50sp" />
+
+<ImageView
+    android:id="@+id/image_view"
+    android:layout_width="match_parent"
+    android:layout_height="200dp"
+    android:scaleType="centerCrop"
+    android:src="@drawable/flores1" />
+
+<TextView
+    android:id="@+id/text_view_body"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="8dp"
+    android:text=" Aquí habrá un texto grande para visualizar los tonos de colores"
+    android:textColor="@android:color/holo_red_light" />
+
+<Button
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:onClick="nextSwatch"
+    android:text="Siguiente muestra" />
+
+</LinearLayout>

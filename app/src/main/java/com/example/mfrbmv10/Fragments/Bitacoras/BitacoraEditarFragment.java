@@ -15,6 +15,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.example.mfrbmv10.FirebaseMotor.Crud;
 import com.example.mfrbmv10.Modelos.Bitacora;
 import com.example.mfrbmv10.R;
@@ -45,6 +47,7 @@ public class BitacoraEditarFragment extends Fragment implements View.OnClickList
     public EditText et_nombre_bp, et_descripcion_bp;
     public Button btn_editar_be;
     private String id_bitacora;
+    private Bitacora b;
 
     public BitacoraEditarFragment() {
         // Required empty public constructor
@@ -99,7 +102,7 @@ public class BitacoraEditarFragment extends Fragment implements View.OnClickList
         Bundle bundle = getArguments();
         id_bitacora = bundle.getString("id_bitacora");
         Toast.makeText(this.getContext(), ""+id_bitacora, Toast.LENGTH_SHORT).show();
-        Bitacora b = (Bitacora) bundle.getSerializable("bitacora");
+        b = (Bitacora) bundle.getSerializable("bitacora");
         obtenerDatos(b);
 
         return bitacora_editar_fragment ;
@@ -108,12 +111,27 @@ public class BitacoraEditarFragment extends Fragment implements View.OnClickList
     private void obtenerDatos(Bitacora model) {
         et_nombre_bp.setText(model.getNombre_btc());
         tv_fecha_bp.setText(model.getFecha_btc());
-        img_bp.setImageResource(R.drawable.flores1);
+        //img_bp.setImageResource(R.drawable.flores1);
+        /*Glide.with(getContext())
+                .load(model.getImagen_btc())
+                .into(img_bp);*/
+        verificarImagen(model.getImagen_btc());
         tv_hora_bp.setText(model.getHora_btc());
         tv_localizacion_bp.setText(model.getUbicacion_btc());
         tv_coordenadas_be.setText(model.getCoordenadas_btc());
         tv_muestreos_bp.setText(model.getCantidad_btc());
         et_descripcion_bp.setText(model.getDescripcion_btc());
+    }
+
+    public void verificarImagen(String imagen){
+        if(imagen == ""){
+            img_bp.setImageResource(R.drawable.flores1);
+        }else{
+            Glide.with(getContext())
+                    .load(imagen)
+                    //.apply(new RequestOptions().override(80, 80))
+                    .into(img_bp);
+        }
     }
 
     @Override
@@ -129,12 +147,12 @@ public class BitacoraEditarFragment extends Fragment implements View.OnClickList
 
     private void actualizarDatos(String id_bitacora) {
         String nombre_btc = (String) et_nombre_bp.getText().toString();
-        String ubicacion_btc = (String) tv_localizacion_bp.getText().toString();
-        String coordenadas_btc = tv_coordenadas_be.getText().toString();
-        String cantidad_btc= (String) tv_muestreos_bp.getText().toString();
-        String fecha_btc= (String) tv_fecha_bp.getText().toString();
-        String hora_btc= (String) tv_hora_bp.getText().toString();
-        String imagen_btc=(String) img_bp.getDrawable().toString();
+        String ubicacion_btc = (String) b.getUbicacion_btc();
+        String coordenadas_btc = b.getCoordenadas_btc();
+        String cantidad_btc= (String) b.getCantidad_btc();
+        String fecha_btc= (String) b.getFecha_btc();
+        String hora_btc= (String) b.getHora_btc();
+        String imagen_btc=(String) b.getImagen_btc();
         String descripcion_btc= (String) et_descripcion_bp.getText().toString();
 
         Bitacora bitacora = new Bitacora(nombre_btc,imagen_btc,fecha_btc,hora_btc,ubicacion_btc,coordenadas_btc,cantidad_btc,descripcion_btc);

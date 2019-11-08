@@ -13,11 +13,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
 
 
-import com.example.mfrbmv10.Fragments.Muestreos.MuestreoNuevoIntermedioFragment2;
+import com.example.mfrbmv10.FirebaseMotor.Crud;
 import com.example.mfrbmv10.Modelos.Muestreo;
 import com.example.mfrbmv10.R;
 import com.google.ar.core.Anchor;
@@ -240,22 +238,16 @@ public class Medicion extends AppCompatActivity implements Node.OnTapListener, S
                 String id_bitacora = getIntent().getStringExtra("id_bitacora");
                 String nombre_bitacora = getIntent().getStringExtra("nombre_bitacora");
                 String cantidad = getIntent().getStringExtra("cantidad");
+
                 Bundle bundle1 = getIntent().getBundleExtra("muestreo");
                 Muestreo m = (Muestreo) bundle1.getSerializable("muestreo");
                 m.setDimension_mtr(todasLongitudes);
+               // Fragment f = (Fragment) bundle1.getSerializable("contexto");
 
-                Bundle bundle = new Bundle();
-                bundle.putString("id_bitacora", id_bitacora);
-                bundle.putString("nombre_bitacora", nombre_bitacora);
-                bundle.putString("cantidad",cantidad);
-                bundle.putSerializable("muestreo", m);
-
-                Fragment fragment = new MuestreoNuevoIntermedioFragment2();
-                FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-                fragment.setArguments(bundle);
-                transaction.replace(R.id.fragment_medicion, fragment);
-                transaction.commit();
-
+                Crud crud = new Crud(this);
+                crud.insertarMuestreo(m, id_bitacora, nombre_bitacora);
+                crud.actualizarCantidadMuestreos(id_bitacora, cantidad);
+                crud.actualizarImagenBitacora(id_bitacora, m.getImagen_mtr());
         }
 
         private void onClear() {
