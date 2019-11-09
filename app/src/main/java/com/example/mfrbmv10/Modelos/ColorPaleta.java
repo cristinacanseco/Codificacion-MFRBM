@@ -32,10 +32,6 @@ public class ColorPaleta {
         return b;
     }
 
-    public void setB(int b) {
-        this.b = b;
-
-
-    }
+    public void setB(int b) { this.b = b; }
 
 }

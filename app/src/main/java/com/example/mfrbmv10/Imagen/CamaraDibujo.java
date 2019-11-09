@@ -5,7 +5,6 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.palette.graphics.Palette;
 
-import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -24,9 +23,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ProgressBar;
-import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.example.mfrbmv10.Extras.Medicion;
@@ -41,10 +38,10 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.nio.IntBuffer;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.Random;
 
 import me.panavtec.drawableview.DrawableView;
 import me.panavtec.drawableview.DrawableViewConfig;
@@ -60,19 +57,22 @@ public class CamaraDibujo extends AppCompatActivity implements View.OnClickListe
 
     private Imagen imagen;
     private Bitmap bitmap;
-    private Bitmap imgOriBitmap, imgNvoBitmap;
+    private Bitmap imgOriBitmap, imgNvoBitmap, imgPaleta;
 
     private String fileUri;
+    private Palette paletaGenerada;
+    private ArrayList<Integer> paleta;
 
     private int color;
     private float pincel;
 
-    public ImageView imagen_pv;
+    public ImageView imagen_pv, imagen_nn;
     private DrawableView drawableView;
     private ImageButton botonPincelGrande, undo, listo, botonPincelChico;
     private DrawableViewConfig config;
 
     private ProgressBar pb_camara;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,6 +89,7 @@ public class CamaraDibujo extends AppCompatActivity implements View.OnClickListe
 
 
         imagen_pv = (ImageView) findViewById(R.id.imagen_pv);
+        imagen_nn = (ImageView) findViewById(R.id.imagen_nn);
         drawableView = (DrawableView) findViewById(R.id.paintView);
 
         botonPincelGrande = findViewById(R.id.botonPincel);
@@ -103,6 +104,8 @@ public class CamaraDibujo extends AppCompatActivity implements View.OnClickListe
         pincel = 20f;
         pb_camara =  findViewById(R.id.pb_camara);
         pb_camara.setVisibility(View.INVISIBLE);
+        paletaGenerada = null;
+
     }
 
     private boolean validaPermisos() {
@@ -247,6 +250,8 @@ public class CamaraDibujo extends AppCompatActivity implements View.OnClickListe
         imagen_pv.setImageURI(imageUri);
         imagen = new Imagen(imagen_pv.getDrawable());
         imgOriBitmap = imagen.getImagenB();
+
+        imagen_pv.setImageBitmap(Bitmap.createScaledBitmap(imgOriBitmap, imgOriBitmap.getWidth()/2, imgOriBitmap.getHeight()/2, false));
         configurarCanvas();
     }
 
@@ -272,7 +277,7 @@ public class CamaraDibujo extends AppCompatActivity implements View.OnClickListe
                 drawableView.undo();
                 break;
             case R.id.botonPincelChico:
-                float pc = pincel-5;
+                float pc = pincel-10;
                 if(pc <=0 && pc<100) {
                    pc = 20f;
                 }
@@ -280,9 +285,7 @@ public class CamaraDibujo extends AppCompatActivity implements View.OnClickListe
                 config.setStrokeWidth(pincel);
                 break;
             case R.id.botonPincel:
-                //Random random = new Random();
-                //config.setStrokeColor(Color.argb(255, random.nextInt(256), random.nextInt(256), random.nextInt(256)));
-                float pg = pincel+5;
+                float pg = pincel+10;
                 if(pg <= 0 && pg<100){
                     pg = 20f;
                 }
@@ -292,9 +295,9 @@ public class CamaraDibujo extends AppCompatActivity implements View.OnClickListe
             case R.id.botonListo:
                 pb_camara.setVisibility(View.VISIBLE);
                 guardarImagen();
-                irAMedicion();
+                obtenerInstancias();
+                //irAMedicion();
                 pb_camara.setVisibility(View.INVISIBLE);
-                //Toast.makeText(this, "W:"+bitmapR.getWidth()+" H:"+bitmapR.getHeight(), Toast.LENGTH_SHORT).show();
                 break;
         }
     }
@@ -318,7 +321,7 @@ public class CamaraDibujo extends AppCompatActivity implements View.OnClickListe
         String cantidad = getIntent().getStringExtra("cantidad");
         Bundle bundle1 = getIntent().getBundleExtra("muestreo");
         Muestreo m = (Muestreo) bundle1.getSerializable("muestreo");
-        //m.setColor_mtr();
+        m.setColor_mtr(paleta);
         m.setImagen_mtr(fileUri);
 
         Bundle bundle = new Bundle();
@@ -372,15 +375,68 @@ public class CamaraDibujo extends AppCompatActivity implements View.OnClickListe
 
     }
 
+    private void guardarImagenBitmap(Bitmap bitmapIB) {
+
+        int count = 0;
+
+        File sdDirectory = Environment.getExternalStorageDirectory();
+        File subDirectory = new File(sdDirectory.toString() + "/Pictures/Paint");
+
+        if (subDirectory.exists()) {
+            File[] existing = subDirectory.listFiles();
+            for (File file : existing) {
+                if (file.getName().endsWith(".jpg") || file.getName().endsWith(".png")) {
+                    count++;
+                }
+            }
+
+        } else {
+            subDirectory.mkdir();
+        }
+
+        if (subDirectory.exists()) {
+            File image = new File(subDirectory, "/imagenBitmapResize_" + (count + 1) + ".png");
+            FileOutputStream fileOutputStream;
+            try {
+                fileOutputStream = new FileOutputStream(image);
+                bitmapIB.compress(Bitmap.CompressFormat.PNG, 100, fileOutputStream);
+                //mBitmap.compress(Bitmap.CompressFormat.PNG, 100, fileOutputStream);
+                //Toast.makeText(this, "W:"+drawableView.obtainBitmap(drawableView.obtainBitmap()).getWidth()+" H:"+drawableView.obtainBitmap(drawableView.obtainBitmap()).getHeight(), Toast.LENGTH_SHORT).show();
+                fileOutputStream.flush();
+                fileOutputStream.close();
+                Toast.makeText(this, "Imagaen Guardada", Toast.LENGTH_LONG).show();
+            } catch (FileNotFoundException e) {
+
+            } catch (IOException e) {
+
+            }
+
+        }
+
+    }
+
     public void obtenerInstancias(){
         imgNvoBitmap = drawableView.obtainBitmap(drawableView.obtainBitmap());
+
+        //Generar bitmap original
+        imagen_pv.setImageBitmap(Bitmap.createScaledBitmap(imgOriBitmap, imgOriBitmap.getWidth()/2, imgOriBitmap.getHeight()/2, false));
+        Imagen imagenOriginal = new Imagen(imagen_pv.getDrawable());
+        Bitmap imgOriginalBitmap = imagenOriginal.getImagenB();
+        guardarImagenBitmap(imgOriginalBitmap);
+
+        //Generar bitmap nuevo
+        imagen_nn.setImageBitmap(Bitmap.createScaledBitmap(imgNvoBitmap, imgNvoBitmap.getWidth()/2, imgNvoBitmap.getHeight()/2, false));
+        Imagen imagenNuevo = new Imagen(imagen_nn.getDrawable());
+        Bitmap imgNuevoBitmap = imagenNuevo.getImagenB();
+        guardarImagenBitmap(imgNuevoBitmap);
+
         ArrayList<ColorPaleta> aux = new ArrayList<>();
 
-        for(int i=0; i< imgOriBitmap.getWidth();i++){
-            for(int j=0; j <imgOriBitmap.getHeight();j++){
+        for(int i=0; i< imgOriginalBitmap.getWidth();i++){
+            for(int j=0; j <imgNuevoBitmap.getHeight();j++){
                 //int pixel = imgNvoBitmap.getPixel(i,j);
-                if(imgNvoBitmap.getPixel(i,j) == color) {
-                    Colores color = new Colores(imgOriBitmap.getPixel(i, j));
+                if(imgNuevoBitmap.getPixel(i,j) == color) {
+                    Colores color = new Colores(imgOriginalBitmap.getPixel(i, j));
                     ColorPaleta cp = new ColorPaleta(color.getRed(), color.getGreen(), color.getBlue());
                     aux.add(cp);
                 }
@@ -391,26 +447,73 @@ public class CamaraDibujo extends AppCompatActivity implements View.OnClickListe
         int tam = (int)(aux.size()/2);
 
         Bitmap.Config conf = Bitmap.Config.ARGB_8888;
-        Bitmap bmp = Bitmap.createBitmap(tam, tam, conf);
+        Bitmap bmp = Bitmap.createBitmap(2, tam, conf);
+
         int x=0;
-        int arreglo[];
-        for(int i=0; i<tam;i++){
-            for(int j=0; j<tam; j++){
-                arreglo = new int[]{aux.get(x).getR(),aux.get(x).getG(),aux.get(x).getB()};
-                bmp.setPixels(arreglo, 0, tam, i, j, tam, tam);
-                x++;
+        for(int i=0; i<2; i++) {
+            for (int j = 0; j < tam; j++) {
+                    int r = aux.get(x).getR();
+                    int g = aux.get(x).getG();
+                    int b = aux.get(x).getB();
+                    bmp.setPixel(i, j, Color.rgb(r, g, b));
+                    x++;
+                    Log.i("cantidad x", ""+x);
             }
         }
+        guardarImagenBitmap(bmp);
+        Log.i("sdsjf", "jsadskfj");
+        paleta = new ArrayList<Integer>();
+        Palette p = Palette.from(bmp).generate();
 
-        Palette.from(bmp).generate(new Palette.PaletteAsyncListener() {
-            public void onGenerated(Palette p) {
-                for (Palette.Swatch sw : p.getSwatches()) {
-                    Log.i("Palette",
-                            "Color: #" + Integer.toHexString(sw.getRgb()) + " (" + sw.getPopulation() + " píxeles)");
-                }
-            }
-        });
+        if(p.getVibrantSwatch() != null){
+            paleta.add(0,p.getVibrantSwatch().getRgb());
+            paleta.add(1,p.getVibrantSwatch().getBodyTextColor());
+        }else{
+            paleta.add(0,0);
+            paleta.add(1,0);
+        }
 
+        if(p.getDarkVibrantSwatch() != null){
+            paleta.add(2,p.getDarkVibrantSwatch().getRgb());
+            paleta.add(3,p.getDarkVibrantSwatch().getBodyTextColor());
+        }else{
+            paleta.add(2,0);
+            paleta.add(3,0);
+        }
+
+        if(p.getLightVibrantSwatch() != null){
+            paleta.add(4,p.getLightVibrantSwatch().getRgb());
+            paleta.add(5,p.getLightVibrantSwatch().getBodyTextColor());
+        }else{
+            paleta.add(4,0);
+            paleta.add(5,0);
+        }
+
+        if(p.getMutedSwatch() != null){
+            paleta.add(6,p.getMutedSwatch().getRgb());
+            paleta.add(7,p.getMutedSwatch().getBodyTextColor());
+        }else{
+            paleta.add(6,0);
+            paleta.add(7,0);
+        }
+
+        if(p.getDarkMutedSwatch()!= null){
+            paleta.add(8,p.getDarkMutedSwatch().getRgb());
+            paleta.add(9,p.getDarkMutedSwatch().getBodyTextColor());
+        }else{
+            paleta.add(8,0);
+            paleta.add(9,0);
+        }
+
+        if(p.getLightMutedSwatch() != null){
+            paleta.add(10,p.getLightMutedSwatch().getRgb());
+            paleta.add(11,p.getLightMutedSwatch().getBodyTextColor());
+        }else{
+            paleta.add(10,0);
+            paleta.add(11,0);
+        }
+
+        irAMedicion();
     }
 
 }

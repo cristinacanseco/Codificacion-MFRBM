@@ -23,9 +23,9 @@
         android:theme="@style/AppTheme">
 
         <activity android:name=".Imagen.CamaraIntento2">
+
         </activity>
 
-        <activity android:name=".Imagen.CamaraSegmentacion"></activity>
         <activity android:name=".Imagen.CamaraDibujo" />
 
         <meta-data

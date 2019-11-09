@@ -20,6 +20,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.bitmap.CenterCrop;
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
+import com.bumptech.glide.request.RequestOptions;
 import com.example.mfrbmv10.Extras.Dialogo;
 import com.example.mfrbmv10.FirebaseMotor.Crud;
 import com.example.mfrbmv10.FirebaseMotor.SesionesFirestore;
@@ -54,9 +58,9 @@ public class UsuarioPerfilFragment extends Fragment implements View.OnClickListe
     private OnFragmentInteractionListener mListener;
 
 
-    private EditText et_nombreUsuario, et_apellidoUsuario, et_correoUsuario;
+    private EditText et_nombreUsuario, et_apellidoUsuario;
     private ImageView iv_imagen_u;
-    private TextView tv_cambiarClave, tv_borrarCuenta;
+    private TextView tv_cambiarClave, tv_borrarCuenta, et_correoUsuario;
     private Button btn_salir_u;
     private SesionesFirestore sesionesFirestore;
     private Crud crud;
@@ -105,9 +109,10 @@ public class UsuarioPerfilFragment extends Fragment implements View.OnClickListe
         //EditText
         et_nombreUsuario = usuario_fragment.findViewById(R.id.et_nombreUsuario);
         et_apellidoUsuario = usuario_fragment.findViewById(R.id.et_apellidoUsuario);
-        et_correoUsuario = usuario_fragment.findViewById(R.id.et_correoUsuario);
+
 
         //TextView
+        et_correoUsuario = usuario_fragment.findViewById(R.id.et_correoUsuario);
 
         tv_cambiarClave = usuario_fragment.findViewById(R.id.tv_cambiarClave);
         SpannableString mitextoU2 = new SpannableString(tv_cambiarClave.getText());
@@ -123,6 +128,11 @@ public class UsuarioPerfilFragment extends Fragment implements View.OnClickListe
 
         //ImageView
         iv_imagen_u = usuario_fragment.findViewById(R.id.iv_imagen_u);
+        Glide.with(getContext())
+                .load(R.drawable.flores1)
+                .apply(RequestOptions.circleCropTransform())
+                .into(iv_imagen_u);
+
 
         //Botonones
         btn_salir_u = usuario_fragment.findViewById(R.id.btn_salir_u);

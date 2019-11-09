@@ -102,7 +102,7 @@ public class BitacoraMostrarFragment extends Fragment implements View.OnClickLis
         tv_localizacion_bm = bitacora_mostrar_fragment.findViewById(R.id.tv_localizacion_bm);
         tv_muestreos_bp = bitacora_mostrar_fragment.findViewById(R.id.tv_muestreos_bm);
         tv_descripcion_bp = bitacora_mostrar_fragment.findViewById(R.id.tv_descripcion_bm);
-        tv_muestreos_bp.setOnClickListener(this);
+
         fab_agregar_bm = bitacora_mostrar_fragment.findViewById(R.id.fab_agregar_bm);
         fab_agregar_bm.setOnClickListener(this);
 
@@ -167,7 +167,7 @@ public class BitacoraMostrarFragment extends Fragment implements View.OnClickLis
     public void onClick(View view) {
 
         switch (view.getId()){
-            case R.id.tv_muestreos_bm:
+            case R.id.fab_agregar_bm:
                 MuestreoFragment bmf=new MuestreoFragment();
                 Bundle bundle = new Bundle();
                 bundle.putString("id_bitacora", id_bitacora);

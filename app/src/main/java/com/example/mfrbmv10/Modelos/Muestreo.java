@@ -13,15 +13,13 @@ public class Muestreo implements Serializable {
     public String coordenadas_mtr;
     public String forma_mtr;
     public String textura_mtr;
-    public String color_mtr;
+    public ArrayList<Integer> color_mtr;
     public ArrayList<String> dimension_mtr;
-
 
     public Muestreo() {
     }
 
-    public Muestreo(String nombre_mtr, String imagen_mtr, String fecha_mtr, String hora_mtr, String ubicacion_mtr, String coordenadas_mtr, String forma_mtr, String textura_mtr, String color_mtr, ArrayList<String> dimension_mtr) {
-
+    public Muestreo(String nombre_mtr, String imagen_mtr, String fecha_mtr, String hora_mtr, String ubicacion_mtr, String coordenadas_mtr, String forma_mtr, String textura_mtr, ArrayList<Integer> color_mtr, ArrayList<String> dimension_mtr) {
         this.nombre_mtr = nombre_mtr;
         this.imagen_mtr = imagen_mtr;
         this.fecha_mtr = fecha_mtr;
@@ -66,11 +64,11 @@ public class Muestreo implements Serializable {
         this.textura_mtr = textura_mtr;
     }
 
-    public String getColor_mtr() {
+    public ArrayList<Integer> getColor_mtr() {
         return color_mtr;
     }
 
-    public void setColor_mtr(String color_mtr) {
+    public void setColor_mtr(ArrayList<Integer> color_mtr) {
         this.color_mtr = color_mtr;
     }
 
@@ -92,9 +90,7 @@ public class Muestreo implements Serializable {
         return coordenadas_mtr;
     }
 
-    public void setCoordenadas_mtr(String coordenadas_mtr) {
-        this.coordenadas_mtr = coordenadas_mtr;
-    }
+    public void setCoordenadas_mtr(String coordenadas_mtr) { this.coordenadas_mtr = coordenadas_mtr; }
 
     public String getFecha_mtr() {
         return fecha_mtr;

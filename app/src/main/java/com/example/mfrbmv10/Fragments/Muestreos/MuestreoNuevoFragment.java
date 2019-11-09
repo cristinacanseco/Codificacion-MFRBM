@@ -6,6 +6,7 @@ import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.palette.graphics.Palette;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,6 +20,7 @@ import com.example.mfrbmv10.Extras.Timestamp;
 import com.example.mfrbmv10.FirebaseMotor.Crud;
 import com.example.mfrbmv10.Fragments.Bitacoras.BitacoraFragment;
 import com.example.mfrbmv10.Imagen.CamaraDibujo;
+import com.example.mfrbmv10.Imagen.CamaraIntento2;
 import com.example.mfrbmv10.Modelos.ColorMuestreo;
 import com.example.mfrbmv10.Modelos.Muestreo;
 import com.example.mfrbmv10.R;
@@ -171,7 +173,6 @@ public class MuestreoNuevoFragment extends Fragment implements View.OnClickListe
 
         Bundle bundle = new Bundle();
         bundle.putSerializable("muestreo", generarDatosMuestreo());
-        //bundle.putSerializable("contexto",this);
 
         Intent intent = new Intent(getContext(), Medicion.class);
         intent.putExtra("id_bitacora", id_bitacora);
@@ -184,10 +185,10 @@ public class MuestreoNuevoFragment extends Fragment implements View.OnClickListe
 
     private Muestreo generarDatosMuestreo() {
         String nombre_mtr = et_nombre_btc_nm.getText().toString();
-        String imagen_mtr = "R.drawable.flores1";
+        String imagen_mtr = "";
         String forma_mtr = "Pilado";
         String textura_mtr= "Cartilaginoso";
-        String  color_mtr = "";
+        ArrayList<Integer> color_mtr = null;
         ArrayList<String> dimension_mtr = null;
         String ubicacion_mtr = localizacion.getUbicacion();
         String coordenadas_mtr = localizacion.getCoordenadas();

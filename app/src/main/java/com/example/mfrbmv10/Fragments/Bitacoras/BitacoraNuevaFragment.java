@@ -122,7 +122,7 @@ public class BitacoraNuevaFragment extends Fragment implements View.OnClickListe
         String hora_btc = timestamp.obtenerHora();
         String ubicacion_btc = localizacion.getUbicacion();
         String coordenadas_btc = localizacion.getCoordenadas();
-        String cantidad_btc = "1";
+        String cantidad_btc = "0";
         String descripcion_btc = et_descripcion_btc_nb.getText().toString();
 
         return new Bitacora(nombre_btc,imagen_btc,fecha_btc,hora_btc,ubicacion_btc,coordenadas_btc,cantidad_btc,descripcion_btc);

@@ -9,6 +9,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.palette.graphics.Palette;
 
 import com.example.mfrbmv10.Adaptadores.FormaAdapter;
 import com.example.mfrbmv10.Adaptadores.TexturaAdapter;
@@ -27,6 +28,9 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.firestore.WriteBatch;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -108,18 +112,19 @@ public class Crud implements Serializable {
                                     .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                                         @Override
                                         public void onClick(DialogInterface dialogInterface, int i) {
-                                            context2.startActivity(new Intent(context2, HomeActivity.class));
+                                            irMuestreoFragment(task.getResult().getId() ,bitacora.getNombre_btc());
+                                            //context2.startActivity(new Intent(context2, HomeActivity.class));
                                         }
                                     })
                                     .create().show();
 
-                            createAlert("Éxito", "Se creó correctamente la bitácora.","OK");
+                            //createAlert("Éxito", "Se creó correctamente la bitácora.","OK");
                             //context.startActivity(new Intent(context2,BitacoraNuevaFragment.class));
 
                             //irBitacoraFragment();
-                            irMuestreoFragment(task.getResult().getId() ,bitacora.getNombre_btc());
+
                         } else {
-                            createAlert("Error", "No se agregaron los datos de la bitácora. \nVuelve a intentarlo\n ", "OK");
+                            createAlert("Error", "No se agregaron los datos de la bitácora. \nVuelve a intentarlo\n "+task.getException(), "OK");
                         }
                     }
                 }).addOnFailureListener(new OnFailureListener() {
@@ -170,6 +175,29 @@ public class Crud implements Serializable {
     public void borrarBitacora(String id_bitacora) {
 
         String id = mAuth.getCurrentUser().getUid();
+
+
+        mFirestore.collection(usuario_db).document(id).collection(bitacora_db).document(id_bitacora).collection(muestreo_db).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if(task.isSuccessful()) {
+
+                    for (QueryDocumentSnapshot documentSnapshot : task.getResult()) {
+                        mFirestore.collection(usuario_db).document(id)
+                                .collection(bitacora_db).document(id_bitacora)
+                                .collection(muestreo_db).document(documentSnapshot.getId())
+                                .delete();
+                    }
+                }else{
+                    createAlert("Error", "\nNo se pudo eliminar la bitácora seleccionada. \nVuelve a intentarlo\n ", "OK");
+                }
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                createAlert("Error", "\nNo se pudo eliminar la bitácora seleccionada. \nVuelve a intentarlo\n " + e.getMessage().toString(), "OK");
+            }
+        });
 
         mFirestore.collection(usuario_db).document(id).collection(bitacora_db).document(id_bitacora).delete().addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
@@ -404,7 +432,7 @@ public class Crud implements Serializable {
         String imagen_mtr = (String) map.get("imagen_mtr");
         String forma_mtr= (String) map.get("forma_mtr");
         String textura_mtr= (String) map.get("textura_mtr");
-        String color_mtr=(String) map.get("color_mtr");
+        ArrayList<Integer> color_mtr=(ArrayList<Integer>) map.get("color_mtr");
         ArrayList<String> dimension_mtr= (ArrayList<String>) map.get("dimension_mtr");
         String ubicacion_mtr= (String)map.get("ubicacion_mtr");
         String coordenadas_mtr = (String)map.get("coordenadas_mtr");

@@ -13,20 +13,20 @@
         android:layout_height="200dp"
         android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp"
-        android:src="@drawable/flores2"
+        android:src="@drawable/flores1"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintHorizontal_bias="0.488"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.064" />
+        app:layout_constraintVertical_bias="0.0" />
 
 
     <ImageView
         android:id="@+id/imageView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="36dp"
+        android:layout_marginTop="80dp"
         android:layout_marginEnd="8dp"
         android:src="@drawable/person"
         app:layout_constraintEnd_toStartOf="@+id/et_nombreUsuario"
@@ -38,13 +38,13 @@
         android:id="@+id/et_nombreUsuario"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="116dp"
-        android:layout_marginTop="28dp"
+        android:layout_marginStart="128dp"
+        android:layout_marginTop="68dp"
+        android:backgroundTint="@android:color/transparent"
         android:fontFamily="@font/bold"
         android:text="Cristina"
         android:textColor="@color/cafe2"
         android:textSize="20sp"
-        android:backgroundTint="@android:color/transparent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/iv_imagen_u" />
 
@@ -53,15 +53,15 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="28dp"
+        android:layout_marginTop="68dp"
         android:layout_marginEnd="8dp"
+        android:backgroundTint="@android:color/transparent"
         android:fontFamily="@font/bold"
         android:text="Canseco"
         android:textColor="@color/cafe2"
         android:textSize="20sp"
-        android:backgroundTint="@android:color/transparent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.09"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@+id/et_nombreUsuario"
         app:layout_constraintTop_toBottomOf="@+id/iv_imagen_u" />
 
@@ -75,23 +75,22 @@
         android:src="@drawable/ic_email_black_24dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/et_correoUsuario"
-        app:layout_constraintHorizontal_bias="0.688"
+        app:layout_constraintHorizontal_bias="0.76"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/et_nombreUsuario"
-        app:layout_constraintVertical_bias="0.114" />
+        app:layout_constraintVertical_bias="0.133" />
 
-    <EditText
+    <TextView
         android:id="@+id/et_correoUsuario"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="36dp"
+        android:backgroundTint="@android:color/transparent"
         android:fontFamily="@font/regular"
         android:text="@string/correo_IS"
         android:textColor="@color/cafe2"
         android:textSize="20sp"
-        android:backgroundTint="@android:color/transparent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.501"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/et_apellidoUsuario" />
 
@@ -101,7 +100,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="152dp"
-        android:layout_marginBottom="88dp"
+        android:layout_marginBottom="100dp"
         android:background="@drawable/boton_rojo"
         android:text="@string/menu_salir"
         android:textColor="@color/rojo"
@@ -119,10 +118,10 @@
         android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintHorizontal_bias="0.109"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/et_correoUsuario"
-        app:layout_constraintVertical_bias="0.241" />
+        app:layout_constraintVertical_bias="0.866" />
 
     <TextView
         android:id="@+id/tv_borrarCuenta"
@@ -137,10 +136,10 @@
         android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.918"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_cambiarClave"
-        app:layout_constraintVertical_bias="0.753" />
+        app:layout_constraintHorizontal_bias="0.746"
+        app:layout_constraintStart_toEndOf="@+id/tv_cambiarClave"
+        app:layout_constraintTop_toBottomOf="@+id/et_correoUsuario"
+        app:layout_constraintVertical_bias="0.826" />
 
 
 
