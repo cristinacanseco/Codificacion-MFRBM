@@ -15,6 +15,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.example.mfrbmv10.Adaptadores.FormaAdapter;
 import com.example.mfrbmv10.Adaptadores.TexturaAdapter;
 import com.example.mfrbmv10.FirebaseMotor.Crud;
@@ -83,7 +84,7 @@ public class TabMuestreoEditarDescripcion extends Fragment  implements View.OnCl
         }else{
             Glide.with(getContext())
                     .load(imagen)
-                    //.apply(new RequestOptions().override(80, 80))
+                    .apply(new RequestOptions().override(getResources().getDisplayMetrics().widthPixels, 200))
                     .into(img_me);
         }
     }

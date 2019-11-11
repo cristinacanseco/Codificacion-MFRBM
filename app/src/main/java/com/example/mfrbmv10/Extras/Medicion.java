@@ -213,12 +213,12 @@ public class Medicion extends AppCompatActivity implements Node.OnTapListener, S
                                                         .thenAccept(
                                                                 material -> {
                                                                         ModelRenderable model = ShapeFactory.makeCube(
-                                                                                new Vector3(0.009f, 0.009f, difference.length()),
+                                                                                new Vector3(0.001f, 0.001f, difference.length()),
                                                                                 Vector3.zero(), material);
                                                                         Node node = new Node();
                                                                         node.setParent(anchorNode);
                                                                         node.setRenderable(model);
-                                                                        node.setWorldPosition(Vector3.add(point1, point2).scaled(.5f));
+                                                                        node.setWorldPosition(Vector3.add(point1, point2).scaled(.05f));
                                                                         node.setWorldRotation(rotationFromAToB);
                                                                 }
                                                         );

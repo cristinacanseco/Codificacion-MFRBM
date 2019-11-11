@@ -128,8 +128,8 @@ public class SesionesFirestore {
                         cambiarBotones(btn_ingresar_is, pb_is);
                         if (task.isSuccessful()) {
                             createAlert("Éxito", "Bienvenido ", "OK");
-                            context.startActivity(new Intent(context, HomeActivity.class));
-
+                            Intent intent = new Intent(context, HomeActivity.class);
+                            context.startActivity(intent);
                         } else {
                             if (task.getException() instanceof FirebaseAuthUserCollisionException) {
                                 createAlert("Error", "No coindice la contraseña con el correo \nVuelve a intentarlo\n ", "OK");

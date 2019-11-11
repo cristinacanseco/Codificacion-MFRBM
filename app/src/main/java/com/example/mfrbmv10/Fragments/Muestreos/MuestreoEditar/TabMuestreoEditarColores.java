@@ -13,6 +13,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.example.mfrbmv10.Modelos.Colores;
 import com.example.mfrbmv10.Modelos.Muestreo;
 import com.example.mfrbmv10.R;
@@ -81,7 +82,7 @@ public class TabMuestreoEditarColores extends Fragment {
         }else{
             Glide.with(getContext())
                     .load(imagen)
-                    //.apply(new RequestOptions().override(80, 80))
+                    .apply(new RequestOptions().override(getResources().getDisplayMetrics().widthPixels, 200))
                     .into(img_mm);
         }
     }

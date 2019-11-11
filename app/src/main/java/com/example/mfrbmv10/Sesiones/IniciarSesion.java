@@ -24,7 +24,6 @@ public class IniciarSesion extends AppCompatActivity implements View.OnClickList
     public SesionesFirestore crud;
     public String correo, clave;
     private ProgressBar pb_is;
-    private Dialogo dialogo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,7 +50,7 @@ public class IniciarSesion extends AppCompatActivity implements View.OnClickList
         et_correo_is = findViewById(R.id.et_correo_is);
         et_clave_is = findViewById(R.id.et_clave_is);
 
-        dialogo = new Dialogo();
+
     }
 
     @Override
@@ -68,8 +67,10 @@ public class IniciarSesion extends AppCompatActivity implements View.OnClickList
                 clave = et_clave_is.getText().toString().trim();
                 cambiarVisibilidad(true);
                 iniciarSesion();
+                finish();
             case R.id.tv_olvidar_clave:
-                dialogo.show(getSupportFragmentManager(), "dialogo");
+                Dialogo dialogo = new Dialogo();
+                dialogo.show(getSupportFragmentManager(), "dialogo2");
                 break;
             default:
                 break;

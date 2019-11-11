@@ -73,7 +73,6 @@ public class CamaraDibujo extends AppCompatActivity implements View.OnClickListe
 
     private ProgressBar pb_camara;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -262,8 +261,8 @@ public class CamaraDibujo extends AppCompatActivity implements View.OnClickListe
         config.setStrokeWidth(pincel);
         config.setMinZoom(1.0f);
         config.setMaxZoom(3.0f);
-        config.setCanvasHeight(imgOriBitmap.getHeight());
-        config.setCanvasWidth(imgOriBitmap.getWidth());
+        config.setCanvasHeight(imgOriBitmap.getHeight() - 100);
+        config.setCanvasWidth(imgOriBitmap.getWidth()-100);
 
         drawableView.setConfig(config);
         drawableView.setBackground(imagen.getImagenD());
@@ -296,7 +295,6 @@ public class CamaraDibujo extends AppCompatActivity implements View.OnClickListe
                 pb_camara.setVisibility(View.VISIBLE);
                 guardarImagen();
                 obtenerInstancias();
-                //irAMedicion();
                 pb_camara.setVisibility(View.INVISIBLE);
                 break;
         }
@@ -368,11 +366,8 @@ public class CamaraDibujo extends AppCompatActivity implements View.OnClickListe
             } catch (FileNotFoundException e) {
 
             } catch (IOException e) {
-
             }
-
         }
-
     }
 
     private void guardarImagenBitmap(Bitmap bitmapIB) {
@@ -419,98 +414,105 @@ public class CamaraDibujo extends AppCompatActivity implements View.OnClickListe
         imgNvoBitmap = drawableView.obtainBitmap(drawableView.obtainBitmap());
 
         //Generar bitmap original
-        imagen_pv.setImageBitmap(Bitmap.createScaledBitmap(imgOriBitmap, imgOriBitmap.getWidth()/2, imgOriBitmap.getHeight()/2, false));
+        imagen_pv.setImageBitmap(Bitmap.createScaledBitmap(imgOriBitmap, imgOriBitmap.getWidth() / 2, imgOriBitmap.getHeight() / 2, false));
         Imagen imagenOriginal = new Imagen(imagen_pv.getDrawable());
         Bitmap imgOriginalBitmap = imagenOriginal.getImagenB();
-        guardarImagenBitmap(imgOriginalBitmap);
+       // guardarImagenBitmap(imgOriginalBitmap);
 
         //Generar bitmap nuevo
-        imagen_nn.setImageBitmap(Bitmap.createScaledBitmap(imgNvoBitmap, imgNvoBitmap.getWidth()/2, imgNvoBitmap.getHeight()/2, false));
+        imagen_nn.setImageBitmap(Bitmap.createScaledBitmap(imgNvoBitmap, imgNvoBitmap.getWidth() / 2, imgNvoBitmap.getHeight() / 2, false));
         Imagen imagenNuevo = new Imagen(imagen_nn.getDrawable());
         Bitmap imgNuevoBitmap = imagenNuevo.getImagenB();
-        guardarImagenBitmap(imgNuevoBitmap);
+
 
         ArrayList<ColorPaleta> aux = new ArrayList<>();
 
-        for(int i=0; i< imgOriginalBitmap.getWidth();i++){
-            for(int j=0; j <imgNuevoBitmap.getHeight();j++){
-                //int pixel = imgNvoBitmap.getPixel(i,j);
-                if(imgNuevoBitmap.getPixel(i,j) == color) {
-                    Colores color = new Colores(imgOriginalBitmap.getPixel(i, j));
+        for (int i = 0; i < imgOriBitmap.getWidth(); i++) {
+            for (int j = 0; j < imgOriBitmap.getHeight(); j++) {
+                if (imgNvoBitmap.getPixel(i, j) == color) {
+                    Colores color = new Colores(imgOriBitmap.getPixel(i, j));
                     ColorPaleta cp = new ColorPaleta(color.getRed(), color.getGreen(), color.getBlue());
                     aux.add(cp);
                 }
             }
         }
 
-        Log.i("cantidad ",""+aux.size());
-        int tam = (int)(aux.size()/2);
+        Log.e("Aux size", ""+aux.size());
+        if(aux.size()==0){
+            generarPaleta(imgOriBitmap);
+        }else {
 
-        Bitmap.Config conf = Bitmap.Config.ARGB_8888;
-        Bitmap bmp = Bitmap.createBitmap(2, tam, conf);
+            int tam = (int) (aux.size() / 2);
 
-        int x=0;
-        for(int i=0; i<2; i++) {
-            for (int j = 0; j < tam; j++) {
+            Bitmap.Config conf = Bitmap.Config.ARGB_8888;
+            Bitmap bmp = Bitmap.createBitmap(2, tam, conf);
+
+            int x = 0;
+            for (int i = 0; i < 2; i++) {
+                for (int j = 0; j < tam; j++) {
                     int r = aux.get(x).getR();
                     int g = aux.get(x).getG();
                     int b = aux.get(x).getB();
                     bmp.setPixel(i, j, Color.rgb(r, g, b));
                     x++;
-                    Log.i("cantidad x", ""+x);
+                    //Log.i("cantidad x", ""+x);
+                }
             }
+            guardarImagenBitmap(bmp);
+            generarPaleta(bmp);
         }
-        guardarImagenBitmap(bmp);
-        Log.i("sdsjf", "jsadskfj");
+    }
+
+    private void generarPaleta(Bitmap bitmaps) {
         paleta = new ArrayList<Integer>();
-        Palette p = Palette.from(bmp).generate();
+        Palette p = Palette.from(bitmaps).generate();
 
         if(p.getVibrantSwatch() != null){
             paleta.add(0,p.getVibrantSwatch().getRgb());
             paleta.add(1,p.getVibrantSwatch().getBodyTextColor());
         }else{
-            paleta.add(0,0);
-            paleta.add(1,0);
+            paleta.add(0,Color.BLACK);
+            paleta.add(1,Color.WHITE);
         }
 
         if(p.getDarkVibrantSwatch() != null){
             paleta.add(2,p.getDarkVibrantSwatch().getRgb());
             paleta.add(3,p.getDarkVibrantSwatch().getBodyTextColor());
         }else{
-            paleta.add(2,0);
-            paleta.add(3,0);
+            paleta.add(2,Color.BLACK);
+            paleta.add(3,Color.WHITE);
         }
 
         if(p.getLightVibrantSwatch() != null){
             paleta.add(4,p.getLightVibrantSwatch().getRgb());
             paleta.add(5,p.getLightVibrantSwatch().getBodyTextColor());
         }else{
-            paleta.add(4,0);
-            paleta.add(5,0);
+            paleta.add(4,Color.BLACK);
+            paleta.add(5,Color.WHITE);
         }
 
         if(p.getMutedSwatch() != null){
             paleta.add(6,p.getMutedSwatch().getRgb());
             paleta.add(7,p.getMutedSwatch().getBodyTextColor());
         }else{
-            paleta.add(6,0);
-            paleta.add(7,0);
+            paleta.add(6,Color.BLACK);
+            paleta.add(7,Color.WHITE);
         }
 
         if(p.getDarkMutedSwatch()!= null){
             paleta.add(8,p.getDarkMutedSwatch().getRgb());
             paleta.add(9,p.getDarkMutedSwatch().getBodyTextColor());
         }else{
-            paleta.add(8,0);
-            paleta.add(9,0);
+            paleta.add(8,Color.BLACK);
+            paleta.add(9,Color.WHITE);
         }
 
         if(p.getLightMutedSwatch() != null){
             paleta.add(10,p.getLightMutedSwatch().getRgb());
             paleta.add(11,p.getLightMutedSwatch().getBodyTextColor());
         }else{
-            paleta.add(10,0);
-            paleta.add(11,0);
+            paleta.add(10,Color.BLACK);
+            paleta.add(11,Color.WHITE);
         }
 
         irAMedicion();

@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.example.mfrbmv10.Adaptadores.ColorAdapter;
 import com.example.mfrbmv10.Modelos.Colores;
 import com.example.mfrbmv10.Modelos.Muestreo;
@@ -80,7 +81,7 @@ public class TabMuestreoMostrarColores extends Fragment {
         }else{
             Glide.with(getContext())
                     .load(imagen)
-                    //.apply(new RequestOptions().override(80, 80))
+                    .apply(new RequestOptions().override(getResources().getDisplayMetrics().widthPixels, 200))
                     .into(img_mm);
         }
     }
