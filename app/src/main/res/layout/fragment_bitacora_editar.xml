@@ -4,7 +4,7 @@ xmlns:app="http://schemas.android.com/apk/res-auto"
 xmlns:tools="http://schemas.android.com/tools"
 android:layout_width="match_parent"
 android:layout_height="match_parent"
-android:background="@color/blanco"
+android:background="@drawable/borde"
 tools:context=".Fragments.Bitacoras.BitacoraMostrarFragment">
 
 
@@ -14,7 +14,7 @@ tools:context=".Fragments.Bitacoras.BitacoraMostrarFragment">
     android:layout_height="200dp"
     android:layout_marginEnd="8dp"
     android:scaleType="centerCrop"
-    android:src="@drawable/flores1"
+    android:src="@drawable/qh"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintHorizontal_bias="0.0"
     app:layout_constraintStart_toStartOf="parent"
@@ -158,18 +158,18 @@ tools:context=".Fragments.Bitacoras.BitacoraMostrarFragment">
     app:layout_constraintTop_toBottomOf="@+id/tv_coordenadas_be" />
 
 
-<ImageView
-    android:id="@+id/img_muestreos_be"
-    android:layout_width="42dp"
-    android:layout_height="38dp"
-    android:layout_marginStart="16dp"
-    android:layout_marginTop="44dp"
-    android:layout_marginEnd="8dp"
-    android:src="@drawable/planta"
-    app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintHorizontal_bias="0.0"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toBottomOf="@+id/img_localizacion_be" />
+        <ImageView
+            android:id="@+id/img_muestreos_be"
+            android:layout_width="42dp"
+            android:layout_height="38dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="28dp"
+            android:layout_marginEnd="8dp"
+            android:src="@drawable/planta"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/img_localizacion_be" />
 
         <TextView
             android:id="@+id/tv_muestreos_be"
@@ -177,14 +177,14 @@ tools:context=".Fragments.Bitacoras.BitacoraMostrarFragment">
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="92dp"
+            android:layout_marginTop="64dp"
             android:layout_marginEnd="8dp"
             android:fontFamily="@font/regular"
             android:text="0 muestreo(s)"
-            android:textSize="18sp"
             android:textColor="@color/cafe2"
+            android:textSize="18sp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.044"
+            app:layout_constraintHorizontal_bias="0.058"
             app:layout_constraintStart_toEndOf="@+id/img_descripcion_be"
             app:layout_constraintTop_toBottomOf="@+id/tv_coordenadas_be" />
 
@@ -215,10 +215,10 @@ tools:context=".Fragments.Bitacoras.BitacoraMostrarFragment">
             android:textSize="18sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.119"
+            app:layout_constraintHorizontal_bias="0.156"
             app:layout_constraintStart_toEndOf="@+id/img_descripcion_be"
             app:layout_constraintTop_toBottomOf="@+id/tv_muestreos_be"
-            app:layout_constraintVertical_bias="0.204" />
+            app:layout_constraintVertical_bias="0.263" />
 
         <Button
             android:id="@+id/btn_editar_be"
@@ -236,9 +236,9 @@ tools:context=".Fragments.Bitacoras.BitacoraMostrarFragment">
             android:textSize="22sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.497"
+            app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@+id/img_be"
-            app:layout_constraintVertical_bias="0.963" />
+            app:layout_constraintVertical_bias="0.0" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -13,6 +13,7 @@ import com.example.mfrbmv10.Fragments.Muestreos.MuestreoEditarFragment;
 import com.example.mfrbmv10.Fragments.Muestreos.MuestreoFragment;
 import com.example.mfrbmv10.Fragments.Muestreos.MuestreoMostrarFragment;
 import com.example.mfrbmv10.Fragments.Muestreos.MuestreoNuevoFragment;
+import com.example.mfrbmv10.Fragments.Usuario.CreditosFragment;
 import com.example.mfrbmv10.Fragments.Usuario.UsuarioPerfilFragment;
 import com.example.mfrbmv10.R;
 
@@ -46,7 +47,8 @@ public class HomeActivity extends AppCompatActivity
                     MuestreoNuevoFragment.OnFragmentInteractionListener,
                     MuestreoEditarFragment.OnFragmentInteractionListener,
                     MuestreoMostrarFragment.OnFragmentInteractionListener,
-                    UsuarioPerfilFragment.OnFragmentInteractionListener{
+                    UsuarioPerfilFragment.OnFragmentInteractionListener,
+                    CreditosFragment.OnFragmentInteractionListener {
 
    private SesionesFirestore sesionesFirestore;
    Fragment fragment;
@@ -146,6 +148,9 @@ public class HomeActivity extends AppCompatActivity
         } else if (id == R.id.nav_Salir) {
             Toast.makeText(this, "¡ Nos vemos luego ;) !", Toast.LENGTH_SHORT).show();
             sesionesFirestore.cerrarSesion();
+        } else if(id == R.id.nav_creditos){
+            fragment = new CreditosFragment();
+            fragmentSeleccionado = true;
         }
 
         if(fragmentSeleccionado)

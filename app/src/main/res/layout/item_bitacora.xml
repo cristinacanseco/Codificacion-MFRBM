@@ -16,7 +16,7 @@
 
         <ImageView
             android:id="@+id/iv_imagen_btc"
-            android:src="@drawable/flores1"
+            android:src="@drawable/qq"
             android:layout_width="80dp"
             android:layout_height="80dp"
             android:scaleType="centerCrop"/>

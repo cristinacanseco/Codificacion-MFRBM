@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/mis_bitacoras"
+    android:background="@drawable/borde"
     tools:context=".Fragments.Usuario.UsuarioPerfilFragment">
 
     <ImageView
@@ -13,24 +13,24 @@
         android:layout_height="200dp"
         android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp"
-        android:src="@drawable/flores1"
+        android:src="@drawable/qq"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.488"
+        app:layout_constraintHorizontal_bias="0.459"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintVertical_bias="0.129" />
 
 
     <ImageView
         android:id="@+id/imageView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="80dp"
+        android:layout_marginTop="52dp"
         android:layout_marginEnd="8dp"
         android:src="@drawable/person"
         app:layout_constraintEnd_toStartOf="@+id/et_nombreUsuario"
-        app:layout_constraintHorizontal_bias="0.761"
+        app:layout_constraintHorizontal_bias="0.76"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/iv_imagen_u" />
 
@@ -39,7 +39,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="128dp"
-        android:layout_marginTop="68dp"
+        android:layout_marginTop="36dp"
         android:backgroundTint="@android:color/transparent"
         android:fontFamily="@font/bold"
         android:text="Cristina"
@@ -53,7 +53,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="68dp"
+        android:layout_marginTop="36dp"
         android:layout_marginEnd="8dp"
         android:backgroundTint="@android:color/transparent"
         android:fontFamily="@font/bold"
@@ -78,29 +78,31 @@
         app:layout_constraintHorizontal_bias="0.76"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/et_nombreUsuario"
-        app:layout_constraintVertical_bias="0.133" />
+        app:layout_constraintVertical_bias="0.045" />
 
     <TextView
         android:id="@+id/et_correoUsuario"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="36dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="128dp"
         android:backgroundTint="@android:color/transparent"
         android:fontFamily="@font/regular"
         android:text="@string/correo_IS"
         android:textColor="@color/cafe2"
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/et_apellidoUsuario" />
+        tools:layout_editor_absoluteY="357dp" />
 
 
     <Button
         android:id="@+id/btn_salir_u"
-        android:layout_width="wrap_content"
+        android:layout_width="200dp"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="152dp"
-        android:layout_marginBottom="100dp"
+        android:layout_marginEnd="104dp"
+        android:layout_marginBottom="136dp"
         android:background="@drawable/boton_rojo"
         android:text="@string/menu_salir"
         android:textColor="@color/rojo"
@@ -121,7 +123,7 @@
         app:layout_constraintHorizontal_bias="0.109"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/et_correoUsuario"
-        app:layout_constraintVertical_bias="0.866" />
+        app:layout_constraintVertical_bias="0.76" />
 
     <TextView
         android:id="@+id/tv_borrarCuenta"
@@ -139,7 +141,7 @@
         app:layout_constraintHorizontal_bias="0.746"
         app:layout_constraintStart_toEndOf="@+id/tv_cambiarClave"
         app:layout_constraintTop_toBottomOf="@+id/et_correoUsuario"
-        app:layout_constraintVertical_bias="0.826" />
+        app:layout_constraintVertical_bias="0.714" />
 
 
 

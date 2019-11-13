@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/blanco"
+    android:background="@drawable/borde"
     tools:context=".Fragments.Muestreos.MuestreoMostrarFragment">
 
     <!-- our tablayout to display tabs  -->
@@ -16,6 +16,7 @@
         android:elevation="6dp"
         android:background="?attr/colorPrimary"
         android:minHeight="?attr/actionBarSize"
+        app:tabTextColor="@color/cafe2"
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"/>
 
     <!-- View pager to swipe views -->

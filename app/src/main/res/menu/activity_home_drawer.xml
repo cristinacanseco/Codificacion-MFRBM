@@ -15,6 +15,12 @@
         <item android:title="" />
 
         <item
+            android:id="@+id/nav_creditos"
+            android:icon="@drawable/ic_info_outline_black_24dp"
+            android:title="@string/menu_creditos" />
+            />
+
+        <item
             android:id="@+id/nav_Salir"
             android:icon="@drawable/salir"
             android:title="@string/menu_salir" />

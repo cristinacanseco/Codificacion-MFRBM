@@ -11,6 +11,7 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.graphics.Matrix;
 import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.Build;
@@ -19,8 +20,10 @@ import android.os.Environment;
 import android.os.StrictMode;
 import android.provider.MediaStore;
 import android.provider.Settings;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewConfiguration;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -57,10 +60,9 @@ public class CamaraDibujo extends AppCompatActivity implements View.OnClickListe
 
     private Imagen imagen;
     private Bitmap bitmap;
-    private Bitmap imgOriBitmap, imgNvoBitmap, imgPaleta;
+    private Bitmap imgOriBitmap, imgNvoBitmap;
 
     private String fileUri;
-    private Palette paletaGenerada;
     private ArrayList<Integer> paleta;
 
     private int color;
@@ -70,6 +72,11 @@ public class CamaraDibujo extends AppCompatActivity implements View.OnClickListe
     private DrawableView drawableView;
     private ImageButton botonPincelGrande, undo, listo, botonPincelChico;
     private DrawableViewConfig config;
+
+    public static final int DENSITY_HIGH = 320;
+    //public static final int DENSITY_HIGH = 240;
+
+    public int densidad;
 
     private ProgressBar pb_camara;
 
@@ -85,7 +92,6 @@ public class CamaraDibujo extends AppCompatActivity implements View.OnClickListe
                 e.printStackTrace();
             }
         }
-
 
         imagen_pv = (ImageView) findViewById(R.id.imagen_pv);
         imagen_nn = (ImageView) findViewById(R.id.imagen_nn);
@@ -103,8 +109,6 @@ public class CamaraDibujo extends AppCompatActivity implements View.OnClickListe
         pincel = 20f;
         pb_camara =  findViewById(R.id.pb_camara);
         pb_camara.setVisibility(View.INVISIBLE);
-        paletaGenerada = null;
-
     }
 
     private boolean validaPermisos() {
@@ -244,28 +248,31 @@ public class CamaraDibujo extends AppCompatActivity implements View.OnClickListe
 
     public void mostrarImagen(){
         bitmap= BitmapFactory.decodeFile(rutaAbsoluta);
+        densidad = bitmap.getDensity();
         Uri imageUri = Uri.fromFile(imagenFile);
         fileUri = String.valueOf(new File(imageUri.getPath()));
         imagen_pv.setImageURI(imageUri);
         imagen = new Imagen(imagen_pv.getDrawable());
-        imgOriBitmap = imagen.getImagenB();
 
-        imagen_pv.setImageBitmap(Bitmap.createScaledBitmap(imgOriBitmap, imgOriBitmap.getWidth()/2, imgOriBitmap.getHeight()/2, false));
+        imgOriBitmap = imagen.getImagenB();
+        imgOriBitmap.setDensity(densidad);
+        //Log.i("DENSIDAD","" + densidad);
         configurarCanvas();
     }
+
 
     private void configurarCanvas() {
         config = new DrawableViewConfig();
         config.setStrokeColor(color);
         config.setShowCanvasBounds(true);
         config.setStrokeWidth(pincel);
-        config.setMinZoom(1.0f);
-        config.setMaxZoom(3.0f);
-        config.setCanvasHeight(imgOriBitmap.getHeight() - 100);
-        config.setCanvasWidth(imgOriBitmap.getWidth()-100);
+        config.setCanvasHeight(imgOriBitmap.getHeight());
+        config.setCanvasWidth(imgOriBitmap.getWidth());
 
         drawableView.setConfig(config);
         drawableView.setBackground(imagen.getImagenD());
+        drawableView.onScaleChange(0.75f);
+
         //Toast.makeText(this, "HD:"+config.getCanvasHeight()+" WD:"+config.getCanvasWidth()+"\nHB:"+bitmap.getHeight()+" WB:"+bitmap.getWidth()+ " \nHI:"+imagen.getImagenB().getHeight()+" WI."+imagen.getImagenB().getWidth(), Toast.LENGTH_SHORT).show();
     }
 
@@ -412,25 +419,28 @@ public class CamaraDibujo extends AppCompatActivity implements View.OnClickListe
 
     public void obtenerInstancias(){
         imgNvoBitmap = drawableView.obtainBitmap(drawableView.obtainBitmap());
+        imgNvoBitmap.setDensity(densidad);
 
         //Generar bitmap original
         imagen_pv.setImageBitmap(Bitmap.createScaledBitmap(imgOriBitmap, imgOriBitmap.getWidth() / 2, imgOriBitmap.getHeight() / 2, false));
         Imagen imagenOriginal = new Imagen(imagen_pv.getDrawable());
         Bitmap imgOriginalBitmap = imagenOriginal.getImagenB();
+        imgOriginalBitmap.setDensity(densidad);
        // guardarImagenBitmap(imgOriginalBitmap);
 
         //Generar bitmap nuevo
         imagen_nn.setImageBitmap(Bitmap.createScaledBitmap(imgNvoBitmap, imgNvoBitmap.getWidth() / 2, imgNvoBitmap.getHeight() / 2, false));
         Imagen imagenNuevo = new Imagen(imagen_nn.getDrawable());
         Bitmap imgNuevoBitmap = imagenNuevo.getImagenB();
+        imgNuevoBitmap.setDensity(densidad);
 
 
         ArrayList<ColorPaleta> aux = new ArrayList<>();
 
-        for (int i = 0; i < imgOriBitmap.getWidth(); i++) {
-            for (int j = 0; j < imgOriBitmap.getHeight(); j++) {
-                if (imgNvoBitmap.getPixel(i, j) == color) {
-                    Colores color = new Colores(imgOriBitmap.getPixel(i, j));
+        for (int i = 0; i < imgOriginalBitmap.getWidth(); i++) {
+            for (int j = 0; j < imgOriginalBitmap.getHeight(); j++) {
+                if (imgNuevoBitmap.getPixel(i, j) == color) {
+                    Colores color = new Colores(imgOriginalBitmap.getPixel(i, j));
                     ColorPaleta cp = new ColorPaleta(color.getRed(), color.getGreen(), color.getBlue());
                     aux.add(cp);
                 }
@@ -442,13 +452,23 @@ public class CamaraDibujo extends AppCompatActivity implements View.OnClickListe
             generarPaleta(imgOriBitmap);
         }else {
 
-            int tam = (int) (aux.size() / 2);
+            int div=0;
+
+            if(aux.size()>10){
+                div=10;
+            }else{
+                div = 2;
+            }
+
+            //int tam = (int) (aux.size() /div);
+            int tam = (int) Math.sqrt(aux.size());
+            div = tam;
 
             Bitmap.Config conf = Bitmap.Config.ARGB_8888;
-            Bitmap bmp = Bitmap.createBitmap(2, tam, conf);
+            Bitmap bmp = Bitmap.createBitmap(div, tam, conf);
 
             int x = 0;
-            for (int i = 0; i < 2; i++) {
+            for (int i = 0; i < div; i++) {
                 for (int j = 0; j < tam; j++) {
                     int r = aux.get(x).getR();
                     int g = aux.get(x).getG();
@@ -458,7 +478,8 @@ public class CamaraDibujo extends AppCompatActivity implements View.OnClickListe
                     //Log.i("cantidad x", ""+x);
                 }
             }
-            guardarImagenBitmap(bmp);
+
+           // guardarImagenBitmap(bmp);
             generarPaleta(bmp);
         }
     }

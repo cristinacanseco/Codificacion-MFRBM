@@ -4,7 +4,7 @@ xmlns:app="http://schemas.android.com/apk/res-auto"
 xmlns:tools="http://schemas.android.com/tools"
 android:layout_width="match_parent"
 android:layout_height="match_parent"
-android:background="@color/blanco"
+android:background="@drawable/borde"
 tools:context=".Fragments.Muestreos.MuestreoEditar.TabMuestreoEditarDescripcion">
 
 
@@ -14,7 +14,7 @@ tools:context=".Fragments.Muestreos.MuestreoEditar.TabMuestreoEditarDescripcion"
     android:layout_height="200dp"
     android:layout_marginEnd="8dp"
     android:scaleType="centerCrop"
-    android:src="@drawable/flores1"
+    android:src="@drawable/qh"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintHorizontal_bias="0.0"
     app:layout_constraintStart_toStartOf="parent"
@@ -58,13 +58,13 @@ tools:context=".Fragments.Muestreos.MuestreoEditar.TabMuestreoEditarDescripcion"
         android:id="@+id/img_horafecha_me"
         android:layout_width="42dp"
         android:layout_height="38dp"
-        android:layout_marginStart="30dp"
+        android:layout_marginStart="28dp"
         android:layout_marginTop="16dp"
         android:src="@drawable/calendario"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@id/view_m"
-        app:layout_constraintVertical_bias="0.07999998" />
+        app:layout_constraintVertical_bias="0.0" />
 
     <TextView
         android:id="@+id/tv_fecha_me"
@@ -79,14 +79,13 @@ tools:context=".Fragments.Muestreos.MuestreoEditar.TabMuestreoEditarDescripcion"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@+id/img_horafecha_me"
         app:layout_constraintTop_toBottomOf="@+id/view_m"
-        app:layout_constraintVertical_bias="0.120000005" />
+        app:layout_constraintVertical_bias="0.062" />
 
     <TextView
         android:id="@+id/tv_fecha_me2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp"
         android:fontFamily="@font/regular"
         android:text="|"
@@ -96,14 +95,13 @@ tools:context=".Fragments.Muestreos.MuestreoEditar.TabMuestreoEditarDescripcion"
         app:layout_constraintHorizontal_bias="0.008"
         app:layout_constraintStart_toEndOf="@+id/tv_fecha_me"
         app:layout_constraintTop_toBottomOf="@+id/view_m"
-        app:layout_constraintVertical_bias="0.110000014" />
+        app:layout_constraintVertical_bias="0.052" />
 
     <TextView
         android:id="@+id/tv_hora_me"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
         android:fontFamily="@font/regular"
@@ -112,10 +110,10 @@ tools:context=".Fragments.Muestreos.MuestreoEditar.TabMuestreoEditarDescripcion"
         android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.041"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@+id/tv_fecha_me2"
         app:layout_constraintTop_toBottomOf="@+id/view_m"
-        app:layout_constraintVertical_bias="0.104" />
+        app:layout_constraintVertical_bias="0.062" />
 
     <ImageView
         android:id="@+id/img_localizacion_me"
@@ -128,7 +126,7 @@ tools:context=".Fragments.Muestreos.MuestreoEditar.TabMuestreoEditarDescripcion"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/img_horafecha_me"
-        app:layout_constraintVertical_bias="0.167" />
+        app:layout_constraintVertical_bias="0.102" />
 
     <TextView
         android:id="@+id/tv_coordenadas_me"
@@ -144,17 +142,17 @@ tools:context=".Fragments.Muestreos.MuestreoEditar.TabMuestreoEditarDescripcion"
         android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.076"
+        app:layout_constraintHorizontal_bias="0.065"
         app:layout_constraintStart_toEndOf="@+id/img_localizacion_me"
         app:layout_constraintTop_toBottomOf="@+id/tv_fecha_me2"
-        app:layout_constraintVertical_bias="0.136" />
+        app:layout_constraintVertical_bias="0.104" />
 
     <TextView
         android:id="@+id/tv_localizacion_me"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="4dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
         android:fontFamily="@font/regular"
@@ -163,10 +161,10 @@ tools:context=".Fragments.Muestreos.MuestreoEditar.TabMuestreoEditarDescripcion"
         android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.076"
+        app:layout_constraintHorizontal_bias="0.065"
         app:layout_constraintStart_toEndOf="@+id/img_localizacion_me"
         app:layout_constraintTop_toBottomOf="@+id/tv_coordenadas_me"
-        app:layout_constraintVertical_bias="0.023" />
+        app:layout_constraintVertical_bias="0.0" />
 
 
     <ImageView
@@ -214,10 +212,10 @@ tools:context=".Fragments.Muestreos.MuestreoEditar.TabMuestreoEditarDescripcion"
         android:textSize="22sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.914"
+        app:layout_constraintHorizontal_bias="0.965"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/img_me"
-        app:layout_constraintVertical_bias="0.987" />
+        app:layout_constraintVertical_bias="0.0" />
 
     <Spinner
         android:id="@+id/spinner_forma_me"

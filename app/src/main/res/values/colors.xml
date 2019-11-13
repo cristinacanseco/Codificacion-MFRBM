@@ -8,15 +8,22 @@
     <color name="icon_selected_color">#757575</color>
     <color name="icon_pressed_color">#757575</color>
 
+
+
+    <color name="cafe2">#543F26</color>
+    <color name="verde3">#095C20</color>
+    <color name="rosa">#EEE6E5</color>
+    <color name="verde2">#CACFA2</color>
+
     <color name="blanco">#FFFFFF</color>
     <color name="beige">#F5ECE7</color>
-    <color name="verde2">#A1B063</color>
+
     <color name="gris1">#A89D99</color>
     <color name="gris2">#E8EBEC</color>
     <color name="verde1">#CACFA2</color>
     <color name="cafe1">#8A5B4F</color>
-    <color name="verde3">#558A08</color>
-    <color name="cafe2">#543F26</color>
+
+
     <color name="rojo2">#FFCCCC</color>
     <color name="rojo">#ff0000</color>
 

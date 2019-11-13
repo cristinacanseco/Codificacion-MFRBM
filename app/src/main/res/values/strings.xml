@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Bitaonline</string>
+    <string name="app_name">Qüitácora</string>
 
     <string name="bienvenido">¡Bienvenido!</string>
     <string name="no_miembro">¿No eres miembro?</string>
@@ -40,17 +40,17 @@
     <string name="confirmarClava_RU">Confirmar contraseña</string>
 
 
-    <string name="title_activity_home">MFRBM1</string>
+    <string name="title_activity_home">Qüitácora</string>
     <string name="navigation_drawer_open">Abrir navigation drawer</string>
     <string name="navigation_drawer_close">Cerrar navigation drawer</string>
 
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Configuración</string>
 
-    <string name="menu_home">MFRBM</string>
+    <string name="menu_home">Qüitácora</string>
     <string name="menu_bitacora">Bitácoras</string>
     <string name="menu_perfil">Mi perfil</string>
-    <string name="menu_salir">Cerrar Sesión</string>
+    <string name="menu_salir">    Cerrar Sesión   </string>
 
 
     <string name="textwarn">Permiso requerido para esta aplicación</string>
@@ -87,5 +87,6 @@
     <string name="aceptar">Aceptar</string>
     <string name="borrarCuenta">Quiero borrar mi cuenta</string>
     <string name="generandoColores"> Generando los colores</string>
+    <string name="menu_creditos">Créditos</string>
 
 </resources>

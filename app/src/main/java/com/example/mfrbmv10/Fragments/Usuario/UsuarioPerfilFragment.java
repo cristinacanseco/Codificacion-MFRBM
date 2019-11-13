@@ -129,7 +129,7 @@ public class UsuarioPerfilFragment extends Fragment implements View.OnClickListe
         //ImageView
         iv_imagen_u = usuario_fragment.findViewById(R.id.iv_imagen_u);
         Glide.with(getContext())
-                .load(R.drawable.flores1)
+                .load(R.drawable.qq)
                 .apply(RequestOptions.circleCropTransform())
                 .into(iv_imagen_u);
 
