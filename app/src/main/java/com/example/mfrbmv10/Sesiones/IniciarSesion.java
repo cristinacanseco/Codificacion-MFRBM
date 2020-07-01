@@ -68,6 +68,7 @@ public class IniciarSesion extends AppCompatActivity implements View.OnClickList
                 cambiarVisibilidad(true);
                 iniciarSesion();
                 finish();
+                break;
             case R.id.tv_olvidar_clave:
                 Dialogo dialogo = new Dialogo();
                 dialogo.show(getSupportFragmentManager(), "dialogo2");

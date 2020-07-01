@@ -101,7 +101,7 @@ public class BitacoraEditarFragment extends Fragment implements View.OnClickList
 
         Bundle bundle = getArguments();
         id_bitacora = bundle.getString("id_bitacora");
-        Toast.makeText(this.getContext(), ""+id_bitacora, Toast.LENGTH_SHORT).show();
+//        Toast.makeText(this.getContext(), ""+id_bitacora, Toast.LENGTH_SHORT).show();
         b = (Bitacora) bundle.getSerializable("bitacora");
         obtenerDatos(b);
 

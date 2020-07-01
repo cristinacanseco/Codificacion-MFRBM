@@ -14,7 +14,6 @@ public class Bitacora implements Serializable {
     public String descripcion_btc;
 
     public Bitacora(){}
-
     public Bitacora(String nombre_btc, String imagen_btc, String fecha_btc, String hora_btc, String ubicacion_btc, String coordenadas_btc, String cantidad_btc, String descripcion_btc) {
         this.nombre_btc = nombre_btc;
         this.imagen_btc = imagen_btc;

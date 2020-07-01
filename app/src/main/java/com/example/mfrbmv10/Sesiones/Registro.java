@@ -121,6 +121,7 @@ public class Registro extends AppCompatActivity implements View.OnClickListener 
                     }else{
                         //Toast.makeText(Registro.this, "Las contraseñas no coinciden, vuelve a intentarlo", Toast.LENGTH_SHORT).show();
                         crud.createAlert("Error", "No coinciden las contraseñas", "OK");
+                        cambiarVisibilidad(false);
                     }
                 }else{
                     et_clave2_r.setError("La clave tiene que tener al menos 6 caracteres");

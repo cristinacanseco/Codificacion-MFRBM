@@ -4,8 +4,7 @@ public class Forma {
     private int id_forma;
     private String tipo_forma;
 
-    public Forma() {
-    }
+    public Forma() { }
 
     public Forma(int id_forma, String tipo_forma) {
         this.id_forma = id_forma;

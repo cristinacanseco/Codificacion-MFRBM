@@ -12,6 +12,11 @@
         layout="@layout/app_bar_home"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
+    <FrameLayout
+        android:id="@+id/content_main"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    </FrameLayout>
 
     <com.google.android.material.navigation.NavigationView
         android:id="@+id/nav_view"
@@ -25,5 +30,7 @@
         app:itemTextColor="@color/cafe2"
         app:itemIconTint="@color/cafe2"
         />
+
+
 
 </androidx.drawerlayout.widget.DrawerLayout>

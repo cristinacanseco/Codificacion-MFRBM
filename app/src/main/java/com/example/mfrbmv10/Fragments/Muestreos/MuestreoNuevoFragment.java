@@ -6,7 +6,6 @@ import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
-import androidx.palette.graphics.Palette;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,8 +19,6 @@ import com.example.mfrbmv10.Extras.Timestamp;
 import com.example.mfrbmv10.FirebaseMotor.Crud;
 import com.example.mfrbmv10.Fragments.Bitacoras.BitacoraFragment;
 import com.example.mfrbmv10.Imagen.CamaraDibujo;
-import com.example.mfrbmv10.Imagen.CamaraIntento2;
-import com.example.mfrbmv10.Modelos.ColorMuestreo;
 import com.example.mfrbmv10.Modelos.Muestreo;
 import com.example.mfrbmv10.R;
 

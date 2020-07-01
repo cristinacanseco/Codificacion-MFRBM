@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Handler;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
@@ -45,6 +46,9 @@ public class SesionesFirestore {
     private FirebaseUser mUser;
     private String usuario_db ="Usuario";
 
+    static final int TIME_OUT = 5000;
+    static final int MSG_DISMISS_DIALOG = 0;
+    private AlertDialog mAlertDialog;
 
     public SesionesFirestore(Context context) {
         this.context = context;
@@ -106,9 +110,6 @@ public class SesionesFirestore {
                                     // Log.e(TAG, "Mensaje: "+ e.getMessage().toString()+ " Localización: " +e.getLocalizedMessage().toString());
                                 }
                             });
-
-
-
                 } else {
                     if (task.getException() instanceof FirebaseAuthUserCollisionException) {
                         createAlert("Error", "El correo ya existe. \nVuelve a intentarlo\n ", "OK");
@@ -127,15 +128,25 @@ public class SesionesFirestore {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         cambiarBotones(btn_ingresar_is, pb_is);
                         if (task.isSuccessful()) {
-                            createAlert("Éxito", "Bienvenido ", "OK");
+                            Toast.makeText(context, "Ingreso pero aquí me quedo", Toast.LENGTH_SHORT).show();
                             Intent intent = new Intent(context, HomeActivity.class);
                             context.startActivity(intent);
                         } else {
                             if (task.getException() instanceof FirebaseAuthUserCollisionException) {
-                                createAlert("Error", "No coindice la contraseña con el correo \nVuelve a intentarlo\n ", "OK");
-
+                                //createAlert("Error", "No coindice la contraseña con el correo \nVuelve a intentarlo\n ", "OK");
+                                Toast.makeText(context, "No coincide la contraseña", Toast.LENGTH_SHORT).show();
                             } else {
-                                createAlert("Error", "No existe el usuario.", "OK");
+                                //createAlert("Error", "No coindice la contraseña con el correo \nVuelve a intentarlo\n", "OK");
+                                AlertDialog.Builder builder = new AlertDialog.Builder(context, R.style.Theme_AppCompat_DayNight_Dialog);
+                                builder.setTitle("Error")
+                                        .setMessage("No coindice la contraseña con el correo \nVuelve a intentarlo\n")
+                                        .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialogInterface, int i) {
+                                                context.startActivity(new Intent(context, IniciarSesion.class));
+                                            }
+                                        })
+                                        .create().show();
                             }
                         }
                     }
@@ -149,7 +160,6 @@ public class SesionesFirestore {
     }
 
     public void cambiarClave(String correo){
-
         mAuth.sendPasswordResetEmail(correo).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
@@ -196,12 +206,28 @@ public class SesionesFirestore {
        });
     }
 
+    private Handler mHandler = new Handler() {
+        public void handleMessage(android.os.Message msg) {
+            switch (msg.what) {
+                case MSG_DISMISS_DIALOG:
+                    if (mAlertDialog != null && mAlertDialog.isShowing()) {
+                        mAlertDialog.dismiss();
+                    }
+                    break;
+
+                default:
+                    break;
+            }
+        }
+    };
+
     public void createAlert(String alertTitle, String alertMessage, String positiveText){
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setTitle(alertTitle)
                 .setMessage(alertMessage)
                 .setPositiveButton(positiveText, null)
                 .create().show();
+        mHandler.sendEmptyMessageDelayed(MSG_DISMISS_DIALOG, TIME_OUT);
     }
 
     private void cambiarBotones(Button btn, ProgressBar pb) {

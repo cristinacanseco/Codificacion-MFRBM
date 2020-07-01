@@ -5,11 +5,10 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.widget.Toast;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.palette.graphics.Palette;
 
 import com.example.mfrbmv10.Adaptadores.FormaAdapter;
 import com.example.mfrbmv10.Adaptadores.TexturaAdapter;
@@ -18,7 +17,6 @@ import com.example.mfrbmv10.Fragments.HomeActivity;
 import com.example.mfrbmv10.Fragments.Muestreos.MuestreoFragment;
 import com.example.mfrbmv10.Fragments.Usuario.UsuarioPerfilFragment;
 import com.example.mfrbmv10.Modelos.Bitacora;
-import com.example.mfrbmv10.Modelos.ColorMuestreo;
 import com.example.mfrbmv10.Modelos.Muestreo;
 import com.example.mfrbmv10.Modelos.Usuario;
 import com.example.mfrbmv10.R;
@@ -27,15 +25,17 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
-import com.google.firebase.firestore.WriteBatch;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+
+import static androidx.constraintlayout.widget.Constraints.TAG;
 
 
 public class Crud implements Serializable {
@@ -46,7 +46,6 @@ public class Crud implements Serializable {
     private String bitacora_db ="Bitacora";
     private String muestreo_db ="Muestreo";
     Context context2;
-
 
     public Crud(Fragment context) {
         this.context = context;
@@ -107,21 +106,15 @@ public class Crud implements Serializable {
                         if (task.isSuccessful()) {
 
                             AlertDialog.Builder builder = new AlertDialog.Builder(context2, R.style.Theme_AppCompat_DayNight_Dialog);
-                            builder.setTitle("¡Nuevo Bitácora!")
+                            builder.setTitle("¡Nueva Bitácora!")
                                     .setMessage("Se generó correctamente tu muestreo. Ya puedes consultarlo")
                                     .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                                         @Override
                                         public void onClick(DialogInterface dialogInterface, int i) {
                                             irMuestreoFragment(task.getResult().getId() ,bitacora.getNombre_btc());
-                                            //context2.startActivity(new Intent(context2, HomeActivity.class));
                                         }
                                     })
                                     .create().show();
-
-                            //createAlert("Éxito", "Se creó correctamente la bitácora.","OK");
-                            //context.startActivity(new Intent(context2,BitacoraNuevaFragment.class));
-
-                            //irBitacoraFragment();
 
                         } else {
                             createAlert("Error", "No se agregaron los datos de la bitácora. \nVuelve a intentarlo\n "+task.getException(), "OK");
@@ -133,7 +126,6 @@ public class Crud implements Serializable {
                 createAlert("Error", "Ups...hubo un problema. \nVuelve a intentarlo\n ", "OK");
             }
         });
-
     }
 
 
@@ -145,7 +137,29 @@ public class Crud implements Serializable {
                 .addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-                createAlert("Error", "Ups...hubo un problema. \nVuelve a intentarlo\n ", "OK");
+                createAlert("Error", "Ups... hubo un problema. \nVuelve a intentarlo\n ", "OK");
+            }
+        });
+
+
+        mFirestore.collection(usuario_db).document(id).collection(bitacora_db)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                Log.d(TAG, document.getId() + " => " + document.getData());
+                            }
+                        } else {
+                            Log.d(TAG, "Error getting documents: ", task.getException());
+                        }
+                    }
+                })
+        .addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Log.e(e.toString(),"MALLLLLL");
             }
         });
     }
@@ -175,8 +189,6 @@ public class Crud implements Serializable {
     public void borrarBitacora(String id_bitacora) {
 
         String id = mAuth.getCurrentUser().getUid();
-
-
         mFirestore.collection(usuario_db).document(id).collection(bitacora_db).document(id_bitacora).collection(muestreo_db).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
@@ -240,7 +252,7 @@ public class Crud implements Serializable {
                     public void onComplete(@NonNull Task<DocumentReference> task) {
                         if (task.isSuccessful()) {
 
-                            /*AlertDialog.Builder builder = new AlertDialog.Builder(context2, R.style.Theme_AppCompat_DayNight_Dialog);
+                            AlertDialog.Builder builder = new AlertDialog.Builder(context2, R.style.Theme_AppCompat_DayNight_Dialog);
                             builder.setTitle("¡Nuevo Muestreo!")
                                     .setMessage("Se generó correctamente el muestreo. Ya puedes consultarlo")
                                     .setPositiveButton("OK", new DialogInterface.OnClickListener() {
@@ -249,19 +261,21 @@ public class Crud implements Serializable {
                                             context2.startActivity(new Intent(context2, HomeActivity.class));
                                         }
                                     })
-                                    .create().show();*/
+                                    .create().show();
                         } else {
                             createAlert("Error", "No se agregaron los datos de la bitácora. \nVuelve a intentarlo\n ", "OK");
                             context2.startActivity(new Intent(context2, HomeActivity.class));
                         }
                     }
-                }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                createAlert("Error", "Ups...hubo un problema. \nVuelve a intentarlo\n ", "OK");
-            }
-        });
 
+                }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            createAlert("Error", "Ups...hubo un problema. \nVuelve a intentarlo\n ", "OK");
+                        }
+                    });
+
+        context2.startActivity(new Intent(context2, HomeActivity.class));
     }
 
 
@@ -273,8 +287,7 @@ public class Crud implements Serializable {
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
-                        //createAlert("Éxito", "Número de muestreos actualizado", "OK");
-                        //irMuestreoFragment(id_bitacora, nombre_muestreo);
+
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
@@ -322,7 +335,7 @@ public class Crud implements Serializable {
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        createAlert("Error", "Ups...hubo un problema. \nVuelve a intentarlo\n ", "OK");
+                        createAlert("Error", "Ups... hubo un problema. \nVuelve a intentarlo\n ", "OK");
                     }
                 });
     }
@@ -339,14 +352,14 @@ public class Crud implements Serializable {
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
-                        createAlert("Éxito", "Bitácora actualizada", "OK");
-                        irBitacoraFragment();
-                        //irMuestreoFragment(id_bitacora, nombre_bitacora);
+                        createAlert("Éxito", "Muestreo actualizado", "OK");
+                        //irBitacoraFragment();
+                        irMuestreoFragment(id_bitacora, nombre_bitacora);
                     }
                 }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-                createAlert("Error", "No se actualizó la bitácora. \nVuelve a intentarlo\n " + e.getMessage().toString(), "OK");
+                createAlert("Error", "No se actualizó el muestreo. \nVuelve a intentarlo\n " + e.getMessage().toString(), "OK");
             }
         });
     }
@@ -363,13 +376,13 @@ public class Crud implements Serializable {
                 .delete().addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
-                createAlert("Éxito", "Bitácora eliminada exitosamente", "OK");
+                createAlert("Éxito", "Muestreo eliminado exitosamente", "OK");
                 irMuestreoFragment(id_bitacora, nombre_bitacora);
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-                createAlert("Error", "\nNo se pudo eliminar la bitácora seleccionada. \nVuelve a intentarlo\n " + e.getMessage().toString(), "OK");
+                createAlert("Error", "\nNo se pudo eliminar el muestreo seleccionada. \nVuelve a intentarlo\n " + e.getMessage().toString(), "OK");
             }
         });
     }

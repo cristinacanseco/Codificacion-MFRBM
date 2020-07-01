@@ -59,10 +59,7 @@ public class Medicion extends AppCompatActivity implements Node.OnTapListener, S
         private AnchorNode ultimoAnchorNode;
         private TextView txtDistance;
         private ImageView btnDist, btnClear, btnGuardar, iv_listo;
-        //Button btnHeight;
         ModelRenderable cubeRenderable;
-        //ModelRenderable heightRenderable;
-        //boolean btnHeightClicked;
         boolean btnLengthClicked;
         Vector3 point1, point2;
 
@@ -85,14 +82,6 @@ public class Medicion extends AppCompatActivity implements Node.OnTapListener, S
                 btnDist = findViewById(R.id.btnDistance);
                 btnDist.setOnClickListener(v -> {btnLengthClicked =true; onClear();});
 
-
-                /*btnHeight = findViewById(R.id.btnHeight);
-                btnHeight.setOnClickListener(v -> {
-                    btnHeightClicked = true;
-                    btnLengthClicked = false;
-                    onClear();
-                });*/
-
                 btnClear = findViewById(R.id.iv_limpiar);
                 btnClear.setOnClickListener(v -> onClear());
 
@@ -111,41 +100,11 @@ public class Medicion extends AppCompatActivity implements Node.OnTapListener, S
                                         cubeRenderable.setShadowReceiver(false);
                                 });
 
-        /*MaterialFactory.makeTransparentWithColor(this, new Color(0F, 0F, 244F))
-                .thenAccept(
-                        material -> {
-                            Vector3 vector3 = new Vector3(0.007f, 0.1f, 0.007f);
-                            heightRenderable = ShapeFactory.makeCube(vector3, Vector3.zero(), material);
-                            heightRenderable.setShadowCaster(false);
-                            heightRenderable.setShadowReceiver(false);
-                        });*/
-
-
                 arFragment.setOnTapArPlaneListener(
                         (HitResult hitResult, Plane plane, MotionEvent motionEvent) -> {
                                 if (cubeRenderable == null) {
                                         return;
                                 }
-
-                    /*if (btnHeightClicked) {
-                        if (lastAnchorNode != null) {
-                            Toast.makeText(this, "Please click clear button", Toast.LENGTH_SHORT).show();
-                            return;
-                        }
-                        Anchor anchor = hitResult.createAnchor();
-                        AnchorNode anchorNode = new AnchorNode(anchor);
-                        anchorNode.setParent(arFragment.getArSceneView().getScene());
-                        TransformableNode transformableNode = new TransformableNode(arFragment.getTransformationSystem());
-                        transformableNode.setParent(anchorNode);
-                        transformableNode.setRenderable(heightRenderable);
-                        transformableNode.select();
-                        ScaleController scaleController = transformableNode.getScaleController();
-                        scaleController.setMaxScale(10f);
-                        scaleController.setMinScale(0.01f);
-                        transformableNode.setOnTapListener(this);
-                        arFragment.getArSceneView().getScene().addOnUpdateListener(this);
-                        lastAnchorNode = anchorNode;
-                    }*/
 
                                 if (btnLengthClicked) {
                                         if (ultimoAnchorNode == null) {
@@ -179,9 +138,7 @@ public class Medicion extends AppCompatActivity implements Node.OnTapListener, S
                                                         arrayList2.add(pose.tx());
                                                         arrayList2.add(pose.ty());
                                                         arrayList2.add(pose.tz());
-                                                        //float d = getDistanceMeters(arrayList1, arrayList2);
                                                         double d = getDistanciaMetros(arrayList1, arrayList2);
-                                                        //todasLongitudes.add(String.valueOf(d));
                                                         txtDistance.setText( String.valueOf(d) + " cm");
                                                 } else {
                                                         arrayList1.clear();
@@ -190,9 +147,7 @@ public class Medicion extends AppCompatActivity implements Node.OnTapListener, S
                                                         arrayList2.add(pose.tx());
                                                         arrayList2.add(pose.ty());
                                                         arrayList2.add(pose.tz());
-                                                        //float d = getDistanceMeters(arrayList1, arrayList2);
                                                         double d = getDistanciaMetros(arrayList1, arrayList2);
-                                                        //todasLongitudes.add(String.valueOf(d));
                                                         txtDistance.setText(String.valueOf(d) + " cm");
                                                 }
 
@@ -235,6 +190,7 @@ public class Medicion extends AppCompatActivity implements Node.OnTapListener, S
         }
 
         private void guardarDatos() {
+                iv_listo.setEnabled(false);
                 String id_bitacora = getIntent().getStringExtra("id_bitacora");
                 String nombre_bitacora = getIntent().getStringExtra("nombre_bitacora");
                 String cantidad = getIntent().getStringExtra("cantidad");
@@ -242,7 +198,6 @@ public class Medicion extends AppCompatActivity implements Node.OnTapListener, S
                 Bundle bundle1 = getIntent().getBundleExtra("muestreo");
                 Muestreo m = (Muestreo) bundle1.getSerializable("muestreo");
                 m.setDimension_mtr(todasLongitudes);
-               // Fragment f = (Fragment) bundle1.getSerializable("contexto");
 
                 Crud crud = new Crud(this);
                 crud.insertarMuestreo(m, id_bitacora, nombre_bitacora);
@@ -320,16 +275,12 @@ public class Medicion extends AppCompatActivity implements Node.OnTapListener, S
                                 renderableSize.z * transformableNodeScale.z);
                 txtDistance.setText("Ancho: " + String.valueOf(finalSize.y));
                 Log.e("Tamaño final: ", String.valueOf(finalSize.x + " " + finalSize.y + " " + finalSize.z));
-                //Toast.makeText(this, "Final Size is " + String.valueOf(finalSize.x + " " + finalSize.y + " " + finalSize.z), Toast.LENGTH_SHORT).show();
+
         }
 
         @Override
         public void onUpdate(FrameTime frameTime) {
                 Frame frame = arFragment.getArSceneView().getArFrame();
-//        Collection<Anchor> updatedAnchors = frame.getUpdatedAnchors();
-//        for (Anchor anchor : updatedAnchors) {
-//            Handle updated anchors...
-//        }
         }
 }
 

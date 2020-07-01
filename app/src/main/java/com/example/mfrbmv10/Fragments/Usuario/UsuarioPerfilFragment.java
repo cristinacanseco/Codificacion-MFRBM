@@ -108,7 +108,6 @@ public class UsuarioPerfilFragment extends Fragment implements View.OnClickListe
 
         //EditText
         et_nombreUsuario = usuario_fragment.findViewById(R.id.et_nombreUsuario);
-        et_apellidoUsuario = usuario_fragment.findViewById(R.id.et_apellidoUsuario);
 
 
         //TextView
@@ -208,8 +207,7 @@ public class UsuarioPerfilFragment extends Fragment implements View.OnClickListe
     public void onComplete(@NonNull Task<DocumentSnapshot> task) {
         if(task.isSuccessful()){
                 usuario =  task.getResult().toObject(Usuario.class);
-                et_nombreUsuario.setText(usuario.getNombre_usr());
-                et_apellidoUsuario.setText(usuario.getApellido_usr());
+                et_nombreUsuario.setText(usuario.getNombre_usr() + " "+ usuario.getApellido_usr());
                 et_correoUsuario.setText(usuario.getCorreo_usr());
         }else{
             crud. createAlert("Error", "Hubo un problema", "OK");

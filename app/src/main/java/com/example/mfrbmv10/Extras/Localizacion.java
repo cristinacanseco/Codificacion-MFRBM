@@ -1,31 +1,24 @@
 package com.example.mfrbmv10.Extras;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 
 import android.Manifest;
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Address;
-import android.location.Criteria;
 import android.location.Geocoder;
 import android.location.Location;
-import android.location.LocationManager;
 import android.net.Uri;
-import android.os.Bundle;
 import android.provider.Settings;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
 import com.example.mfrbmv10.BuildConfig;
-import com.example.mfrbmv10.Fragments.Bitacoras.BitacoraNuevaFragment;
-import com.example.mfrbmv10.Fragments.Muestreos.MuestreoNuevoFragment;
 import com.example.mfrbmv10.R;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
@@ -36,7 +29,6 @@ import com.google.android.material.snackbar.Snackbar;
 import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
-import java.util.concurrent.Executor;
 
 public class Localizacion implements ActivityCompat.OnRequestPermissionsResultCallback {
 
@@ -73,18 +65,15 @@ public class Localizacion implements ActivityCompat.OnRequestPermissionsResultCa
         Log.i(TAG, "onRequestPermissionResult");
         if (requestCode == REQUEST_PERMISSIONS_REQUEST_CODE) {
             if (grantResults.length <= 0) {
-                // If user interaction was interrupted, the permission request is cancelled and you
-                // receive empty arrays.
-                Log.i(TAG, "User interaction was cancelled.");
+                Log.i(TAG, "Cancelaste la interación");
             } else if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                // Permission granted.
                 getLastLocation();
             } else {
                 showSnackbar(R.string.textwarn, R.string.settings,
                         new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
-                                // Build intent that displays the App settings screen.
+
                                 Intent intent = new Intent();
                                 intent.setAction(
                                         Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
@@ -125,7 +114,7 @@ public class Localizacion implements ActivityCompat.OnRequestPermissionsResultCa
                         Manifest.permission.ACCESS_FINE_LOCATION);
 
         if (shouldProvideRationale) {
-            Log.i(TAG, "Displaying permission rationale to provide additional context.");
+            Log.i(TAG, "Desplegando permisos relacionados para proveer un contexto adicional");
 
             showSnackbar(R.string.textwarn, android.R.string.ok,
                     new View.OnClickListener() {
@@ -137,7 +126,7 @@ public class Localizacion implements ActivityCompat.OnRequestPermissionsResultCa
                     });
 
         } else {
-            Log.i(TAG, "Requesting permission");
+            Log.i(TAG, "Se requiere el permiso para ingresar a la localización");
             startLocationPermissionRequest();
         }
     }
@@ -156,7 +145,6 @@ public class Localizacion implements ActivityCompat.OnRequestPermissionsResultCa
                                     mLastLocation.getLatitude());
                             mLongitudeLabel = String.format(Locale.ENGLISH, "%f",
                                     mLastLocation.getLongitude());
-                            //mLatitudeText.setText(getUbicacion());
                             nombreCoordenada(mLastLocation);
                         } else {
                             Log.w(TAG, "getLastLocation:exception", task.getException());

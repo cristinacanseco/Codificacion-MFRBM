@@ -23,11 +23,11 @@ public class PersistenciaFirebase extends  android.app.Application {
             startActivity(intent);
         }
 
-        FirebaseFirestoreSettings settings = new FirebaseFirestoreSettings.Builder()
+        /*FirebaseFirestoreSettings settings = new FirebaseFirestoreSettings.Builder()
                 .setCacheSizeBytes(FirebaseFirestoreSettings.CACHE_SIZE_UNLIMITED)
                 .build();
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-        db.setFirestoreSettings(settings);
+        db.setFirestoreSettings(settings)*/;
     }
 }
 

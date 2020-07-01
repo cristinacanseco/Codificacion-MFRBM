@@ -140,7 +140,7 @@ public class MuestreoFragment extends Fragment implements OnCompleteListener<Que
             public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
 
                 AlertDialog.Builder builder = new AlertDialog.Builder(getContext(), R.style.Theme_AppCompat_DayNight_Dialog);
-                builder.setTitle("Eliminar bitácora")
+                builder.setTitle("Eliminar muestreo")
                         .setMessage("¿Estás seguro de que deseas eliminar el muestreo?")
                         .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                             @Override

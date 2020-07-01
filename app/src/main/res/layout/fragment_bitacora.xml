@@ -61,7 +61,7 @@ tools:context=".Fragments.Bitacoras.BitacoraFragment">
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_mis_bitacoras_p"
         android:layout_width="match_parent"
-        android:layout_marginTop="140dp"
+        android:layout_marginTop="110dp"
         android:layout_height="match_parent">
     </androidx.recyclerview.widget.RecyclerView>
 

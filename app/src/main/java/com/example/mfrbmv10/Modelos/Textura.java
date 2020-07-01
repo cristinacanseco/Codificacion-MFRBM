@@ -5,8 +5,7 @@ public class Textura {
     private int id_textura;
     private String tipo_textura;
 
-    public Textura() {
-    }
+    public Textura() { }
 
     public Textura(int id_textura, String tipo_textura) {
         this.id_textura = id_textura;

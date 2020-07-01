@@ -11,7 +11,6 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
-import android.graphics.Matrix;
 import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.Build;
@@ -20,10 +19,8 @@ import android.os.Environment;
 import android.os.StrictMode;
 import android.provider.MediaStore;
 import android.provider.Settings;
-import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
-import android.view.ViewConfiguration;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -41,7 +38,6 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.nio.IntBuffer;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -78,7 +74,7 @@ public class CamaraDibujo extends AppCompatActivity implements View.OnClickListe
 
     public int densidad;
 
-    private ProgressBar pb_camara;
+    public ProgressBar pb_camara;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -193,8 +189,7 @@ public class CamaraDibujo extends AppCompatActivity implements View.OnClickListe
     }
 
     private File crearFotoFile() throws IOException{
-        File fileImagen = crearDirectorioPublico("MFRBM");
-        //File fileImagen=getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        File fileImagen = crearDirectorioPublico("Quitacora");
 
         String timeStamp="";
         String imagenFileName="";
@@ -205,7 +200,6 @@ public class CamaraDibujo extends AppCompatActivity implements View.OnClickListe
         }
 
         if(isCreada==true){
-            //nombreImagen=(System.currentTimeMillis()/1000)+".jpg";
             timeStamp=new SimpleDateFormat("yyyyMMddHHmm").format(new Date());
             imagenFileName ="img_muestreo_"+timeStamp;
         }
@@ -256,7 +250,6 @@ public class CamaraDibujo extends AppCompatActivity implements View.OnClickListe
 
         imgOriBitmap = imagen.getImagenB();
         imgOriBitmap.setDensity(densidad);
-        //Log.i("DENSIDAD","" + densidad);
         configurarCanvas();
     }
 
@@ -272,9 +265,7 @@ public class CamaraDibujo extends AppCompatActivity implements View.OnClickListe
         drawableView.setConfig(config);
         drawableView.setBackground(imagen.getImagenD());
         drawableView.onScaleChange(0.75f);
-
-        //Toast.makeText(this, "HD:"+config.getCanvasHeight()+" WD:"+config.getCanvasWidth()+"\nHB:"+bitmap.getHeight()+" WB:"+bitmap.getWidth()+ " \nHI:"+imagen.getImagenB().getHeight()+" WI."+imagen.getImagenB().getWidth(), Toast.LENGTH_SHORT).show();
-    }
+ }
 
     @Override
     public void onClick(View view) {
@@ -365,14 +356,13 @@ public class CamaraDibujo extends AppCompatActivity implements View.OnClickListe
             try {
                 fileOutputStream = new FileOutputStream(image);
                 drawableView.obtainBitmap(drawableView.obtainBitmap()).compress(Bitmap.CompressFormat.PNG, 100, fileOutputStream);
-                //mBitmap.compress(Bitmap.CompressFormat.PNG, 100, fileOutputStream);
-                //Toast.makeText(this, "W:"+drawableView.obtainBitmap(drawableView.obtainBitmap()).getWidth()+" H:"+drawableView.obtainBitmap(drawableView.obtainBitmap()).getHeight(), Toast.LENGTH_SHORT).show();
                 fileOutputStream.flush();
                 fileOutputStream.close();
                 Toast.makeText(this, "Imagaen Guardada", Toast.LENGTH_LONG).show();
             } catch (FileNotFoundException e) {
-
+                Toast.makeText(this, "Ups... ocurrió un problema", Toast.LENGTH_LONG).show();
             } catch (IOException e) {
+                Toast.makeText(this, "Ups... ocurrió un problema "+e.toString(), Toast.LENGTH_LONG).show();
             }
         }
     }
@@ -402,15 +392,13 @@ public class CamaraDibujo extends AppCompatActivity implements View.OnClickListe
             try {
                 fileOutputStream = new FileOutputStream(image);
                 bitmapIB.compress(Bitmap.CompressFormat.PNG, 100, fileOutputStream);
-                //mBitmap.compress(Bitmap.CompressFormat.PNG, 100, fileOutputStream);
-                //Toast.makeText(this, "W:"+drawableView.obtainBitmap(drawableView.obtainBitmap()).getWidth()+" H:"+drawableView.obtainBitmap(drawableView.obtainBitmap()).getHeight(), Toast.LENGTH_SHORT).show();
                 fileOutputStream.flush();
                 fileOutputStream.close();
                 Toast.makeText(this, "Imagaen Guardada", Toast.LENGTH_LONG).show();
             } catch (FileNotFoundException e) {
-
+                Toast.makeText(this, "Ups... ocurrió un problema", Toast.LENGTH_LONG).show();
             } catch (IOException e) {
-
+                Toast.makeText(this, "Ups... ocurrió un problema "+e.toString(), Toast.LENGTH_LONG).show();
             }
 
         }
@@ -426,14 +414,12 @@ public class CamaraDibujo extends AppCompatActivity implements View.OnClickListe
         Imagen imagenOriginal = new Imagen(imagen_pv.getDrawable());
         Bitmap imgOriginalBitmap = imagenOriginal.getImagenB();
         imgOriginalBitmap.setDensity(densidad);
-       // guardarImagenBitmap(imgOriginalBitmap);
 
         //Generar bitmap nuevo
         imagen_nn.setImageBitmap(Bitmap.createScaledBitmap(imgNvoBitmap, imgNvoBitmap.getWidth() / 2, imgNvoBitmap.getHeight() / 2, false));
         Imagen imagenNuevo = new Imagen(imagen_nn.getDrawable());
         Bitmap imgNuevoBitmap = imagenNuevo.getImagenB();
         imgNuevoBitmap.setDensity(densidad);
-
 
         ArrayList<ColorPaleta> aux = new ArrayList<>();
 
@@ -447,7 +433,7 @@ public class CamaraDibujo extends AppCompatActivity implements View.OnClickListe
             }
         }
 
-        Log.e("Aux size", ""+aux.size());
+
         if(aux.size()==0){
             generarPaleta(imgOriBitmap);
         }else {
@@ -460,7 +446,6 @@ public class CamaraDibujo extends AppCompatActivity implements View.OnClickListe
                 div = 2;
             }
 
-            //int tam = (int) (aux.size() /div);
             int tam = (int) Math.sqrt(aux.size());
             div = tam;
 
@@ -475,11 +460,10 @@ public class CamaraDibujo extends AppCompatActivity implements View.OnClickListe
                     int b = aux.get(x).getB();
                     bmp.setPixel(i, j, Color.rgb(r, g, b));
                     x++;
-                    //Log.i("cantidad x", ""+x);
                 }
             }
 
-           // guardarImagenBitmap(bmp);
+            guardarImagenBitmap(bmp);
             generarPaleta(bmp);
         }
     }
@@ -538,5 +522,7 @@ public class CamaraDibujo extends AppCompatActivity implements View.OnClickListe
 
         irAMedicion();
     }
+
+
 
 }

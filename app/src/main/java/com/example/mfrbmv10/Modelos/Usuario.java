@@ -16,16 +16,6 @@ public class Usuario {
         this.admin_usr = admin_usr;
     }
 
-    public Usuario(String uid, String nombre_usr, String apellido_usr, String correo_usr, String clave_usr, String imagen_usr, boolean admin_usr) {
-        this.nombre_usr = nombre_usr;
-        this.apellido_usr = apellido_usr;
-        this.correo_usr = correo_usr;
-        this.clave_usr = clave_usr;
-        this.imagen_usr = imagen_usr;
-        this.uid = uid;
-        this.admin_usr = admin_usr;
-    }
-
     public String getNombre_usr() {
         return nombre_usr;
     }
@@ -50,33 +40,5 @@ public class Usuario {
         return admin_usr;
     }
 
-    public String getUid() { return uid; }
 
-    public void setNombre_usr(String nombre_usr) {
-        this.nombre_usr = nombre_usr;
-    }
-
-    public void setApellido_usr(String apellido_usr) {
-        this.apellido_usr = apellido_usr;
-    }
-
-    public void setCorreo_usr(String correo_usr) {
-        this.correo_usr = correo_usr;
-    }
-
-    public void setClave_usr(String clave_usr) {
-        this.clave_usr = clave_usr;
-    }
-
-    public void setImagen_usr(String imagen_usr) {
-        this.imagen_usr = imagen_usr;
-    }
-
-    public void setUid(String uid) {
-        this.uid = uid;
-    }
-
-    public void setAdmin_usr(boolean admin_usr) {
-        this.admin_usr = admin_usr;
-    }
 }

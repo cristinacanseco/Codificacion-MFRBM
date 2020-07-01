@@ -26,8 +26,6 @@
             android:theme="@style/Theme.AppCompat.Light.NoActionBar">
         </activity>
 
-        <activity android:name=".Imagen.CamaraIntento2"></activity>
-
         <activity android:name=".Imagen.CamaraDibujo"
                   android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
 
@@ -44,7 +42,9 @@
         <activity
             android:name=".Fragments.HomeActivity"
             android:label="@string/title_activity_home"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar">
+
+        </activity>
         <activity
             android:name=".Sesiones.Registro"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />

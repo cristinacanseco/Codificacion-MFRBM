@@ -1,12 +1,10 @@
 package com.example.mfrbmv10.Modelos;
 
-import android.graphics.Bitmap;
-import android.graphics.Color;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
-import android.media.Image;
-import android.widget.ImageView;
-
+        import android.graphics.Bitmap;
+        import android.graphics.drawable.BitmapDrawable;
+        import android.graphics.drawable.Drawable;
+        import android.media.Image;
+        import android.widget.ImageView;
 
 public class Imagen {
 
@@ -27,7 +25,6 @@ public class Imagen {
     }
 
     public Imagen(Drawable imagenD) {
-
         this.imagenB = drawableToBitmap(imagenD);
         this.imagenD = imagenD;
         this.descripcion = "Image";
@@ -50,10 +47,7 @@ public class Imagen {
         return imagenD;
     }
 
-    public Bitmap getImagenB() {
-
-        return imagenB;
-    }
+    public Bitmap getImagenB() { return imagenB; }
 
     public void setImagenB(Bitmap imagenB) {
         this.imagenB = imagenB;
@@ -78,36 +72,8 @@ public class Imagen {
         this.imagen = iv;
     }
 
-    public int getAltura() {
-        return altura;
-    }
-
-    public int getAncho() {
-        return ancho;
-    }
-
-
     public int getRGB(int x, int y){
         int pixel = this.imagenB.getPixel(x,y);
-        return pixel;
-    }
-
-    public int getRed(int pixel) {
-        return Color.red(pixel);
-    }
-
-    public int getBlue(int pixel) {
-        return Color.blue(pixel);
-    }
-    public int getGreen(int pixel) {
-        return Color.green(pixel);
-    }
-
-    public int getRGB2(int x, int y){
-        int pixel = this.imagenB.getPixel(x,y);
-        int r = Color.red(pixel);
-        int g = Color.red(pixel);
-        int b = Color.red(pixel);
         return pixel;
     }
 

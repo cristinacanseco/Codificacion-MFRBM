@@ -31,6 +31,8 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.view.Menu;
 import android.view.View;
@@ -39,19 +41,22 @@ import android.widget.Toast;
 
 public class HomeActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
-                    BitacoraFragment.OnFragmentInteractionListener,
-                    BitacoraNuevaFragment.OnFragmentInteractionListener,
-                    BitacoraEditarFragment.OnFragmentInteractionListener,
-                    BitacoraMostrarFragment.OnFragmentInteractionListener,
-                    MuestreoFragment.OnFragmentInteractionListener,
-                    MuestreoNuevoFragment.OnFragmentInteractionListener,
-                    MuestreoEditarFragment.OnFragmentInteractionListener,
-                    MuestreoMostrarFragment.OnFragmentInteractionListener,
-                    UsuarioPerfilFragment.OnFragmentInteractionListener,
-                    CreditosFragment.OnFragmentInteractionListener {
+        UsuarioPerfilFragment.OnFragmentInteractionListener,
+        CreditosFragment.OnFragmentInteractionListener,
+        BitacoraFragment.OnFragmentInteractionListener,
+        BitacoraNuevaFragment.OnFragmentInteractionListener,
+        BitacoraEditarFragment.OnFragmentInteractionListener,
+        BitacoraMostrarFragment.OnFragmentInteractionListener,
+        MuestreoFragment.OnFragmentInteractionListener,
+        MuestreoNuevoFragment.OnFragmentInteractionListener,
+        MuestreoEditarFragment.OnFragmentInteractionListener,
+        MuestreoMostrarFragment.OnFragmentInteractionListener
+         {
 
-   private SesionesFirestore sesionesFirestore;
-   Fragment fragment;
+    private SesionesFirestore sesionesFirestore;
+    Fragment fragment;
+    FragmentManager fragmentManager;
+    FragmentTransaction fragmentTransaction;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,18 +69,24 @@ public class HomeActivity extends AppCompatActivity
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.addDrawerListener(toggle);
-        toggle.syncState();
-
         navigationView.setNavigationItemSelectedListener(this);
         actualizarNavHeader();
 
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawer.addDrawerListener(toggle);
+        toggle.setDrawerIndicatorEnabled(true);
+        toggle.syncState();
+
+        fragment = new CreditosFragment();
         fragment = new BitacoraFragment();
         getSupportFragmentManager().beginTransaction().add(R.id.content_main, fragment).commit();
         navigationView.setNavigationItemSelectedListener(this);
 
+        /*fragmentManager = getSupportFragmentManager();
+        fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.add(R.id.content_main, fragment);
+        fragmentTransaction.commit();*/
     }
 
     @Override
@@ -130,17 +141,18 @@ public class HomeActivity extends AppCompatActivity
         return super.onOptionsItemSelected(item);
     }
 
-    @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-
         boolean fragmentSeleccionado=false;
+        FragmentTransaction transaction;
+        transaction = getSupportFragmentManager().beginTransaction();
 
         if (id == R.id.nav_bitacora) {
             fragment = new BitacoraFragment();
+
             fragmentSeleccionado = true;
         } else if (id == R.id.nav_perfil) {
             fragment = new UsuarioPerfilFragment();
@@ -159,11 +171,8 @@ public class HomeActivity extends AppCompatActivity
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         onBackPressed();
-        return true;
+        return false;
     }
-
-    @Override
-    public void onFragmentInteraction(Uri uri) { }
 
     public void actualizarNavHeader(){
         NavigationView navigationView = findViewById(R.id.nav_view);
@@ -172,9 +181,14 @@ public class HomeActivity extends AppCompatActivity
         TextView tv_nombreUsuario = headerView.findViewById(R.id.tv_nombreUsuario);
         TextView tv_correoUsuario = headerView.findViewById(R.id.tv_correoUsuario);
 
-        //Toast.makeText(this, ""+sesionesFirestore.getmUser().getDisplayName(), Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, ""+sesionesFirestore.getmUser().getDisplayName(), Toast.LENGTH_SHORT).show();
         tv_nombreUsuario.setText(sesionesFirestore.getmUser().getDisplayName());
         tv_correoUsuario.setText(sesionesFirestore.getmUser().getEmail());
 
     }
-}
+
+             @Override
+             public void onFragmentInteraction(Uri uri) {
+
+             }
+         }
